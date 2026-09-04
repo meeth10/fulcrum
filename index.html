@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FULCRUM — DCF Valuation</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 17L12 4L21 17" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="12" cy="17" r="2.4" fill="currentColor"/>
+          <path d="M2 20.5H22" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        FULCRUM
+      </div>
+      <div class="brand-sub">Discounted Cash Flow &amp; Scenario Valuation</div>
+    </div>
+
+    <div class="case-name-field">
+      <label>Case</label>
+      <input type="text" id="case-name-input" placeholder="Untitled Case">
+    </div>
+
+    <nav class="steps" id="step-nav">
+      <!-- populated by main.js -->
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="sync-status" id="sync-status"><span class="dot"></span><span>Not connected</span></div>
+      <button class="btn btn-ghost btn-sm" id="btn-load-sample" style="justify-content:center;">Load sample case</button>
+      <button class="btn btn-ghost btn-sm" id="btn-github" style="justify-content:center;">GitHub save / load</button>
+      <button class="btn btn-ghost btn-sm" id="btn-export" style="justify-content:center;">Export JSON</button>
+    </div>
+  </aside>
+
+  <main class="main" id="main-content">
+    <!-- populated by main.js per active step -->
+  </main>
+
+</div>
+
+<!-- GitHub sync modal -->
+<div id="github-modal" class="modal-overlay hidden">
+  <div class="modal-card card" id="github-modal-body"></div>
+</div>
+
+<style>
+  .modal-overlay { position: fixed; inset: 0; background: rgba(28,23,18,0.45); display:flex; align-items:center; justify-content:center; z-index: 50; }
+  .modal-card { width: 460px; max-width: 90vw; max-height: 84vh; overflow-y: auto; }
+</style>
+
+<script src="js/calc/finance-utils.js"></script>
+<script src="js/calc/wacc.js"></script>
+<script src="js/calc/dcf.js"></script>
+<script src="js/calc/sensitivity.js"></script>
+<script src="js/calc/derive.js"></script>
+<script src="js/calc/scenarios.js"></script>
+
+<script src="js/state.js"></script>
+<script src="js/format.js"></script>
+<script src="data/sample-case.js"></script>
+<script src="js/github-sync.js"></script>
+<script src="js/charts.js"></script>
+
+<script src="js/ui/helpers.js"></script>
+<script src="js/ui/company.js"></script>
+<script src="js/ui/statements.js"></script>
+<script src="js/ui/capital.js"></script>
+<script src="js/ui/scenarios.js"></script>
+<script src="js/ui/valuation.js"></script>
+<script src="js/ui/sensitivity.js"></script>
+<script src="js/ui/summary.js"></script>
+<script src="js/ui/sync-modal.js"></script>
+
+<script src="js/main.js"></script>
+
+</body>
+</html>
