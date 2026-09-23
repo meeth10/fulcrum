@@ -8,6 +8,9 @@ venv/
 env/
 
 # Local financial data
+data/*.db
+data/*.sqlite
+data/*.sqlite3
 extractor/data/*.pdf
 extractor/data/*.db
 extractor/data/*.sqlite
