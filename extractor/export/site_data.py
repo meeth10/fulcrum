@@ -151,7 +151,7 @@ if __name__ == "__main__":
 
     p = argparse.ArgumentParser()
     p.add_argument("--db", default="data/financials.db")
-    p.add_argument("--out", default="site/data")
+    p.add_argument("--out", default="data")
     p.add_argument("--entity", action="append", default=[], help="repeat for each company")
     p.add_argument("--ticker", action="append", default=[])
     p.add_argument("--sector", action="append", default=[])
