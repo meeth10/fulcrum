@@ -1,0 +1,9 @@
+[
+  {
+    "id": "hdfc-bank",
+    "name": "HDFC Bank",
+    "ticker": "HDFCBANK",
+    "sector": "Financials",
+    "periods": ["FY2024", "FY2025"]
+  }
+]
