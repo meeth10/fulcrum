@@ -3,83 +3,1138 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FULCRUM — DCF Valuation</title>
-<link rel="stylesheet" href="css/styles.css">
+<title>FULCRUM — Valuation, Comps &amp; Financials</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ---------------------------------------------------------------------
+   Dark editorial palette — intentionally single-theme (matches the rest
+   of the toolkit: WAVE / FRAME / SIEVE / the original Fulcrum DCF page).
+   Defined identically under the OS-dark and explicit-dark selectors too,
+   so the page never falls back to an unstyled light default anywhere.
+----------------------------------------------------------------------*/
+:root, :root:not([data-theme="light"]), :root[data-theme="dark"] {
+  --bg: #110e0b;
+  --bg-panel: #191410;
+  --bg-panel-2: #201a15;
+  --bg-inset: #0c0a08;
+  --border: #322920;
+  --border-soft: #241d17;
+  --text: #ece3d4;
+  --text-dim: #a99a86;
+  --text-faint: #6d6153;
+  --accent: #c9793f;
+  --accent-2: #e3a465;
+  --accent-soft: #4a3220;
+  --positive: #8caa7c;
+  --negative: #bd6552;
+  --serif: 'Fraunces', Georgia, serif;
+  --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  --radius: 3px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(201,121,63,0.07), transparent),
+    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(201,121,63,0.04), transparent);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--accent-soft); color: var(--accent-2); }
+
+a { color: var(--accent-2); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-inset); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; }
+
+/* ---- layout shell ---- */
+
+#app { max-width: 1180px; margin: 0 auto; padding: 28px 24px 80px; }
+
+header.top {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--border); padding-bottom: 18px; margin-bottom: 4px;
+}
+header.top .brand h1 {
+  font-family: var(--serif); font-weight: 600; font-size: 34px; letter-spacing: 0.5px;
+  margin: 0; color: var(--text);
+}
+header.top .brand h1 span { color: var(--accent); }
+header.top .brand p {
+  margin: 4px 0 0; color: var(--text-dim); font-size: 12px; letter-spacing: 0.3px;
+}
+header.top .context {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.select {
+  background: var(--bg-panel); border: 1px solid var(--border); color: var(--text);
+  font-family: var(--mono); font-size: 12px; padding: 7px 10px; border-radius: var(--radius);
+  cursor: pointer; min-width: 150px;
+}
+.select:focus { outline: 1px solid var(--accent); }
+
+nav.tabs {
+  display: flex; gap: 2px; margin: 22px 0 22px; border-bottom: 1px solid var(--border);
+}
+nav.tabs button {
+  background: none; border: none; color: var(--text-faint); font-family: var(--mono);
+  font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; padding: 10px 4px;
+  margin-right: 26px; cursor: pointer; border-bottom: 2px solid transparent;
+  position: relative; top: 1px;
+}
+nav.tabs button:hover { color: var(--text-dim); }
+nav.tabs button.active { color: var(--accent-2); border-bottom-color: var(--accent); }
+
+.panel {
+  background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 22px;
+}
+.panel + .panel { margin-top: 16px; }
+.panel h2 {
+  font-family: var(--serif); font-weight: 500; font-size: 17px; margin: 0 0 4px; color: var(--text);
+}
+.panel .sub { color: var(--text-faint); font-size: 11.5px; margin: 0 0 16px; }
+
+.grid { display: grid; gap: 16px; }
+.grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 760px) {
+  .grid.cols-2, .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr; }
+  header.top { flex-direction: column; align-items: flex-start; }
+}
+
+label.field { display: block; margin-bottom: 12px; }
+label.field span.lbl {
+  display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--text-faint); margin-bottom: 5px;
+}
+input[type=number], input[type=text], input[type=password] {
+  width: 100%; background: var(--bg-inset); border: 1px solid var(--border); color: var(--text);
+  font-family: var(--mono); font-size: 13px; padding: 8px 9px; border-radius: var(--radius);
+}
+input:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
+input[type=checkbox] { accent-color: var(--accent); margin-right: 6px; }
+
+button.btn {
+  background: var(--bg-inset); border: 1px solid var(--border); color: var(--text);
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.4px; padding: 8px 14px;
+  border-radius: var(--radius); cursor: pointer; white-space: nowrap;
+}
+button.btn:hover { border-color: var(--accent); color: var(--accent-2); }
+button.btn.primary { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-2); }
+button.btn.primary:hover { background: var(--accent); color: #14100c; }
+button.btn.ghost { background: none; border-color: transparent; color: var(--text-faint); }
+button.btn.ghost:hover { color: var(--accent-2); border-color: transparent; }
+button.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+button.btn:disabled:hover { border-color: var(--border); color: var(--text); }
+
+table.data { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.data th {
+  text-align: right; font-weight: 500; color: var(--text-faint); font-size: 10.5px;
+  text-transform: uppercase; letter-spacing: 0.6px; padding: 6px 10px; border-bottom: 1px solid var(--border);
+}
+table.data th:first-child, table.data td:first-child { text-align: left; }
+table.data td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--border-soft); }
+table.data tr:last-child td { border-bottom: none; }
+table.data tr.total td { color: var(--accent-2); font-weight: 600; border-top: 1px solid var(--border); }
+table.data td.pos { color: var(--positive); }
+table.data td.neg { color: var(--negative); }
+table.data td.muted { color: var(--text-faint); }
+table.data td.editable { padding: 3px 6px; }
+table.data td.editable input {
+  width: 100%; background: transparent; border: 1px solid transparent; text-align: right;
+  color: var(--accent-2); padding: 5px 6px; border-radius: var(--radius);
+}
+table.data td.editable input:hover { border-color: var(--border); }
+table.data td.editable input:focus { border-color: var(--accent); background: var(--bg-inset); }
+
+.citation { font-size: 10.5px; color: var(--text-faint); margin-top: 3px; }
+.citation .pg { color: var(--accent-2); }
+
+.badge {
+  display: inline-block; font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 10px; border: 1px solid var(--border); color: var(--text-faint);
+}
+.badge.on { border-color: var(--positive); color: var(--positive); }
+.badge.warn { border-color: var(--accent); color: var(--accent-2); }
+
+.heat { text-align: center !important; font-weight: 500; }
+
+.checklist { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.checklist label {
+  display: flex; align-items: center; font-size: 12px; color: var(--text-dim); cursor: pointer;
+}
+
+.statline { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border-soft); }
+.statline:last-child { border-bottom: none; }
+.statline .k { color: var(--text-faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+.statline .v { font-family: var(--mono); font-size: 15px; color: var(--accent-2); font-weight: 500; }
+
+footer.databar {
+  position: sticky; bottom: 0; margin-top: 26px; background: var(--bg-panel-2);
+  border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+footer.databar .status { color: var(--text-faint); font-size: 11px; margin-right: auto; }
+footer.databar .status .dot {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--text-faint);
+  margin-right: 6px; position: relative; top: -1px;
+}
+footer.databar .status.ok .dot { background: var(--positive); }
+
+.gh-panel {
+  display: none; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border);
+}
+.gh-panel.open { display: block; }
+.gh-note { font-size: 11px; color: var(--text-faint); margin: 8px 0 0; }
+
+.empty { color: var(--text-faint); font-size: 12px; padding: 30px 0; text-align: center; }
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--bg-panel-2); border: 1px solid var(--accent); color: var(--accent-2);
+  padding: 9px 16px; border-radius: var(--radius); font-size: 12px; z-index: 50;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.toast.show { opacity: 1; }
+
+.hidden { display: none !important; }
+</style>
 </head>
 <body>
+<div id="app">
 
-<div class="app-shell">
-
-  <aside class="sidebar">
+  <header class="top">
     <div class="brand">
-      <div class="brand-mark">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 17L12 4L21 17" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-          <circle cx="12" cy="17" r="2.4" fill="currentColor"/>
-          <path d="M2 20.5H22" stroke="currentColor" stroke-width="1.6"/>
-        </svg>
-        FULCRUM
+      <h1>FUL<span>C</span>RUM</h1>
+      <p>Discounted cash flow &middot; comparable companies &middot; extracted financials — one page, no backend</p>
+    </div>
+    <div class="context">
+      <select id="companySelect" class="select"></select>
+      <select id="periodSelect" class="select" style="min-width:100px;"></select>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="dcf" class="active">DCF</button>
+    <button data-tab="comps">Comps</button>
+    <button data-tab="financials">Financials</button>
+  </nav>
+
+  <main>
+
+    <!-- ============================= DCF TAB ============================= -->
+    <section id="tab-dcf">
+      <div class="panel">
+        <h2>Forecast &amp; assumptions</h2>
+        <p class="sub">Five-year FCFF build. Edit any cell — the valuation recalculates as you type.</p>
+        <div style="overflow-x:auto;">
+          <table class="data" id="dcfForecastTable"></table>
+        </div>
+        <div class="grid cols-4" style="margin-top:18px;">
+          <label class="field"><span class="lbl">Shares outstanding (cr)</span><input type="number" id="in_shares" step="0.01"></label>
+          <label class="field"><span class="lbl">Cash (₹ cr)</span><input type="number" id="in_cash" step="1"></label>
+          <label class="field"><span class="lbl">Debt (₹ cr)</span><input type="number" id="in_debt" step="1"></label>
+          <label class="field"><span class="lbl">Terminal growth (%)</span><input type="number" id="in_termgrowth" step="0.1"></label>
+        </div>
       </div>
-      <div class="brand-sub">Discounted Cash Flow &amp; Scenario Valuation</div>
-    </div>
 
-    <div class="case-name-field">
-      <label>Case</label>
-      <input type="text" id="case-name-input" placeholder="Untitled Case">
-    </div>
+      <div class="panel">
+        <h2>Discount rate</h2>
+        <p class="sub">Enter WACC directly, or build it from CAPM inputs.</p>
+        <label style="display:flex;align-items:center;margin-bottom:14px;font-size:12px;color:var(--text-dim);">
+          <input type="checkbox" id="in_useCapm"> Build WACC from CAPM instead of entering it directly
+        </label>
+        <div class="grid cols-4" id="waccDirectRow">
+          <label class="field"><span class="lbl">WACC (%)</span><input type="number" id="in_wacc" step="0.1"></label>
+        </div>
+        <div class="grid cols-4 hidden" id="waccCapmRow">
+          <label class="field"><span class="lbl">Risk-free rate (%)</span><input type="number" id="in_rf" step="0.1" value="7.0"></label>
+          <label class="field"><span class="lbl">Beta</span><input type="number" id="in_beta" step="0.05" value="1.0"></label>
+          <label class="field"><span class="lbl">Equity risk premium (%)</span><input type="number" id="in_erp" step="0.1" value="6.0"></label>
+          <label class="field"><span class="lbl">Pre-tax cost of debt (%)</span><input type="number" id="in_kd" step="0.1" value="8.5"></label>
+          <label class="field"><span class="lbl">Debt weight (0–1)</span><input type="number" id="in_dw" step="0.05" value="0.25"></label>
+          <label class="field"><span class="lbl">Effective tax rate (%)</span><input type="number" id="in_capmtax" step="0.5" value="25"></label>
+        </div>
+      </div>
 
-    <nav class="steps" id="step-nav">
-      <!-- populated by main.js -->
-    </nav>
+      <div class="panel" id="dcfResultsPanel">
+        <h2>Output</h2>
+        <div class="grid cols-4" id="dcfStats"></div>
+        <h2 style="margin-top:22px;">Sensitivity — value per share</h2>
+        <p class="sub">Rows: WACC &middot; Columns: terminal growth</p>
+        <div style="overflow-x:auto;">
+          <table class="data" id="dcfSensitivity"></table>
+        </div>
+      </div>
+    </section>
 
-    <div class="sidebar-foot">
-      <div class="sync-status" id="sync-status"><span class="dot"></span><span>Not connected</span></div>
-      <button class="btn btn-ghost btn-sm" id="btn-load-sample" style="justify-content:center;">Load sample case</button>
-      <button class="btn btn-ghost btn-sm" id="btn-github" style="justify-content:center;">GitHub save / load</button>
-      <button class="btn btn-ghost btn-sm" id="btn-export" style="justify-content:center;">Export JSON</button>
-    </div>
-  </aside>
+    <!-- ============================= COMPS TAB ============================= -->
+    <section id="tab-comps" class="hidden">
+      <div class="panel">
+        <h2>Peer set</h2>
+        <p class="sub">Pick companies to compare, for the period selected above.</p>
+        <div class="checklist" id="compsChecklist"></div>
+      </div>
+      <div class="panel">
+        <h2>Fundamentals &amp; growth</h2>
+        <div style="overflow-x:auto;"><table class="data" id="compsFundTable"></table></div>
+      </div>
+      <div class="panel">
+        <h2>Valuation multiples</h2>
+        <p class="sub" id="compsValNote"></p>
+        <div style="overflow-x:auto;"><table class="data" id="compsValTable"></table></div>
+      </div>
+    </section>
 
-  <main class="main" id="main-content">
-    <!-- populated by main.js per active step -->
+    <!-- ============================= FINANCIALS TAB ============================= -->
+    <section id="tab-financials" class="hidden">
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+          <div>
+            <h2 style="margin-bottom:2px;">Statements</h2>
+            <p class="sub" style="margin-bottom:0;">Extracted line items, every figure traceable to a filing page and its bold heading.</p>
+          </div>
+          <div class="checklist" id="statementTabs"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:12px;">
+          <span class="lbl" style="color:var(--text-faint);font-size:10.5px;text-transform:uppercase;letter-spacing:1px;">Basis</span>
+          <div class="checklist" id="basisTabs"></div>
+          <span class="badge" id="basisBadge" style="margin-left:auto;"></span>
+        </div>
+        <div style="overflow-x:auto;margin-top:14px;"><table class="data" id="financialsTable"></table></div>
+        <div id="financialsCitations" style="margin-top:14px;"></div>
+      </div>
+    </section>
+
   </main>
 
+  <footer class="databar">
+    <span class="status" id="dataStatus"><span class="dot"></span>No data loaded</span>
+    <button class="btn" id="btnLoadSample">Load sample data</button>
+    <button class="btn" id="btnImport">Import JSON</button>
+    <input type="file" id="fileImport" accept="application/json" class="hidden">
+    <button class="btn" id="btnExport">Export JSON</button>
+    <button class="btn ghost" id="btnGithubToggle">GitHub sync ▾</button>
+  </footer>
+
+  <div class="panel gh-panel" id="ghPanel">
+    <h2>GitHub sync</h2>
+    <p class="sub">Reads/writes company JSON via the GitHub Contents API. Only works when this page is self-hosted (e.g. on GitHub Pages) — a published Claude artifact preview can't reach external APIs, so these calls will fail there by design.</p>
+    <div class="grid cols-4">
+      <label class="field"><span class="lbl">Owner / org</span><input type="text" id="gh_owner" placeholder="meeth10"></label>
+      <label class="field"><span class="lbl">Repo</span><input type="text" id="gh_repo" placeholder="fulcrum"></label>
+      <label class="field"><span class="lbl">Branch</span><input type="text" id="gh_branch" value="main"></label>
+      <label class="field"><span class="lbl">Data path</span><input type="text" id="gh_path" value="site/data"></label>
+    </div>
+    <label class="field"><span class="lbl">Personal access token (repo scope)</span><input type="password" id="gh_token" placeholder="ghp_…"></label>
+    <label style="display:flex;align-items:center;margin-bottom:12px;font-size:11.5px;color:var(--text-faint);">
+      <input type="checkbox" id="gh_remember"> Remember these fields in this browser (not the token)
+    </label>
+    <div style="display:flex;gap:10px;">
+      <button class="btn primary" id="btnGithubLoad">Load index.json from GitHub</button>
+      <button class="btn" id="btnGithubSave">Save current company to GitHub</button>
+    </div>
+    <p class="gh-note" id="ghStatus"></p>
+  </div>
+
 </div>
 
-<!-- GitHub sync modal -->
-<div id="github-modal" class="modal-overlay hidden">
-  <div class="modal-card card" id="github-modal-body"></div>
-</div>
+<div class="toast" id="toast"></div>
 
-<style>
-  .modal-overlay { position: fixed; inset: 0; background: rgba(28,23,18,0.45); display:flex; align-items:center; justify-content:center; z-index: 50; }
-  .modal-card { width: 460px; max-width: 90vw; max-height: 84vh; overflow-y: auto; }
-</style>
+<script>
+'use strict';
 
-<script src="js/calc/finance-utils.js"></script>
-<script src="js/calc/wacc.js"></script>
-<script src="js/calc/dcf.js"></script>
-<script src="js/calc/sensitivity.js"></script>
-<script src="js/calc/derive.js"></script>
-<script src="js/calc/scenarios.js"></script>
+/* =====================================================================
+   1. DCF ENGINE — ported 1:1 from valuation/dcf.py. Same formulas, same
+      sensitivity-grid construction, same validation rules.
+===================================================================== */
+function runDCF(inputs) {
+  const {
+    revenue, ebitMargin, taxRate, da, capex, deltaNwc,
+    sharesOutstanding, cash, debt,
+    wacc: waccInput, terminalGrowth = 0.03, exitMultiple = null,
+    riskFreeRate = null, beta = null, equityRiskPremium = null,
+    preTaxCostOfDebt = null, effectiveTaxRate = null, debtWeight = null,
+  } = inputs;
 
-<script src="js/state.js"></script>
-<script src="js/format.js"></script>
-<script src="data/sample-case.js"></script>
-<script src="js/github-sync.js"></script>
-<script src="js/charts.js"></script>
+  const n = revenue.length;
+  if (sharesOutstanding <= 0) throw new Error('Shares outstanding must be positive');
 
-<script src="js/ui/helpers.js"></script>
-<script src="js/ui/company.js"></script>
-<script src="js/ui/statements.js"></script>
-<script src="js/ui/capital.js"></script>
-<script src="js/ui/scenarios.js"></script>
-<script src="js/ui/valuation.js"></script>
-<script src="js/ui/sensitivity.js"></script>
-<script src="js/ui/summary.js"></script>
-<script src="js/ui/sync-modal.js"></script>
+  let wacc;
+  if (waccInput !== null && waccInput !== undefined && !Number.isNaN(waccInput)) {
+    wacc = waccInput;
+  } else {
+    const fields = [riskFreeRate, beta, equityRiskPremium, preTaxCostOfDebt, debtWeight];
+    if (fields.some((x) => x === null || x === undefined || Number.isNaN(x))) {
+      throw new Error('Provide WACC directly or all CAPM inputs');
+    }
+    const dw = debtWeight, ew = 1 - dw;
+    const tax = effectiveTaxRate ?? 0.0;
+    const ke = riskFreeRate + beta * equityRiskPremium;
+    wacc = ew * ke + dw * preTaxCostOfDebt * (1 - tax);
+  }
+  if (wacc <= 0) throw new Error('WACC must be positive');
+  const g = terminalGrowth;
+  if (wacc <= g && exitMultiple === null) throw new Error('WACC must exceed terminal growth');
 
-<script src="js/main.js"></script>
+  const fcffs = revenue.map((rev, i) =>
+    rev * ebitMargin[i] * (1 - taxRate[i]) + da[i] - capex[i] - deltaNwc[i]);
 
+  function terminalValue(lastFcff, w, gg, exitMult) {
+    if (exitMult !== null && exitMult !== undefined) return [lastFcff * exitMult, 'EXIT_MULTIPLE'];
+    return [(lastFcff * (1 + gg)) / (w - gg), 'PERPETUITY_GROWTH'];
+  }
+  function presentValue(fcffArr, tv, w) {
+    const dfs = fcffArr.map((_, idx) => 1 / Math.pow(1 + w, idx + 1));
+    const pvFcff = fcffArr.map((cf, idx) => cf * dfs[idx]);
+    const pvTerminal = tv * dfs[dfs.length - 1];
+    return { ev: pvFcff.reduce((a, b) => a + b, 0) + pvTerminal, dfs, pvFcff };
+  }
+
+  const [tv, method] = terminalValue(fcffs[fcffs.length - 1], wacc, g, exitMultiple);
+  const { ev, dfs, pvFcff } = presentValue(fcffs, tv, wacc);
+  const equity = ev + cash - debt;
+  const perShare = equity / sharesOutstanding;
+
+  const waccSteps = [-0.02, -0.01, 0, 0.01, 0.02].map((d) => wacc + d);
+  const growthSteps = [-0.01, -0.005, 0, 0.005, 0.01].map((d) => g + d);
+  const sensitivity = {};
+  for (const w of waccSteps) {
+    const row = {};
+    for (const gg of growthSteps) {
+      if (w <= gg) { row[gg.toFixed(4)] = null; continue; }
+      const [tvCell] = terminalValue(fcffs[fcffs.length - 1], w, gg, null);
+      const { ev: evCell } = presentValue(fcffs, tvCell, w);
+      row[gg.toFixed(4)] = (evCell + cash - debt) / sharesOutstanding;
+    }
+    sensitivity[w.toFixed(4)] = row;
+  }
+
+  return {
+    enterpriseValue: ev, equityValue: equity, valuePerShare: perShare,
+    wacc, terminalValue: tv, terminalMethod: method,
+    projectedFcff: fcffs, discountFactors: dfs, pvOfFcff: pvFcff,
+    sensitivity, waccSteps, growthSteps,
+  };
+}
+
+/* =====================================================================
+   2. COMPS ENGINE — ported 1:1 from valuation/comps.py.
+===================================================================== */
+function safeDiv(a, b) {
+  if (a === null || a === undefined || b === null || b === undefined || b === 0) return null;
+  return a / b;
+}
+function buildCompanyComp(f, prior, market) {
+  f = f || {}; prior = prior || {}; market = market || {};
+  let netDebt = market.netDebtOverride ?? null;
+  if (netDebt === null && f.total_debt != null && f.cash_and_equivalents != null) {
+    netDebt = f.total_debt - f.cash_and_equivalents;
+  }
+  let freeCashFlow = null;
+  if (f.operating_cash_flow != null && f.capital_expenditure != null) {
+    freeCashFlow = f.operating_cash_flow - f.capital_expenditure;
+  }
+  const metrics = {
+    ebitda_margin: safeDiv(f.ebitda, f.revenue),
+    net_margin: safeDiv(f.net_income, f.revenue),
+    roe: safeDiv(f.net_income, f.shareholders_equity),
+    roic: (f.total_debt != null && f.shareholders_equity != null && f.cash_and_equivalents != null)
+      ? safeDiv(f.ebit, f.total_debt + f.shareholders_equity - f.cash_and_equivalents) : null,
+    free_cash_flow: freeCashFlow,
+    net_debt: netDebt,
+    net_debt_to_ebitda: safeDiv(netDebt, f.ebitda),
+    revenue_growth: (prior.revenue != null && f.revenue != null) ? safeDiv(f.revenue - prior.revenue, prior.revenue) : null,
+  };
+  const valuation = {};
+  if (market.price != null && market.sharesOutstanding != null) {
+    const marketCap = market.price * market.sharesOutstanding;
+    const enterpriseValue = netDebt != null ? marketCap + netDebt : null;
+    Object.assign(valuation, {
+      market_cap: marketCap, enterprise_value: enterpriseValue,
+      pe: safeDiv(marketCap, f.net_income), pb: safeDiv(marketCap, f.shareholders_equity),
+      ev_ebitda: enterpriseValue != null ? safeDiv(enterpriseValue, f.ebitda) : null,
+      ev_ebit: enterpriseValue != null ? safeDiv(enterpriseValue, f.ebit) : null,
+      ev_sales: enterpriseValue != null ? safeDiv(enterpriseValue, f.revenue) : null,
+      fcf_yield: safeDiv(freeCashFlow, marketCap),
+    });
+  }
+  return { metrics, valuation, fundamentals: f };
+}
+
+/* =====================================================================
+   3. SAMPLE DATA — generated through the real Python pipeline
+      (core/schema.py -> export/site_data.py -> valuation/comps.py), not
+      hand-typed, so it matches the exact schema the site expects.
+      Currency convention throughout: Rs crore, shares in crore of shares.
+===================================================================== */
+const SAMPLE_DATA = [{"id":"meridian-industrials-ltd","name":"Meridian Industrials Ltd","ticker":"MERIND","sector":"Industrials","currency":"INR","market":{"price":842.0,"shares_outstanding":42.0,"net_debt_override":null},"periods":["FY2024","FY2025"],"statements":{"balance_sheet":{"FY2024":{"shareholders_equity":{"consolidated":{"value":14200.0,"unit":"cr_inr","metric_raw":"Shareholders Equity","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"total_debt":{"consolidated":{"value":5100.0,"unit":"cr_inr","metric_raw":"Total Debt","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"cash_and_equivalents":{"consolidated":{"value":2210.0,"unit":"cr_inr","metric_raw":"Cash And Equivalents","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"total_assets":{"consolidated":{"value":26800.0,"unit":"cr_inr","metric_raw":"Total Assets","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"total_liabilities":{"consolidated":{"value":12600.0,"unit":"cr_inr","metric_raw":"Total Liabilities","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null}},"FY2025":{"shareholders_equity":{"consolidated":{"value":16450.0,"unit":"cr_inr","metric_raw":"Shareholders Equity","source_page":40,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"total_debt":{"consolidated":{"value":5600.0,"unit":"cr_inr","metric_raw":"Total Debt","source_page":40,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"cash_and_equivalents":{"consolidated":{"value":2840.0,"unit":"cr_inr","metric_raw":"Cash And Equivalents","source_page":40,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"total_assets":{"consolidated":{"value":30100.0,"unit":"cr_inr","metric_raw":"Total Assets","source_page":40,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"total_liabilities":{"consolidated":{"value":13650.0,"unit":"cr_inr","metric_raw":"Total Liabilities","source_page":40,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null}}},"income_statement":{"FY2024":{"revenue":{"consolidated":{"value":18420.0,"unit":"cr_inr","metric_raw":"Revenue","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":{"value":15200.0,"unit":"cr_inr","metric_raw":"Revenue","source_page":45,"source_table":"Sample Statement","source_heading":"STANDALONE STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"unspecified":null},"ebitda":{"consolidated":{"value":3865.0,"unit":"cr_inr","metric_raw":"Ebitda","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":{"value":3100.0,"unit":"cr_inr","metric_raw":"Ebitda","source_page":45,"source_table":"Sample Statement","source_heading":"STANDALONE STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"unspecified":null},"ebit":{"consolidated":{"value":3040.0,"unit":"cr_inr","metric_raw":"Ebit","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":{"value":2450.0,"unit":"cr_inr","metric_raw":"Ebit","source_page":45,"source_table":"Sample Statement","source_heading":"STANDALONE STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"unspecified":null},"net_income":{"consolidated":{"value":1980.0,"unit":"cr_inr","metric_raw":"Net Income","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":{"value":1590.0,"unit":"cr_inr","metric_raw":"Net Income","source_page":45,"source_table":"Sample Statement","source_heading":"STANDALONE STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"unspecified":null}},"FY2025":{"revenue":{"consolidated":{"value":21150.0,"unit":"cr_inr","metric_raw":"Revenue","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":{"value":17640.0,"unit":"cr_inr","metric_raw":"Revenue","source_page":44,"source_table":"Sample Statement","source_heading":"STANDALONE STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"unspecified":null},"ebitda":{"consolidated":{"value":4610.0,"unit":"cr_inr","metric_raw":"Ebitda","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":{"value":3720.0,"unit":"cr_inr","metric_raw":"Ebitda","source_page":44,"source_table":"Sample Statement","source_heading":"STANDALONE STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"unspecified":null},"ebit":{"consolidated":{"value":3690.0,"unit":"cr_inr","metric_raw":"Ebit","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":{"value":2980.0,"unit":"cr_inr","metric_raw":"Ebit","source_page":44,"source_table":"Sample Statement","source_heading":"STANDALONE STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"unspecified":null},"net_income":{"consolidated":{"value":2430.0,"unit":"cr_inr","metric_raw":"Net Income","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":{"value":1960.0,"unit":"cr_inr","metric_raw":"Net Income","source_page":44,"source_table":"Sample Statement","source_heading":"STANDALONE STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"unspecified":null}}},"cash_flow":{"FY2024":{"operating_cash_flow":{"consolidated":{"value":3510.0,"unit":"cr_inr","metric_raw":"Operating Cash Flow","source_page":43,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF CASH FLOWS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"capital_expenditure":{"consolidated":{"value":1450.0,"unit":"cr_inr","metric_raw":"Capital Expenditure","source_page":43,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF CASH FLOWS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null}},"FY2025":{"operating_cash_flow":{"consolidated":{"value":4080.0,"unit":"cr_inr","metric_raw":"Operating Cash Flow","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF CASH FLOWS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"capital_expenditure":{"consolidated":{"value":1680.0,"unit":"cr_inr","metric_raw":"Capital Expenditure","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF CASH FLOWS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null}}}},"fundamentals":{"FY2024":{"revenue":18420.0,"ebitda":3865.0,"ebit":3040.0,"net_income":1980.0,"shareholders_equity":14200.0,"total_debt":5100.0,"cash_and_equivalents":2210.0,"operating_cash_flow":3510.0,"capital_expenditure":1450.0},"FY2025":{"revenue":21150.0,"ebitda":4610.0,"ebit":3690.0,"net_income":2430.0,"shareholders_equity":16450.0,"total_debt":5600.0,"cash_and_equivalents":2840.0,"operating_cash_flow":4080.0,"capital_expenditure":1680.0}},"comps":{"FY2024":{"metrics":{"ebitda_margin":0.20982627578718785,"net_margin":0.10749185667752444,"roe":0.13943661971830987,"roic":0.17788180222352254,"free_cash_flow":2060.0,"net_debt":2890.0,"net_debt_to_ebitda":0.7477360931435963,"revenue_growth":null},"valuation":{"market_cap":35364.0,"enterprise_value":38254.0,"pe":17.86060606060606,"pb":2.4904225352112674,"ev_ebitda":9.897542043984476,"ev_ebit":12.583552631578947,"ev_sales":2.0767643865363734,"fcf_yield":0.05825132903517702},"missing_inputs":[]},"FY2025":{"metrics":{"ebitda_margin":0.21796690307328606,"net_margin":0.1148936170212766,"roe":0.14772036474164132,"roic":0.19208745445080688,"free_cash_flow":2400.0,"net_debt":2760.0,"net_debt_to_ebitda":0.5986984815618221,"revenue_growth":0.1482084690553746},"valuation":{"market_cap":35364.0,"enterprise_value":38124.0,"pe":14.553086419753086,"pb":2.1497872340425532,"ev_ebitda":8.269848156182212,"ev_ebit":10.331707317073171,"ev_sales":1.8025531914893618,"fcf_yield":0.0678656260604004},"missing_inputs":[]}}},{"id":"coastal-foods-beverages-ltd","name":"Coastal Foods & Beverages Ltd","ticker":"COASTFB","sector":"Consumer Staples","currency":"INR","market":{"price":316.0,"shares_outstanding":68.0,"net_debt_override":null},"periods":["FY2024","FY2025"],"statements":{"balance_sheet":{"FY2024":{"shareholders_equity":{"consolidated":{"value":6100.0,"unit":"cr_inr","metric_raw":"Shareholders Equity","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"total_debt":{"consolidated":{"value":1850.0,"unit":"cr_inr","metric_raw":"Total Debt","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"cash_and_equivalents":{"consolidated":{"value":980.0,"unit":"cr_inr","metric_raw":"Cash And Equivalents","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"total_assets":{"consolidated":{"value":11400.0,"unit":"cr_inr","metric_raw":"Total Assets","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"total_liabilities":{"consolidated":{"value":5300.0,"unit":"cr_inr","metric_raw":"Total Liabilities","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null}},"FY2025":{"shareholders_equity":{"consolidated":{"value":6980.0,"unit":"cr_inr","metric_raw":"Shareholders Equity","source_page":40,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"total_debt":{"consolidated":{"value":1920.0,"unit":"cr_inr","metric_raw":"Total Debt","source_page":40,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"cash_and_equivalents":{"consolidated":{"value":1140.0,"unit":"cr_inr","metric_raw":"Cash And Equivalents","source_page":40,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"total_assets":{"consolidated":{"value":13050.0,"unit":"cr_inr","metric_raw":"Total Assets","source_page":40,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"total_liabilities":{"consolidated":{"value":6070.0,"unit":"cr_inr","metric_raw":"Total Liabilities","source_page":40,"source_table":"Sample Statement","source_heading":"CONSOLIDATED BALANCE SHEET AS AT MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null}}},"income_statement":{"FY2024":{"revenue":{"consolidated":{"value":9840.0,"unit":"cr_inr","metric_raw":"Revenue","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"ebitda":{"consolidated":{"value":1720.0,"unit":"cr_inr","metric_raw":"Ebitda","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"ebit":{"consolidated":{"value":1340.0,"unit":"cr_inr","metric_raw":"Ebit","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"net_income":{"consolidated":{"value":845.0,"unit":"cr_inr","metric_raw":"Net Income","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null}},"FY2025":{"revenue":{"consolidated":{"value":11260.0,"unit":"cr_inr","metric_raw":"Revenue","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"ebitda":{"consolidated":{"value":2040.0,"unit":"cr_inr","metric_raw":"Ebitda","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"ebit":{"consolidated":{"value":1610.0,"unit":"cr_inr","metric_raw":"Ebit","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"net_income":{"consolidated":{"value":1040.0,"unit":"cr_inr","metric_raw":"Net Income","source_page":41,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF PROFIT AND LOSS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null}}},"cash_flow":{"FY2024":{"operating_cash_flow":{"consolidated":{"value":1560.0,"unit":"cr_inr","metric_raw":"Operating Cash Flow","source_page":43,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF CASH FLOWS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null},"capital_expenditure":{"consolidated":{"value":520.0,"unit":"cr_inr","metric_raw":"Capital Expenditure","source_page":43,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF CASH FLOWS FOR THE YEAR ENDED MARCH 31, 2024","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2024"},"standalone":null,"unspecified":null}},"FY2025":{"operating_cash_flow":{"consolidated":{"value":1830.0,"unit":"cr_inr","metric_raw":"Operating Cash Flow","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF CASH FLOWS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null},"capital_expenditure":{"consolidated":{"value":610.0,"unit":"cr_inr","metric_raw":"Capital Expenditure","source_page":42,"source_table":"Sample Statement","source_heading":"CONSOLIDATED STATEMENT OF CASH FLOWS FOR THE YEAR ENDED MARCH 31, 2025","extraction_method":"sample_data","extraction_confidence":0.95,"doc_type":"annual_report","fiscal_year":"FY2025"},"standalone":null,"unspecified":null}}}},"fundamentals":{"FY2024":{"revenue":9840.0,"ebitda":1720.0,"ebit":1340.0,"net_income":845.0,"shareholders_equity":6100.0,"total_debt":1850.0,"cash_and_equivalents":980.0,"operating_cash_flow":1560.0,"capital_expenditure":520.0},"FY2025":{"revenue":11260.0,"ebitda":2040.0,"ebit":1610.0,"net_income":1040.0,"shareholders_equity":6980.0,"total_debt":1920.0,"cash_and_equivalents":1140.0,"operating_cash_flow":1830.0,"capital_expenditure":610.0}},"comps":{"FY2024":{"metrics":{"ebitda_margin":0.17479674796747968,"net_margin":0.0858739837398374,"roe":0.13852459016393442,"roic":0.19225251076040173,"free_cash_flow":1040.0,"net_debt":870.0,"net_debt_to_ebitda":0.5058139534883721,"revenue_growth":null},"valuation":{"market_cap":21488.0,"enterprise_value":22358.0,"pe":25.429585798816568,"pb":3.522622950819672,"ev_ebitda":12.998837209302325,"ev_ebit":16.68507462686567,"ev_sales":2.2721544715447153,"fcf_yield":0.04839910647803425},"missing_inputs":[]},"FY2025":{"metrics":{"ebitda_margin":0.1811722912966252,"net_margin":0.09236234458259325,"roe":0.1489971346704871,"roic":0.20747422680412372,"free_cash_flow":1220.0,"net_debt":780.0,"net_debt_to_ebitda":0.38235294117647056,"revenue_growth":0.1443089430894309},"valuation":{"market_cap":21488.0,"enterprise_value":22268.0,"pe":20.661538461538463,"pb":3.078510028653295,"ev_ebitda":10.915686274509804,"ev_ebit":13.831055900621118,"ev_sales":1.977619893428064,"fcf_yield":0.056775874906924796},"missing_inputs":[]}}}];
+
+/* =====================================================================
+   4. STATE
+===================================================================== */
+const STATE = {
+  companies: {},          // id -> company object
+  companyOrder: [],
+  selectedCompanyId: null,
+  selectedPeriod: null,
+  dcf: {},                // per company id: {rows:[...], shares, cash, debt, termGrowth, wacc, useCapm, capm:{...}}
+  compsSelection: new Set(),
+  statement: 'balance_sheet',
+  basis: 'consolidated',   // 'consolidated' | 'standalone' | 'unspecified'
+};
+
+let downloadsCapability = null;
+(async () => {
+  try {
+    if (window.claude && window.claude.use) downloadsCapability = await window.claude.use('downloads');
+  } catch (e) { /* not running inside a Claude artifact viewer — fine, fallback handles it */ }
+})();
+
+/* =====================================================================
+   5. FORMATTING HELPERS
+===================================================================== */
+function fmtNum(v, digits = 1) {
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  return Number(v).toLocaleString('en-IN', { maximumFractionDigits: digits, minimumFractionDigits: digits });
+}
+function fmtCr(v) { return v === null || v === undefined || Number.isNaN(v) ? '—' : fmtNum(v, 0); }
+function fmtPct(v, digits = 1) {
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  return (v * 100).toFixed(digits) + '%';
+}
+function fmtX(v, digits = 1) {
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  return v.toFixed(digits) + '×';
+}
+function fmtRs(v, digits = 2) {
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  return '₹' + fmtNum(v, digits);
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._h);
+  toast._h = setTimeout(() => t.classList.remove('show'), 2600);
+}
+function titleCase(metric) {
+  return metric.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+/* =====================================================================
+   6. DATA LOADING / MERGING
+===================================================================== */
+function ingestCompanies(list) {
+  for (const c of list) {
+    STATE.companies[c.id] = c;
+    if (!STATE.companyOrder.includes(c.id)) STATE.companyOrder.push(c.id);
+  }
+  if (!STATE.selectedCompanyId && STATE.companyOrder.length) {
+    STATE.selectedCompanyId = STATE.companyOrder[0];
+  }
+  const c = STATE.companies[STATE.selectedCompanyId];
+  if (c && c.periods.length) STATE.selectedPeriod = c.periods[c.periods.length - 1];
+  refreshSelectors();
+  renderAll();
+  saveLocal();
+  updateDataStatus();
+}
+
+function updateDataStatus() {
+  const el = document.getElementById('dataStatus');
+  const n = STATE.companyOrder.length;
+  if (n === 0) { el.innerHTML = '<span class="dot"></span>No data loaded'; el.classList.remove('ok'); return; }
+  el.innerHTML = `<span class="dot"></span>${n} compan${n === 1 ? 'y' : 'ies'} loaded`;
+  el.classList.add('ok');
+}
+
+async function tryFetchPublishedData() {
+  try {
+    const res = await fetch('data/index.json', { cache: 'no-store' });
+    if (!res.ok) return;
+    const index = await res.json();
+    const companies = [];
+    for (const entry of index) {
+      try {
+        const r = await fetch(`data/${entry.id}.json`, { cache: 'no-store' });
+        if (r.ok) companies.push(await r.json());
+      } catch (e) { /* skip this one */ }
+    }
+    if (companies.length) { ingestCompanies(companies); toast(`Loaded ${companies.length} compan${companies.length === 1 ? 'y' : 'ies'} from data/`); }
+  } catch (e) { /* no data/ folder here — expected inside the Claude preview, fine */ }
+}
+
+/* =====================================================================
+   7. LOCAL PERSISTENCE (per-viewer convenience only, never the source
+      of truth for company data)
+===================================================================== */
+function saveLocal() {
+  try {
+    localStorage.setItem('fulcrum:dcf', JSON.stringify(STATE.dcf));
+    localStorage.setItem('fulcrum:compsSelection', JSON.stringify([...STATE.compsSelection]));
+    localStorage.setItem('fulcrum:selected', JSON.stringify({ company: STATE.selectedCompanyId, period: STATE.selectedPeriod }));
+  } catch (e) { /* storage unavailable — degrade silently */ }
+}
+function loadLocal() {
+  try {
+    const dcf = localStorage.getItem('fulcrum:dcf');
+    if (dcf) STATE.dcf = JSON.parse(dcf);
+    const sel = localStorage.getItem('fulcrum:compsSelection');
+    if (sel) STATE.compsSelection = new Set(JSON.parse(sel));
+  } catch (e) { /* corrupt or unavailable — start fresh */ }
+}
+
+/* =====================================================================
+   8. SELECTORS (company / period, shared across all tabs)
+===================================================================== */
+function refreshSelectors() {
+  const csel = document.getElementById('companySelect');
+  csel.innerHTML = STATE.companyOrder.map((id) => {
+    const c = STATE.companies[id];
+    return `<option value="${id}" ${id === STATE.selectedCompanyId ? 'selected' : ''}>${c.name}${c.ticker ? ' · ' + c.ticker : ''}</option>`;
+  }).join('') || '<option>No companies loaded</option>';
+
+  const psel = document.getElementById('periodSelect');
+  const c = STATE.companies[STATE.selectedCompanyId];
+  const periods = c ? c.periods : [];
+  psel.innerHTML = periods.map((p) => `<option value="${p}" ${p === STATE.selectedPeriod ? 'selected' : ''}>${p}</option>`).join('') || '<option>—</option>';
+}
+
+/* =====================================================================
+   9. DCF TAB
+===================================================================== */
+const DCF_DEFAULT_ROWS = 5;
+
+function dcfStateFor(companyId) {
+  if (!STATE.dcf[companyId]) {
+    const c = STATE.companies[companyId];
+    const latestF = c && c.fundamentals && STATE.selectedPeriod ? c.fundamentals[STATE.selectedPeriod] : null;
+    const baseRevenue = (latestF && latestF.revenue) || 1000;
+    const rows = [];
+    for (let i = 0; i < DCF_DEFAULT_ROWS; i++) {
+      rows.push({
+        revenue: Math.round(baseRevenue * Math.pow(1.12, i + 1)),
+        ebitMargin: latestF && latestF.ebit && latestF.revenue ? Math.round((latestF.ebit / latestF.revenue) * 1000) / 1000 : 0.18,
+        taxRate: 0.25,
+        da: Math.round(baseRevenue * 0.04),
+        capex: Math.round(baseRevenue * 0.08),
+        deltaNwc: Math.round(baseRevenue * 0.015),
+      });
+    }
+    STATE.dcf[companyId] = {
+      rows,
+      shares: (c && c.market && c.market.shares_outstanding) || 10,
+      cash: (latestF && latestF.cash_and_equivalents) || 0,
+      debt: (latestF && latestF.total_debt) || 0,
+      termGrowth: 4.0,
+      wacc: 11.0,
+      useCapm: false,
+      capm: { rf: 7.0, beta: 1.0, erp: 6.0, kd: 8.5, dw: 0.25, tax: 25 },
+    };
+  }
+  return STATE.dcf[companyId];
+}
+
+function renderDCFForecastTable() {
+  const d = dcfStateFor(STATE.selectedCompanyId);
+  const cols = ['Revenue', 'EBIT margin %', 'Tax rate %', 'D&amp;A', 'Capex', 'Δ NWC'];
+  const keys = ['revenue', 'ebitMargin', 'taxRate', 'da', 'capex', 'deltaNwc'];
+  const pctKeys = new Set(['ebitMargin', 'taxRate']);
+  let html = '<thead><tr><th>Year</th>' + cols.map((c) => `<th>${c}</th>`).join('') + '</tr></thead><tbody>';
+  d.rows.forEach((row, i) => {
+    html += `<tr><td>Y${i + 1}</td>`;
+    keys.forEach((k) => {
+      const raw = pctKeys.has(k) ? (row[k] * 100) : row[k];
+      html += `<td class="editable"><input type="number" step="${pctKeys.has(k) ? '0.1' : '1'}" data-row="${i}" data-key="${k}" value="${raw}"></td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  document.getElementById('dcfForecastTable').innerHTML = html;
+  document.querySelectorAll('#dcfForecastTable input').forEach((inp) => {
+    inp.addEventListener('input', () => {
+      const row = +inp.dataset.row, key = inp.dataset.key;
+      const val = parseFloat(inp.value);
+      const d2 = dcfStateFor(STATE.selectedCompanyId);
+      d2.rows[row][key] = pctKeys.has(key) ? (Number.isNaN(val) ? 0 : val / 100) : (Number.isNaN(val) ? 0 : val);
+      computeAndRenderDCF();
+      saveLocal();
+    });
+  });
+}
+
+function syncDCFTopInputs() {
+  const d = dcfStateFor(STATE.selectedCompanyId);
+  document.getElementById('in_shares').value = d.shares;
+  document.getElementById('in_cash').value = d.cash;
+  document.getElementById('in_debt').value = d.debt;
+  document.getElementById('in_termgrowth').value = d.termGrowth;
+  document.getElementById('in_wacc').value = d.wacc;
+  document.getElementById('in_useCapm').checked = d.useCapm;
+  document.getElementById('in_rf').value = d.capm.rf;
+  document.getElementById('in_beta').value = d.capm.beta;
+  document.getElementById('in_erp').value = d.capm.erp;
+  document.getElementById('in_kd').value = d.capm.kd;
+  document.getElementById('in_dw').value = d.capm.dw;
+  document.getElementById('in_capmtax').value = d.capm.tax;
+  document.getElementById('waccDirectRow').classList.toggle('hidden', d.useCapm);
+  document.getElementById('waccCapmRow').classList.toggle('hidden', !d.useCapm);
+}
+
+function computeAndRenderDCF() {
+  const d = dcfStateFor(STATE.selectedCompanyId);
+  const inputs = {
+    revenue: d.rows.map((r) => r.revenue),
+    ebitMargin: d.rows.map((r) => r.ebitMargin),
+    taxRate: d.rows.map((r) => r.taxRate),
+    da: d.rows.map((r) => r.da),
+    capex: d.rows.map((r) => r.capex),
+    deltaNwc: d.rows.map((r) => r.deltaNwc),
+    sharesOutstanding: d.shares, cash: d.cash, debt: d.debt,
+    terminalGrowth: d.termGrowth / 100,
+  };
+  if (d.useCapm) {
+    Object.assign(inputs, {
+      wacc: null, riskFreeRate: d.capm.rf / 100, beta: d.capm.beta,
+      equityRiskPremium: d.capm.erp / 100, preTaxCostOfDebt: d.capm.kd / 100,
+      debtWeight: d.capm.dw, effectiveTaxRate: d.capm.tax / 100,
+    });
+  } else {
+    inputs.wacc = d.wacc / 100;
+  }
+
+  const statsEl = document.getElementById('dcfStats');
+  const sensEl = document.getElementById('dcfSensitivity');
+  try {
+    const r = runDCF(inputs);
+    statsEl.innerHTML = [
+      ['Enterprise value', fmtRs(r.enterpriseValue, 0) + ' cr'],
+      ['Equity value', fmtRs(r.equityValue, 0) + ' cr'],
+      ['Value per share', fmtRs(r.valuePerShare, 2)],
+      ['WACC used', fmtPct(r.wacc, 2)],
+    ].map(([k, v]) => `<div class="statline" style="flex-direction:column;align-items:flex-start;"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
+
+    let html = '<thead><tr><th>WACC ＼ g</th>' + r.growthSteps.map((g) => `<th>${fmtPct(g, 2)}</th>`).join('') + '</tr></thead><tbody>';
+    r.waccSteps.forEach((w) => {
+      const row = r.sensitivity[w.toFixed(4)];
+      html += `<tr><td>${fmtPct(w, 2)}</td>`;
+      r.growthSteps.forEach((g) => {
+        const v = row[g.toFixed(4)];
+        const isBase = Math.abs(w - r.wacc) < 1e-9 && Math.abs(g - inputs.terminalGrowth) < 1e-9;
+        html += `<td class="heat" style="${isBase ? 'color:var(--accent-2);font-weight:700;' : ''}">${v === null || Number.isNaN(v) ? '—' : fmtRs(v, 2)}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody>';
+    sensEl.innerHTML = html;
+    document.getElementById('dcfResultsPanel').classList.remove('hidden');
+  } catch (e) {
+    statsEl.innerHTML = `<div class="empty" style="grid-column:1/-1;">${e.message}</div>`;
+    sensEl.innerHTML = '';
+  }
+}
+
+function wireDCFTopInputs() {
+  const d = () => dcfStateFor(STATE.selectedCompanyId);
+  const bind = (id, key, parse = parseFloat) => {
+    document.getElementById(id).addEventListener('input', (e) => {
+      d()[key] = parse(e.target.value); computeAndRenderDCF(); saveLocal();
+    });
+  };
+  bind('in_shares', 'shares'); bind('in_cash', 'cash'); bind('in_debt', 'debt');
+  bind('in_termgrowth', 'termGrowth'); bind('in_wacc', 'wacc');
+  document.getElementById('in_useCapm').addEventListener('change', (e) => {
+    d().useCapm = e.target.checked; syncDCFTopInputs(); computeAndRenderDCF(); saveLocal();
+  });
+  ['rf', 'beta', 'erp', 'kd', 'dw', 'capmtax'].forEach((k) => {
+    document.getElementById('in_' + (k === 'capmtax' ? 'capmtax' : k)).addEventListener('input', (e) => {
+      const map = { rf: 'rf', beta: 'beta', erp: 'erp', kd: 'kd', dw: 'dw', capmtax: 'tax' };
+      d().capm[map[k]] = parseFloat(e.target.value); computeAndRenderDCF(); saveLocal();
+    });
+  });
+}
+
+function renderDCF() {
+  syncDCFTopInputs();
+  renderDCFForecastTable();
+  computeAndRenderDCF();
+}
+
+/* =====================================================================
+   10. COMPS TAB
+===================================================================== */
+function renderCompsChecklist() {
+  const el = document.getElementById('compsChecklist');
+  if (!STATE.companyOrder.length) { el.innerHTML = '<div class="empty">No companies loaded yet.</div>'; return; }
+  el.innerHTML = STATE.companyOrder.map((id) => {
+    const c = STATE.companies[id];
+    const checked = STATE.compsSelection.has(id);
+    return `<label><input type="checkbox" data-id="${id}" ${checked ? 'checked' : ''}> ${c.name}</label>`;
+  }).join('');
+  el.querySelectorAll('input').forEach((cb) => {
+    cb.addEventListener('change', () => {
+      if (cb.checked) STATE.compsSelection.add(cb.dataset.id); else STATE.compsSelection.delete(cb.dataset.id);
+      renderComps(); saveLocal();
+    });
+  });
+}
+
+function renderComps() {
+  renderCompsChecklist();
+  const period = STATE.selectedPeriod;
+  const ids = [...STATE.compsSelection].filter((id) => STATE.companies[id]);
+  const fundEl = document.getElementById('compsFundTable');
+  const valEl = document.getElementById('compsValTable');
+  document.getElementById('compsValNote').textContent =
+    `Period: ${period || '—'}. Multiples use each company's own stored market price/shares — not necessarily the same as-of date.`;
+
+  if (!ids.length) {
+    document.getElementById('compsFundTable').innerHTML = '<tbody><tr><td class="empty">Select two or more companies above.</td></tr></tbody>';
+    document.getElementById('compsValTable').innerHTML = '';
+    return;
+  }
+
+  const rows = ids.map((id) => {
+    const c = STATE.companies[id];
+    const periods = c.periods;
+    const idx = periods.indexOf(period);
+    const f = c.fundamentals[period] || {};
+    const prior = idx > 0 ? c.fundamentals[periods[idx - 1]] : null;
+    const market = c.market && c.market.price != null ? { price: c.market.price, sharesOutstanding: c.market.shares_outstanding, netDebtOverride: c.market.net_debt_override } : null;
+    const comp = buildCompanyComp(f, prior, market);
+    return { id, name: c.name, ticker: c.ticker, ...comp };
+  });
+
+  const fundCols = [
+    ['Revenue growth', (r) => r.metrics.revenue_growth, fmtPct],
+    ['EBITDA margin', (r) => r.metrics.ebitda_margin, fmtPct],
+    ['Net margin', (r) => r.metrics.net_margin, fmtPct],
+    ['ROE', (r) => r.metrics.roe, fmtPct],
+    ['ROIC', (r) => r.metrics.roic, fmtPct],
+    ['FCF (₹cr)', (r) => r.metrics.free_cash_flow, fmtCr],
+    ['Net debt/EBITDA', (r) => r.metrics.net_debt_to_ebitda, (v) => fmtX(v, 2)],
+  ];
+  fundEl.innerHTML = buildCompsTable(rows, fundCols);
+
+  const valCols = [
+    ['P/E', (r) => r.valuation.pe, (v) => fmtX(v)],
+    ['P/B', (r) => r.valuation.pb, (v) => fmtX(v)],
+    ['EV/EBITDA', (r) => r.valuation.ev_ebitda, (v) => fmtX(v)],
+    ['EV/EBIT', (r) => r.valuation.ev_ebit, (v) => fmtX(v)],
+    ['EV/Sales', (r) => r.valuation.ev_sales, (v) => fmtX(v)],
+    ['FCF yield', (r) => r.valuation.fcf_yield, fmtPct],
+  ];
+  valEl.innerHTML = buildCompsTable(rows, valCols);
+}
+
+function median(arr) {
+  const v = arr.filter((x) => x !== null && x !== undefined && !Number.isNaN(x)).sort((a, b) => a - b);
+  if (!v.length) return null;
+  const mid = Math.floor(v.length / 2);
+  return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
+}
+
+// cols: [label, rawGetter(row) -> number|null, formatter(number|null) -> string]
+// The same formatter runs on each row's value AND on the median, so the
+// median row is never mis-classified as a percent vs. a multiple vs. a
+// plain amount by guessing from magnitude.
+function buildCompsTable(rows, cols) {
+  let html = '<thead><tr><th>Company</th>' + cols.map(([label]) => `<th>${label}</th>`).join('') + '</tr></thead><tbody>';
+  rows.forEach((r) => {
+    html += `<tr><td>${r.name}${r.ticker ? ' <span class="muted" style="color:var(--text-faint);">· ' + r.ticker + '</span>' : ''}</td>`;
+    cols.forEach(([, raw, fmt]) => {
+      const v = raw(r);
+      const cls = v === null || v === undefined ? 'muted' : (v < 0 ? 'neg' : '');
+      html += `<td class="${cls}">${fmt(v)}</td>`;
+    });
+    html += '</tr>';
+  });
+  if (rows.length > 1) {
+    html += '<tr class="total"><td>Median</td>';
+    cols.forEach(([, raw, fmt]) => { html += `<td>${fmt(median(rows.map(raw)))}</td>`; });
+    html += '</tr>';
+  }
+  html += '</tbody>';
+  return html;
+}
+
+/* =====================================================================
+   11. FINANCIALS TAB
+===================================================================== */
+const BASIS_LABELS = { consolidated: 'Consolidated', standalone: 'Standalone', unspecified: 'Unmarked' };
+
+function renderStatementTabs() {
+  const el = document.getElementById('statementTabs');
+  const statements = [['balance_sheet', 'Balance Sheet'], ['income_statement', 'Income Statement'], ['cash_flow', 'Cash Flow']];
+  el.innerHTML = statements.map(([k, label]) =>
+    `<label style="cursor:pointer;"><button class="btn ${STATE.statement === k ? 'primary' : 'ghost'}" data-st="${k}" style="font-size:10.5px;">${label}</button></label>`
+  ).join('');
+  el.querySelectorAll('button').forEach((b) => {
+    b.addEventListener('click', () => { STATE.statement = b.dataset.st; renderFinancials(); });
+  });
+}
+
+// Every consolidated/standalone statement is introduced by its own bold
+// heading on the page, not a data column — so a metric can carry BOTH a
+// consolidated and a standalone figure for the same period. This scans
+// what's actually present for the current company/statement and only
+// offers the bases that exist, defaulting to Consolidated when available.
+function availableBases(c, statement) {
+  const found = new Set();
+  const stData = (c && c.statements[statement]) || {};
+  Object.values(stData).forEach((block) => {
+    Object.values(block).forEach((variants) => {
+      ['consolidated', 'standalone', 'unspecified'].forEach((b) => { if (variants[b]) found.add(b); });
+    });
+  });
+  return ['consolidated', 'standalone', 'unspecified'].filter((b) => found.has(b));
+}
+
+function renderBasisTabs() {
+  const el = document.getElementById('basisTabs');
+  const c = STATE.companies[STATE.selectedCompanyId];
+  const bases = availableBases(c, STATE.statement);
+  if (!bases.includes(STATE.basis)) STATE.basis = bases[0] || 'consolidated';
+  el.innerHTML = bases.length
+    ? bases.map((b) => `<label style="cursor:pointer;"><button class="btn ${STATE.basis === b ? 'primary' : 'ghost'}" data-basis="${b}" style="font-size:10.5px;">${BASIS_LABELS[b]}</button></label>`).join('')
+    : '<span class="empty" style="padding:0;">—</span>';
+  el.querySelectorAll('button').forEach((b) => {
+    b.addEventListener('click', () => { STATE.basis = b.dataset.basis; renderFinancials(); saveLocal(); });
+  });
+  document.getElementById('basisBadge').textContent = bases.length > 1 ? `${bases.length} bases available for this statement` : '';
+}
+
+function renderFinancials() {
+  renderStatementTabs();
+  renderBasisTabs();
+  const c = STATE.companies[STATE.selectedCompanyId];
+  const tableEl = document.getElementById('financialsTable');
+  const citeEl = document.getElementById('financialsCitations');
+  if (!c) { tableEl.innerHTML = '<tbody><tr><td class="empty">No company selected.</td></tr></tbody>'; citeEl.innerHTML = ''; return; }
+
+  const periods = c.periods;
+  const stData = c.statements[STATE.statement] || {};
+  const metricSet = new Set();
+  periods.forEach((p) => Object.keys(stData[p] || {}).forEach((m) => metricSet.add(m)));
+  const metrics = [...metricSet];
+
+  if (!metrics.length) {
+    tableEl.innerHTML = '<tbody><tr><td class="empty">No extracted data for this statement.</td></tr></tbody>';
+    citeEl.innerHTML = '';
+    return;
+  }
+
+  // Fall back to whichever basis IS present for a given cell, so a metric
+  // that only has a standalone figure still shows on the Consolidated tab
+  // rather than going blank — the citation makes clear which basis it is.
+  function cellFor(period, metric) {
+    const variants = (stData[period] || {})[metric];
+    if (!variants) return null;
+    return variants[STATE.basis] || variants.consolidated || variants.standalone || variants.unspecified || null;
+  }
+
+  let html = '<thead><tr><th>Line item</th>' + periods.map((p) => `<th>${p}</th>`).join('') + '</tr></thead><tbody>';
+  const citations = [];
+  metrics.forEach((m) => {
+    html += `<tr><td>${titleCase(m)}</td>`;
+    periods.forEach((p) => {
+      const cell = cellFor(p, m);
+      if (cell) {
+        const offBasis = cell.metric_raw !== undefined && !( (stData[p] || {})[m] && (stData[p] || {})[m][STATE.basis] );
+        html += `<td${offBasis ? ' class="muted"' : ''}>${fmtCr(cell.value)}<sup style="color:var(--accent-2);">${citations.push(cell)}</sup></td>`;
+      } else {
+        html += '<td class="muted">—</td>';
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  tableEl.innerHTML = html;
+
+  citeEl.innerHTML = citations.map((cit, i) =>
+    `<div class="citation">[${i + 1}] "${cit.metric_raw}" — <span class="pg">page ${cit.source_page ?? '—'}</span>, ${cit.source_table || 'source table n/a'}${cit.source_heading ? ', under heading "' + cit.source_heading + '"' : ''} (${cit.doc_type || ''} ${cit.fiscal_year || ''}, ${cit.extraction_method || 'unknown method'}${cit.extraction_confidence != null ? ', ' + fmtPct(cit.extraction_confidence, 0) + ' confidence' : ''})</div>`
+  ).join('');
+}
+
+/* =====================================================================
+   12. TAB SWITCHING + GLOBAL SELECTOR WIRING
+===================================================================== */
+function renderAll() {
+  renderDCF();
+  renderComps();
+  renderFinancials();
+}
+
+document.querySelectorAll('nav.tabs button').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('nav.tabs button').forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    ['dcf', 'comps', 'financials'].forEach((t) => {
+      document.getElementById('tab-' + t).classList.toggle('hidden', t !== btn.dataset.tab);
+    });
+  });
+});
+
+document.getElementById('companySelect').addEventListener('change', (e) => {
+  STATE.selectedCompanyId = e.target.value;
+  const c = STATE.companies[STATE.selectedCompanyId];
+  if (c && c.periods.length) STATE.selectedPeriod = c.periods[c.periods.length - 1];
+  refreshSelectors(); renderAll(); saveLocal();
+});
+document.getElementById('periodSelect').addEventListener('change', (e) => {
+  STATE.selectedPeriod = e.target.value;
+  renderAll(); saveLocal();});
+
+/* =====================================================================
+   13. DATA BAR: sample / import / export / GitHub sync
+===================================================================== */
+document.getElementById('btnLoadSample').addEventListener('click', () => {
+  ingestCompanies(SAMPLE_DATA);
+  toast('Sample data loaded');
+});
+
+document.getElementById('btnImport').addEventListener('click', () => document.getElementById('fileImport').click());
+document.getElementById('fileImport').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    const list = Array.isArray(parsed) ? parsed : (parsed.id ? [parsed] : Object.values(parsed));
+    ingestCompanies(list);
+    toast(`Imported ${list.length} compan${list.length === 1 ? 'y' : 'ies'}`);
+  } catch (err) {
+    toast('Import failed — not valid JSON in the expected shape');
+  }
+  e.target.value = '';
+});
+
+document.getElementById('btnExport').addEventListener('click', async () => {
+  const payload = JSON.stringify(Object.values(STATE.companies), null, 2);
+  const filename = 'fulcrum-data.json';
+  if (downloadsCapability) {
+    try {
+      await downloadsCapability.save({ filename, data: payload });
+      toast('Saved');
+      return;
+    } catch (err) {
+      if (err && err.code === 'declined') return;
+      // fall through to the plain-anchor method below
+    }
+  }
+  const blob = new Blob([payload], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+  a.remove(); URL.revokeObjectURL(url);
+  toast('Downloaded');
+});
+
+document.getElementById('btnGithubToggle').addEventListener('click', () => {
+  document.getElementById('ghPanel').classList.toggle('open');
+});
+
+function ghFields() {
+  return {
+    owner: document.getElementById('gh_owner').value.trim(),
+    repo: document.getElementById('gh_repo').value.trim(),
+    branch: document.getElementById('gh_branch').value.trim() || 'main',
+    path: document.getElementById('gh_path').value.trim().replace(/\/$/, ''),
+    token: document.getElementById('gh_token').value.trim(),
+  };
+}
+function ghStatus(msg) { document.getElementById('ghStatus').textContent = msg; }
+
+document.getElementById('btnGithubLoad').addEventListener('click', async () => {
+  const f = ghFields();
+  if (!f.owner || !f.repo || !f.token) { ghStatus('Owner, repo and token are required.'); return; }
+  ghStatus('Loading…');
+  try {
+    const idxUrl = `https://api.github.com/repos/${f.owner}/${f.repo}/contents/${f.path}/index.json?ref=${f.branch}`;
+    const idxRes = await fetch(idxUrl, { headers: { Authorization: `Bearer ${f.token}`, Accept: 'application/vnd.github.raw' } });
+    if (!idxRes.ok) throw new Error(`index.json: HTTP ${idxRes.status}`);
+    const index = await idxRes.json();
+    const companies = [];
+    for (const entry of index) {
+      const r = await fetch(`https://api.github.com/repos/${f.owner}/${f.repo}/contents/${f.path}/${entry.id}.json?ref=${f.branch}`,
+        { headers: { Authorization: `Bearer ${f.token}`, Accept: 'application/vnd.github.raw' } });
+      if (r.ok) companies.push(await r.json());
+    }
+    ingestCompanies(companies);
+    ghStatus(`Loaded ${companies.length} compan${companies.length === 1 ? 'y' : 'ies'} from GitHub.`);
+  } catch (err) {
+    ghStatus(`Failed: ${err.message}. If you're viewing this inside a Claude artifact preview, this is expected — self-host the page to use GitHub sync.`);
+  }
+});
+
+document.getElementById('btnGithubSave').addEventListener('click', async () => {
+  const f = ghFields();
+  const c = STATE.companies[STATE.selectedCompanyId];
+  if (!f.owner || !f.repo || !f.token || !c) { ghStatus('Owner, repo, token and a selected company are required.'); return; }
+  ghStatus('Saving…');
+  try {
+    const filePath = `${f.path}/${c.id}.json`;
+    const apiUrl = `https://api.github.com/repos/${f.owner}/${f.repo}/contents/${filePath}`;
+    let sha;
+    const existing = await fetch(`${apiUrl}?ref=${f.branch}`, { headers: { Authorization: `Bearer ${f.token}` } });
+    if (existing.ok) sha = (await existing.json()).sha;
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(c, null, 2))));
+    const res = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${f.token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: `fulcrum: update ${c.id}.json`, content, branch: f.branch, sha }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    ghStatus(`Saved ${filePath} to GitHub.`);
+  } catch (err) {
+    ghStatus(`Failed: ${err.message}. If you're viewing this inside a Claude artifact preview, this is expected — self-host the page to use GitHub sync.`);
+  }
+});
+
+/* Optional convenience: remember the non-secret GitHub fields (never the token) */
+(function restoreGhFields() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('fulcrum:ghFields') || 'null');
+    if (saved) {
+      document.getElementById('gh_owner').value = saved.owner || '';
+      document.getElementById('gh_repo').value = saved.repo || '';
+      document.getElementById('gh_branch').value = saved.branch || 'main';
+      document.getElementById('gh_path').value = saved.path || 'site/data';
+      document.getElementById('gh_remember').checked = true;
+    }
+  } catch (e) { /* ignore */ }
+})();
+document.getElementById('ghPanel').addEventListener('input', () => {
+  if (!document.getElementById('gh_remember').checked) return;
+  try {
+    const { owner, repo, branch, path } = ghFields();
+    localStorage.setItem('fulcrum:ghFields', JSON.stringify({ owner, repo, branch, path }));
+  } catch (e) { /* ignore */ }
+});
+
+/* =====================================================================
+   14. BOOT
+===================================================================== */
+loadLocal();
+wireDCFTopInputs();
+refreshSelectors();
+renderAll();
+updateDataStatus();
+tryFetchPublishedData();
+</script>
 </body>
 </html>
