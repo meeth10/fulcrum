@@ -6,32 +6,33 @@
 <title>FULCRUM — Valuation, Comps &amp; Financials</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ---------------------------------------------------------------------
-   Dark editorial palette — intentionally single-theme (matches the rest
-   of the toolkit: WAVE / FRAME / SIEVE / the original Fulcrum DCF page).
-   Defined identically under the OS-dark and explicit-dark selectors too,
-   so the page never falls back to an unstyled light default anywhere.
+   FULCRUM — institutional research-desk palette. Paper ivory ground,
+   deep navy ink, a single restrained brass accent reserved for the one
+   number or line that should hold the eye on any given screen.
 ----------------------------------------------------------------------*/
 :root, :root:not([data-theme="light"]), :root[data-theme="dark"] {
-  --bg: #110e0b;
-  --bg-panel: #191410;
-  --bg-panel-2: #201a15;
-  --bg-inset: #0c0a08;
-  --border: #322920;
-  --border-soft: #241d17;
-  --text: #ece3d4;
-  --text-dim: #a99a86;
-  --text-faint: #6d6153;
-  --accent: #c9793f;
-  --accent-2: #e3a465;
-  --accent-soft: #4a3220;
-  --positive: #8caa7c;
-  --negative: #bd6552;
-  --serif: 'Fraunces', Georgia, serif;
+  --bg: #F3F0E8;
+  --bg-panel: #FDFCF9;
+  --bg-panel-2: #EEEAE0;
+  --bg-inset: #EAE6DA;
+  --border: #D6D0BE;
+  --border-soft: #E3DECE;
+  --text: #172230;
+  --text-dim: #4E5B68;
+  --text-faint: #85806E;
+  --accent: #1F3A5C;
+  --accent-2: #35577F;
+  --accent-soft: #DCE2E6;
+  --brass: #8C6A2F;
+  --positive: #3B6650;
+  --negative: #8A3B34;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
-  --radius: 3px;
+  --radius: 2px;
 }
 
 * { box-sizing: border-box; }
@@ -40,18 +41,15 @@ html, body { margin: 0; padding: 0; }
 
 body {
   background: var(--bg);
-  background-image:
-    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(201,121,63,0.07), transparent),
-    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(201,121,63,0.04), transparent);
   color: var(--text);
-  font-family: var(--mono);
-  font-size: 13px;
-  line-height: 1.5;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.55;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
-::selection { background: var(--accent-soft); color: var(--accent-2); }
+::selection { background: var(--accent-soft); color: var(--accent); }
 
 a { color: var(--accent-2); }
 
@@ -61,42 +59,50 @@ a { color: var(--accent-2); }
 
 /* ---- layout shell ---- */
 
-#app { max-width: 1180px; margin: 0 auto; padding: 28px 24px 80px; }
+#app { max-width: 1180px; margin: 0 auto; padding: 32px 24px 80px; }
 
 header.top {
   display: flex; align-items: flex-end; justify-content: space-between;
   gap: 20px; flex-wrap: wrap;
-  border-bottom: 1px solid var(--border); padding-bottom: 18px; margin-bottom: 4px;
+  border-bottom: 2px solid var(--accent); padding-bottom: 20px; margin-bottom: 6px;
 }
 header.top .brand h1 {
-  font-family: var(--serif); font-weight: 600; font-size: 34px; letter-spacing: 0.5px;
+  font-family: var(--serif); font-weight: 600; font-size: 30px; letter-spacing: 0.2px;
   margin: 0; color: var(--text);
 }
-header.top .brand h1 span { color: var(--accent); }
+header.top .brand h1 span { color: var(--brass); }
 header.top .brand p {
-  margin: 4px 0 0; color: var(--text-dim); font-size: 12px; letter-spacing: 0.3px;
+  margin: 5px 0 0; color: var(--text-dim); font-size: 12.5px; max-width: 46ch;
 }
 header.top .context {
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
 }
 .select {
   background: var(--bg-panel); border: 1px solid var(--border); color: var(--text);
-  font-family: var(--mono); font-size: 12px; padding: 7px 10px; border-radius: var(--radius);
+  font-family: var(--sans); font-size: 12.5px; padding: 7px 10px; border-radius: var(--radius);
   cursor: pointer; min-width: 150px;
 }
-.select:focus { outline: 1px solid var(--accent); }
+.select:focus { outline: 2px solid var(--accent-2); outline-offset: 1px; }
+
+.icon-btn {
+  background: var(--bg-panel); border: 1px solid var(--border); color: var(--text-dim);
+  width: 30px; height: 30px; border-radius: var(--radius); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 13px;
+  padding: 0;
+}
+.icon-btn:hover { border-color: var(--accent-2); color: var(--accent); }
 
 nav.tabs {
   display: flex; gap: 2px; margin: 22px 0 22px; border-bottom: 1px solid var(--border);
 }
 nav.tabs button {
-  background: none; border: none; color: var(--text-faint); font-family: var(--mono);
-  font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; padding: 10px 4px;
-  margin-right: 26px; cursor: pointer; border-bottom: 2px solid transparent;
+  background: none; border: none; color: var(--text-faint); font-family: var(--sans);
+  font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600; padding: 10px 4px;
+  margin-right: 28px; cursor: pointer; border-bottom: 2px solid transparent;
   position: relative; top: 1px;
 }
 nav.tabs button:hover { color: var(--text-dim); }
-nav.tabs button.active { color: var(--accent-2); border-bottom-color: var(--accent); }
+nav.tabs button.active { color: var(--accent); border-bottom-color: var(--brass); }
 
 .panel {
   background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius);
@@ -104,9 +110,13 @@ nav.tabs button.active { color: var(--accent-2); border-bottom-color: var(--acce
 }
 .panel + .panel { margin-top: 16px; }
 .panel h2 {
-  font-family: var(--serif); font-weight: 500; font-size: 17px; margin: 0 0 4px; color: var(--text);
+  font-family: var(--serif); font-weight: 600; font-size: 18px; margin: 0 0 4px; color: var(--text);
 }
-.panel .sub { color: var(--text-faint); font-size: 11.5px; margin: 0 0 16px; }
+.panel .sub { color: var(--text-faint); font-size: 12px; margin: 0 0 16px; }
+.card-title {
+  font-family: var(--serif); font-weight: 600; font-size: 16px; color: var(--text);
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;
+}
 
 .grid { display: grid; gap: 16px; }
 .grid.cols-2 { grid-template-columns: 1fr 1fr; }
@@ -119,97 +129,109 @@ nav.tabs button.active { color: var(--accent-2); border-bottom-color: var(--acce
 
 label.field { display: block; margin-bottom: 12px; }
 label.field span.lbl {
-  display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px;
-  color: var(--text-faint); margin-bottom: 5px;
+  display: block; font-size: 11.5px; font-weight: 500;
+  color: var(--text-dim); margin-bottom: 5px;
 }
-input[type=number], input[type=text], input[type=password] {
+input[type=number], input[type=text], input[type=password], select.field-select {
   width: 100%; background: var(--bg-inset); border: 1px solid var(--border); color: var(--text);
-  font-family: var(--mono); font-size: 13px; padding: 8px 9px; border-radius: var(--radius);
+  font-family: var(--sans); font-size: 13px; padding: 8px 9px; border-radius: var(--radius);
 }
-input:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
+input:focus, select.field-select:focus { outline: 2px solid var(--accent-2); outline-offset: 1px; border-color: var(--accent-2); }
 input[type=checkbox] { accent-color: var(--accent); margin-right: 6px; }
+.field-note { font-size: 11px; color: var(--text-faint); margin: 5px 0 0; }
 
 button.btn {
-  background: var(--bg-inset); border: 1px solid var(--border); color: var(--text);
-  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.4px; padding: 8px 14px;
+  background: var(--bg-panel); border: 1px solid var(--border); color: var(--text);
+  font-family: var(--sans); font-size: 12px; font-weight: 500; letter-spacing: 0.1px; padding: 8px 14px;
   border-radius: var(--radius); cursor: pointer; white-space: nowrap;
 }
-button.btn:hover { border-color: var(--accent); color: var(--accent-2); }
-button.btn.primary { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-2); }
-button.btn.primary:hover { background: var(--accent); color: #14100c; }
+button.btn:hover { border-color: var(--accent-2); color: var(--accent); }
+button.btn.primary { background: var(--accent); border-color: var(--accent); color: #FBF9F4; }
+button.btn.primary:hover { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
 button.btn.ghost { background: none; border-color: transparent; color: var(--text-faint); }
-button.btn.ghost:hover { color: var(--accent-2); border-color: transparent; }
+button.btn.ghost:hover { color: var(--accent); border-color: transparent; }
+button.btn.danger { color: var(--negative); }
+button.btn.danger:hover { border-color: var(--negative); color: var(--negative); }
 button.btn:disabled { opacity: 0.4; cursor: not-allowed; }
 button.btn:disabled:hover { border-color: var(--border); color: var(--text); }
+button.btn-sm { padding: 5px 10px; font-size: 11.5px; }
 
 table.data { width: 100%; border-collapse: collapse; font-size: 12.5px; }
 table.data th {
-  text-align: right; font-weight: 500; color: var(--text-faint); font-size: 10.5px;
-  text-transform: uppercase; letter-spacing: 0.6px; padding: 6px 10px; border-bottom: 1px solid var(--border);
+  text-align: right; font-weight: 600; color: var(--text-dim); font-size: 11px;
+  padding: 7px 10px; border-bottom: 1px solid var(--accent);
 }
-table.data th:first-child, table.data td:first-child { text-align: left; }
-table.data td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--border-soft); }
+table.data th:first-child, table.data td:first-child { text-align: left; font-family: var(--sans); }
+table.data td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--border-soft); font-family: var(--mono); }
 table.data tr:last-child td { border-bottom: none; }
-table.data tr.total td { color: var(--accent-2); font-weight: 600; border-top: 1px solid var(--border); }
+table.data tr.total td { color: var(--accent); font-weight: 600; border-top: 1px solid var(--border); }
 table.data td.pos { color: var(--positive); }
 table.data td.neg { color: var(--negative); }
 table.data td.muted { color: var(--text-faint); }
 table.data td.editable { padding: 3px 6px; }
 table.data td.editable input {
   width: 100%; background: transparent; border: 1px solid transparent; text-align: right;
-  color: var(--accent-2); padding: 5px 6px; border-radius: var(--radius);
+  font-family: var(--mono); color: var(--accent); padding: 5px 6px; border-radius: var(--radius);
 }
 table.data td.editable input:hover { border-color: var(--border); }
-table.data td.editable input:focus { border-color: var(--accent); background: var(--bg-inset); }
+table.data td.editable input:focus { border-color: var(--accent-2); background: var(--bg-inset); }
+table.ledger { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.ledger td { padding: 6px 4px; border-bottom: 1px solid var(--border-soft); font-family: var(--sans); }
 
-.citation { font-size: 10.5px; color: var(--text-faint); margin-top: 3px; }
-.citation .pg { color: var(--accent-2); }
+.citation { font-size: 11px; color: var(--text-faint); margin-top: 4px; font-family: var(--mono); }
+.citation .pg { color: var(--accent); }
 
 .badge {
-  display: inline-block; font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase;
-  padding: 2px 7px; border-radius: 10px; border: 1px solid var(--border); color: var(--text-faint);
+  display: inline-block; font-size: 10.5px; font-weight: 500;
+  padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border); color: var(--text-faint);
 }
 .badge.on { border-color: var(--positive); color: var(--positive); }
-.badge.warn { border-color: var(--accent); color: var(--accent-2); }
+.badge.warn { border-color: var(--brass); color: var(--brass); }
 
 .heat { text-align: center !important; font-weight: 500; }
 
 .checklist { display: flex; flex-wrap: wrap; gap: 8px 18px; }
 .checklist label {
-  display: flex; align-items: center; font-size: 12px; color: var(--text-dim); cursor: pointer;
+  display: flex; align-items: center; font-size: 12.5px; color: var(--text-dim); cursor: pointer;
 }
 
 .statline { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border-soft); }
 .statline:last-child { border-bottom: none; }
-.statline .k { color: var(--text-faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
-.statline .v { font-family: var(--mono); font-size: 15px; color: var(--accent-2); font-weight: 500; }
+.statline .k { color: var(--text-faint); font-size: 11.5px; }
+.statline .v { font-family: var(--mono); font-size: 16px; color: var(--accent); font-weight: 600; }
 
 footer.databar {
   position: sticky; bottom: 0; margin-top: 26px; background: var(--bg-panel-2);
   border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px;
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
 }
-footer.databar .status { color: var(--text-faint); font-size: 11px; margin-right: auto; }
+footer.databar .status { color: var(--text-faint); font-size: 11.5px; margin-right: auto; }
 footer.databar .status .dot {
   display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--text-faint);
   margin-right: 6px; position: relative; top: -1px;
 }
 footer.databar .status.ok .dot { background: var(--positive); }
 
-.gh-panel {
+.drop-panel {
   display: none; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border);
 }
-.gh-panel.open { display: block; }
-.gh-note { font-size: 11px; color: var(--text-faint); margin: 8px 0 0; }
+.drop-panel.open { display: block; }
+.gh-note { font-size: 11.5px; color: var(--text-faint); margin: 8px 0 0; }
 
-.empty { color: var(--text-faint); font-size: 12px; padding: 30px 0; text-align: center; }
+.empty { color: var(--text-faint); font-size: 12.5px; padding: 30px 0; text-align: center; }
 .toast {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-  background: var(--bg-panel-2); border: 1px solid var(--accent); color: var(--accent-2);
-  padding: 9px 16px; border-radius: var(--radius); font-size: 12px; z-index: 50;
+  background: var(--accent); border: 1px solid var(--accent); color: #FBF9F4;
+  padding: 9px 16px; border-radius: var(--radius); font-size: 12.5px; z-index: 50;
   opacity: 0; pointer-events: none; transition: opacity 0.2s;
 }
 .toast.show { opacity: 1; }
+
+.extract-row { display: grid; grid-template-columns: 22px 1fr 130px 90px 90px 60px; gap: 8px; align-items: center; padding: 6px 4px; border-bottom: 1px solid var(--border-soft); font-size: 12px; }
+.extract-row.head { font-weight: 600; color: var(--text-dim); font-size: 11px; border-bottom: 1px solid var(--accent); }
+.extract-row input[type=text], .extract-row input[type=number], .extract-row select { padding: 5px 6px; font-size: 12px; }
+.extract-row .raw { color: var(--text-faint); font-size: 11px; }
+.extract-scroll { max-height: 420px; overflow-y: auto; border: 1px solid var(--border-soft); border-radius: var(--radius); padding: 4px 8px; margin-top: 10px; }
 
 .hidden { display: none !important; }
 </style>
@@ -220,13 +242,40 @@ footer.databar .status.ok .dot { background: var(--positive); }
   <header class="top">
     <div class="brand">
       <h1>FUL<span>C</span>RUM</h1>
-      <p>Discounted cash flow &middot; comparable companies &middot; extracted financials — one page, no backend</p>
+      <p>Discounted cash flow, comparable companies, and extracted financials, worked in one page with no backend server.</p>
     </div>
     <div class="context">
       <select id="companySelect" class="select"></select>
       <select id="periodSelect" class="select" style="min-width:100px;"></select>
+      <button class="icon-btn" id="btnEditCompany" title="Rename / edit this company">&#9998;</button>
+      <button class="btn btn-sm" id="btnAddCompany">+ Add company</button>
     </div>
   </header>
+
+  <div class="panel drop-panel" id="companyPanel">
+    <div class="card-title">
+      <span id="companyPanelTitle">Add a company</span>
+      <button class="icon-btn" id="companyPanelClose">&#10005;</button>
+    </div>
+    <p class="sub">Name it, then use <strong>Financials &rarr; Upload PDF</strong> or the Financials table to add its numbers.</p>
+    <div class="grid cols-2">
+      <label class="field"><span class="lbl">Company name</span><input type="text" id="cf_name" placeholder="Acme Industries Ltd"></label>
+      <label class="field"><span class="lbl">Ticker</span><input type="text" id="cf_ticker" placeholder="ACME"></label>
+      <label class="field"><span class="lbl">Sector</span><input type="text" id="cf_sector" placeholder="Industrials"></label>
+      <label class="field"><span class="lbl">Currency</span><input type="text" id="cf_currency" placeholder="INR"></label>
+    </div>
+    <div class="grid cols-4">
+      <label class="field"><span class="lbl">Share price</span><input type="number" id="cf_price" step="0.01"></label>
+      <label class="field"><span class="lbl">Shares outstanding (cr)</span><input type="number" id="cf_shares" step="0.01"></label>
+      <label class="field"><span class="lbl">Net debt override</span><input type="number" id="cf_netdebt" step="1"></label>
+      <label class="field"><span class="lbl">Fiscal years (comma-sep)</span><input type="text" id="cf_periods" placeholder="FY2024,FY2025"></label>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <button class="btn primary" id="btnCompanySave">Save company</button>
+      <button class="btn danger" id="btnCompanyDelete">Delete this company</button>
+      <span class="field-note" id="companyPanelStatus" style="margin:0;"></span>
+    </div>
+  </div>
 
   <nav class="tabs">
     <button data-tab="dcf" class="active">DCF</button>
@@ -275,7 +324,7 @@ footer.databar .status.ok .dot { background: var(--positive); }
         <h2>Output</h2>
         <div class="grid cols-4" id="dcfStats"></div>
         <h2 style="margin-top:22px;">Sensitivity — value per share</h2>
-        <p class="sub">Rows: WACC &middot; Columns: terminal growth</p>
+        <p class="sub">Rows step WACC up and down; columns step the terminal growth rate.</p>
         <div style="overflow-x:auto;">
           <table class="data" id="dcfSensitivity"></table>
         </div>
@@ -328,10 +377,46 @@ footer.databar .status.ok .dot { background: var(--positive); }
     <button class="btn" id="btnImport">Import JSON</button>
     <input type="file" id="fileImport" accept="application/json" class="hidden">
     <button class="btn" id="btnExport">Export JSON</button>
+    <button class="btn" id="btnUploadPdf">Upload PDF</button>
+    <input type="file" id="filePdf" accept="application/pdf" class="hidden">
     <button class="btn ghost" id="btnGithubToggle">GitHub sync ▾</button>
   </footer>
 
-  <div class="panel gh-panel" id="ghPanel">
+  <div class="panel drop-panel" id="pdfPanel">
+    <div class="card-title">
+      <span>Extract financials from PDF</span>
+      <button class="icon-btn" id="pdfPanelClose">✕</button>
+    </div>
+    <p class="sub">
+      Best-effort, in-browser extraction — it scans the PDF for statement headings and known line-item labels, then shows you
+      exactly what it found so you can correct anything before it's saved. Nothing leaves your browser. Works on two
+      side-by-side year columns per statement (the usual annual-report layout); re-run it against another filing to add more years.
+    </p>
+    <div class="grid cols-4" id="pdfSetupRow">
+      <label class="field"><span class="lbl">Reporting unit</span>
+        <select id="pdf_unit" class="field-select">
+          <option value="cr_inr">₹ Crore</option>
+          <option value="lakh_inr">₹ Lakh</option>
+          <option value="inr">₹ (absolute)</option>
+          <option value="usd_mm">US$ million</option>
+          <option value="usd">US$ (absolute)</option>
+        </select>
+      </label>
+      <label class="field"><span class="lbl">Column 1 = fiscal year</span><input type="text" id="pdf_col1" placeholder="FY2025"></label>
+      <label class="field"><span class="lbl">Column 2 = fiscal year</span><input type="text" id="pdf_col2" placeholder="FY2024"></label>
+      <label class="field" style="align-self:end;"><button class="btn primary" id="btnPdfChoose" style="width:100%;">Choose PDF…</button></label>
+    </div>
+    <p class="field-note" id="pdfStatus"></p>
+    <div id="pdfReviewWrap" class="hidden">
+      <div class="extract-scroll" id="pdfReviewList"></div>
+      <div style="display:flex;gap:10px;margin-top:12px;align-items:center;">
+        <button class="btn primary" id="btnPdfConfirm">Save checked rows to this company</button>
+        <span class="field-note" id="pdfConfirmStatus" style="margin:0;"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel drop-panel" id="ghPanel">
     <h2>GitHub sync</h2>
     <p class="sub">Reads/writes company JSON via the GitHub Contents API. Only works when this page is self-hosted (e.g. on GitHub Pages) — a published Claude artifact preview can't reach external APIs, so these calls will fail there by design.</p>
     <div class="grid cols-4">
@@ -448,7 +533,11 @@ function buildCompanyComp(f, prior, market) {
   }
   let freeCashFlow = null;
   if (f.operating_cash_flow != null && f.capital_expenditure != null) {
-    freeCashFlow = f.operating_cash_flow - f.capital_expenditure;
+    // capex's sign convention varies by filing — some print it as a
+    // positive "spend" figure, others already-negative from parentheses
+    // in the cash-flow statement. Math.abs() keeps FCF correct either way
+    // instead of silently inflating it when capex arrives pre-negated.
+    freeCashFlow = f.operating_cash_flow - Math.abs(f.capital_expenditure);
   }
   const metrics = {
     ebitda_margin: safeDiv(f.ebitda, f.revenue),
@@ -539,8 +628,49 @@ function titleCase(metric) {
 /* =====================================================================
    6. DATA LOADING / MERGING
 ===================================================================== */
+// The site's schema keeps rich, per-basis "statements" (what a filing
+// actually says, with page/heading provenance) separate from flat
+// "fundamentals" (one number per metric per period, basis already
+// resolved) that the DCF and comps engines read. SAMPLE_DATA ships with
+// fundamentals pre-baked by the Python pipeline; anything ingested here
+// in the browser (a manually added company, an edited cell, a PDF
+// extraction) needs that same resolution step run client-side, or its
+// numbers would show up in the Financials tab but never reach DCF/Comps.
+const FUNDAMENTAL_METRICS_BY_STATEMENT = {
+  balance_sheet: ['shareholders_equity', 'total_debt', 'cash_and_equivalents'],
+  income_statement: ['revenue', 'ebitda', 'ebit', 'net_income'],
+  cash_flow: ['operating_cash_flow', 'capital_expenditure'],
+};
+function deriveFundamentalsForPeriod(company, period) {
+  const out = {};
+  for (const [stmt, metrics] of Object.entries(FUNDAMENTAL_METRICS_BY_STATEMENT)) {
+    const stData = ((company.statements || {})[stmt] || {})[period] || {};
+    for (const m of metrics) {
+      const variants = stData[m];
+      const chosen = variants ? (variants.consolidated || variants.standalone || variants.unspecified) : null;
+      out[m] = chosen ? chosen.value : null;
+    }
+  }
+  return out;
+}
+function refreshFundamentals(company) {
+  company.fundamentals = company.fundamentals || {};
+  for (const period of company.periods) {
+    const derived = deriveFundamentalsForPeriod(company, period);
+    const existing = company.fundamentals[period] || {};
+    const merged = { ...existing };
+    for (const [k, v] of Object.entries(derived)) { if (v !== null && v !== undefined) merged[k] = v; }
+    company.fundamentals[period] = merged;
+  }
+}
+
 function ingestCompanies(list) {
   for (const c of list) {
+    c.statements = c.statements || { balance_sheet: {}, income_statement: {}, cash_flow: {} };
+    c.fundamentals = c.fundamentals || {};
+    c.periods = c.periods || [];
+    c.market = c.market || { price: null, shares_outstanding: null, net_debt_override: null };
+    refreshFundamentals(c);
     STATE.companies[c.id] = c;
     if (!STATE.companyOrder.includes(c.id)) STATE.companyOrder.push(c.id);
   }
@@ -1156,7 +1286,340 @@ document.getElementById('ghPanel').addEventListener('input', () => {
 });
 
 /* =====================================================================
-   14. BOOT
+   14. COMPANY MANAGEMENT — add / rename / delete
+===================================================================== */
+function slugId(name, existingIds) {
+  const base = (name || 'untitled-company').toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'company';
+  let id = base, n = 2;
+  while (existingIds.has(id)) { id = `${base}-${n}`; n += 1; }
+  return id;
+}
+function companyStatus(msg) { document.getElementById('companyPanelStatus').textContent = msg || ''; }
+
+function openCompanyPanel(mode) {
+  const panel = document.getElementById('companyPanel');
+  const title = document.getElementById('companyPanelTitle');
+  const periodsField = document.getElementById('cf_periods').closest('label');
+  const deleteBtn = document.getElementById('btnCompanyDelete');
+  companyStatus('');
+  if (mode === 'edit') {
+    const c = STATE.companies[STATE.selectedCompanyId];
+    if (!c) return;
+    title.textContent = `Edit ${c.name}`;
+    document.getElementById('cf_name').value = c.name || '';
+    document.getElementById('cf_ticker').value = c.ticker || '';
+    document.getElementById('cf_sector').value = c.sector || '';
+    document.getElementById('cf_currency').value = c.currency || 'INR';
+    document.getElementById('cf_price').value = c.market && c.market.price != null ? c.market.price : '';
+    document.getElementById('cf_shares').value = c.market && c.market.shares_outstanding != null ? c.market.shares_outstanding : '';
+    document.getElementById('cf_netdebt').value = c.market && c.market.net_debt_override != null ? c.market.net_debt_override : '';
+    periodsField.classList.add('hidden');
+    deleteBtn.classList.remove('hidden');
+    panel.dataset.mode = 'edit';
+  } else {
+    title.textContent = 'Add a company';
+    document.getElementById('cf_name').value = '';
+    document.getElementById('cf_ticker').value = '';
+    document.getElementById('cf_sector').value = '';
+    document.getElementById('cf_currency').value = 'INR';
+    document.getElementById('cf_price').value = '';
+    document.getElementById('cf_shares').value = '';
+    document.getElementById('cf_netdebt').value = '';
+    document.getElementById('cf_periods').value = 'FY2024,FY2025';
+    periodsField.classList.remove('hidden');
+    deleteBtn.classList.add('hidden');
+    panel.dataset.mode = 'add';
+  }
+  panel.classList.add('open');
+  document.getElementById('cf_name').focus();
+}
+function closeCompanyPanel() { document.getElementById('companyPanel').classList.remove('open'); }
+
+document.getElementById('btnAddCompany').addEventListener('click', () => openCompanyPanel('add'));
+document.getElementById('btnEditCompany').addEventListener('click', () => {
+  if (!STATE.selectedCompanyId) { toast('Add a company first'); openCompanyPanel('add'); return; }
+  openCompanyPanel('edit');
+});
+document.getElementById('companyPanelClose').addEventListener('click', closeCompanyPanel);
+
+document.getElementById('btnCompanySave').addEventListener('click', () => {
+  const name = document.getElementById('cf_name').value.trim();
+  if (!name) { companyStatus('Company name is required.'); return; }
+  const ticker = document.getElementById('cf_ticker').value.trim();
+  const sector = document.getElementById('cf_sector').value.trim();
+  const currency = document.getElementById('cf_currency').value.trim() || 'INR';
+  const price = document.getElementById('cf_price').value === '' ? null : Number(document.getElementById('cf_price').value);
+  const shares = document.getElementById('cf_shares').value === '' ? null : Number(document.getElementById('cf_shares').value);
+  const netDebt = document.getElementById('cf_netdebt').value === '' ? null : Number(document.getElementById('cf_netdebt').value);
+  const mode = document.getElementById('companyPanel').dataset.mode;
+
+  if (mode === 'edit') {
+    const c = STATE.companies[STATE.selectedCompanyId];
+    if (!c) return;
+    c.name = name; c.ticker = ticker; c.sector = sector; c.currency = currency;
+    c.market = { price, shares_outstanding: shares, net_debt_override: netDebt };
+    refreshSelectors(); renderAll(); saveLocal();
+    toast(`Saved "${name}"`);
+    closeCompanyPanel();
+  } else {
+    const periods = document.getElementById('cf_periods').value.split(',').map((p) => p.trim()).filter(Boolean);
+    if (!periods.length) { companyStatus('Give it at least one fiscal year, e.g. FY2025.'); return; }
+    const id = slugId(name, new Set(STATE.companyOrder));
+    const company = {
+      id, name, ticker, sector, currency,
+      market: { price, shares_outstanding: shares, net_debt_override: netDebt },
+      periods,
+      statements: { balance_sheet: {}, income_statement: {}, cash_flow: {} },
+      fundamentals: {},
+    };
+    ingestCompanies([company]);
+    STATE.selectedCompanyId = id;
+    STATE.selectedPeriod = periods[periods.length - 1];
+    refreshSelectors(); renderAll(); saveLocal();
+    toast(`Added "${name}" — now add its numbers via Upload PDF or the Financials tab`);
+    closeCompanyPanel();
+  }
+});
+
+document.getElementById('btnCompanyDelete').addEventListener('click', () => {
+  const c = STATE.companies[STATE.selectedCompanyId];
+  if (!c) return;
+  if (!confirm(`Delete "${c.name}"? This can't be undone.`)) return;
+  delete STATE.companies[c.id];
+  STATE.companyOrder = STATE.companyOrder.filter((id) => id !== c.id);
+  STATE.compsSelection.delete(c.id);
+  STATE.selectedCompanyId = STATE.companyOrder[0] || null;
+  const next = STATE.companies[STATE.selectedCompanyId];
+  STATE.selectedPeriod = next && next.periods.length ? next.periods[next.periods.length - 1] : null;
+  refreshSelectors(); renderAll(); saveLocal(); updateDataStatus();
+  toast(`Deleted "${c.name}"`);
+  closeCompanyPanel();
+});
+
+/* =====================================================================
+   15. PDF STATEMENT EXTRACTION — client-side, heuristic, human-reviewed.
+      Uses pdf.js to read each page's positioned text, reconstructs rows
+      by clustering text items that share a y-coordinate, then matches
+      row labels against a metric alias dictionary. Nothing is written to
+      a company's statements until the person reviews and confirms it
+      here — this is assistive, not a black box.
+===================================================================== */
+const PDFJS_VERSION = '4.6.82';
+let pdfjsLibPromise = null;
+function loadPdfJs() {
+  if (!pdfjsLibPromise) {
+    pdfjsLibPromise = import(`https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/build/pdf.min.mjs`).then((mod) => {
+      mod.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/build/pdf.worker.min.mjs`;
+      return mod;
+    });
+  }
+  return pdfjsLibPromise;
+}
+
+const METRIC_ALIASES = [
+  // [statementType, metricKey, [alias substrings, longest/most specific first]]
+  ['income_statement', 'revenue', ['revenue from operations', 'total revenue from operations', 'total income', 'total revenue', 'net sales', 'sales']],
+  ['income_statement', 'ebitda', ['ebitda']],
+  ['income_statement', 'ebit', ['operating profit before', 'profit before interest and tax', 'operating profit', 'ebit']],
+  ['income_statement', 'net_income', ['profit for the year', 'profit for the period', 'profit after tax', 'net profit', 'net income']],
+  ['balance_sheet', 'shareholders_equity', ["total equity attributable", 'shareholders funds', "shareholders' equity", 'total equity', 'net worth']],
+  ['balance_sheet', 'total_debt', ['total borrowings', 'total debt', 'borrowings']],
+  ['balance_sheet', 'cash_and_equivalents', ['cash and cash equivalents', 'cash and bank balances', 'cash & cash equivalents']],
+  ['balance_sheet', 'total_assets', ['total assets']],
+  ['balance_sheet', 'total_liabilities', ['total equity and liabilities', 'total liabilities']],
+  ['cash_flow', 'operating_cash_flow', ['net cash generated from operating', 'net cash from operating activities', 'cash generated from operations', 'cash flow from operating activities']],
+  ['cash_flow', 'capital_expenditure', ['purchase of property, plant', 'purchase of fixed assets', 'capital expenditure', 'payments for property']],
+];
+const HEADING_HINTS = [
+  ['balance_sheet', /balance sheet/i],
+  ['income_statement', /(profit\s*(&|and)\s*loss|statement of profit|income statement)/i],
+  ['cash_flow', /cash flow/i],
+];
+function matchMetric(label) {
+  const norm = label.toLowerCase().replace(/[^a-z0-9&' ]/g, ' ').replace(/\s+/g, ' ').trim();
+  // Pick the longest matching alias across ALL metrics, not the first
+  // array match — otherwise a short alias like "total equity" (for
+  // shareholders_equity) wrongly wins against a row actually labelled
+  // "Total Equity and Liabilities" (a total_liabilities line) just
+  // because it appears earlier in the list.
+  let best = null;
+  for (const [stmt, metric, aliases] of METRIC_ALIASES) {
+    for (const alias of aliases) {
+      if (norm.includes(alias) && (!best || alias.length > best.alias.length)) {
+        best = { stmt, metric, alias };
+      }
+    }
+  }
+  return best;
+}
+function parseNumberToken(tok) {
+  const neg = /^\(.*\)$/.test(tok.trim());
+  const cleaned = tok.replace(/[(),₹$\s]/g, '');
+  if (!/^-?\d+(\.\d+)?$/.test(cleaned)) return null;
+  const v = parseFloat(cleaned);
+  return neg ? -v : v;
+}
+
+async function extractPdfCandidates(file, onProgress) {
+  const pdfjsLib = await loadPdfJs();
+  const buf = await file.arrayBuffer();
+  const doc = await pdfjsLib.getDocument({ data: buf }).promise;
+  const candidates = [];
+  let section = { stmt: null, basis: 'consolidated', heading: null };
+
+  for (let p = 1; p <= doc.numPages; p++) {
+    if (onProgress) onProgress(p, doc.numPages);
+    const page = await doc.getPage(p);
+    const content = await page.getTextContent();
+    // Cluster text items into rows by y-coordinate (transform[5]), then
+    // sort each row left-to-right by x (transform[4]) — this recovers
+    // table structure that plain page.getTextContent() text loses.
+    const rows = [];
+    for (const item of content.items) {
+      const y = Math.round(item.transform[5]);
+      const x = item.transform[4];
+      let row = rows.find((r) => Math.abs(r.y - y) <= 3);
+      if (!row) { row = { y, items: [] }; rows.push(row); }
+      row.items.push({ x, str: item.str });
+    }
+    rows.sort((a, b) => b.y - a.y);
+    for (const row of rows) {
+      row.items.sort((a, b) => a.x - b.x);
+      const text = row.items.map((i) => i.str).join(' ').replace(/\s+/g, ' ').trim();
+      if (!text) continue;
+
+      const headingHit = HEADING_HINTS.find(([, re]) => re.test(text));
+      if (headingHit && text.length < 120) {
+        section = {
+          stmt: headingHit[0],
+          basis: /standalone/i.test(text) ? 'standalone' : (/consolidated/i.test(text) ? 'consolidated' : section.basis),
+          heading: text,
+        };
+        continue;
+      }
+      if (!section.stmt) continue;
+
+      // Label = leading non-numeric run; values = numeric tokens after it.
+      const numMatches = [...text.matchAll(/\(?-?[\d,]+(?:\.\d+)?\)?/g)];
+      if (!numMatches.length) continue;
+      const label = text.slice(0, numMatches[0].index).replace(/[.\s]+$/, '').trim();
+      if (!label || label.length < 3) continue;
+      const match = matchMetric(label);
+      if (!match || match.stmt !== section.stmt) continue;
+      const values = numMatches.slice(0, 2).map((m) => parseNumberToken(m[0])).filter((v) => v !== null);
+      if (!values.length) continue;
+
+      candidates.push({
+        stmt: match.stmt, metric: match.metric, basis: section.basis,
+        rawLabel: label, values, page: p, heading: section.heading,
+      });
+    }
+  }
+  return candidates;
+}
+
+let pdfCandidates = [];
+const STATEMENT_LABELS = { balance_sheet: 'Balance sheet', income_statement: 'Income statement', cash_flow: 'Cash flow' };
+const METRIC_OPTIONS = [...new Set(METRIC_ALIASES.map((a) => a[1]))];
+
+function renderPdfReview() {
+  const wrap = document.getElementById('pdfReviewWrap');
+  const list = document.getElementById('pdfReviewList');
+  if (!pdfCandidates.length) { wrap.classList.add('hidden'); return; }
+  wrap.classList.remove('hidden');
+  let html = `<div class="extract-row head"><span></span><span>Line item found</span><span>Metric</span><span>Value 1</span><span>Value 2</span><span>Basis</span></div>`;
+  pdfCandidates.forEach((c, i) => {
+    html += `<div class="extract-row" data-i="${i}">
+      <input type="checkbox" class="c-inc" ${c.metric ? 'checked' : ''}>
+      <span class="raw" title="p.${c.page} — ${c.heading || ''}">${c.rawLabel}</span>
+      <select class="c-metric">${METRIC_OPTIONS.map((m) => `<option value="${m}" ${m === c.metric ? 'selected' : ''}>${titleCase(m)}</option>`).join('')}</select>
+      <input type="number" class="c-v1" value="${c.values[0] ?? ''}">
+      <input type="number" class="c-v2" value="${c.values[1] ?? ''}">
+      <select class="c-basis"><option value="consolidated" ${c.basis === 'consolidated' ? 'selected' : ''}>Consol.</option><option value="standalone" ${c.basis === 'standalone' ? 'selected' : ''}>Standalone</option></select>
+    </div>`;
+  });
+  list.innerHTML = html;
+}
+
+document.getElementById('btnUploadPdf').addEventListener('click', () => {
+  if (!STATE.selectedCompanyId) { toast('Add or select a company first'); openCompanyPanel('add'); return; }
+  document.getElementById('pdfPanel').classList.add('open');
+});
+document.getElementById('pdfPanelClose').addEventListener('click', () => document.getElementById('pdfPanel').classList.remove('open'));
+document.getElementById('btnPdfChoose').addEventListener('click', () => document.getElementById('filePdf').click());
+
+document.getElementById('filePdf').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const statusEl = document.getElementById('pdfStatus');
+  pdfCandidates = [];
+  renderPdfReview();
+  statusEl.textContent = 'Loading PDF engine…';
+  try {
+    pdfCandidates = await extractPdfCandidates(file, (p, n) => { statusEl.textContent = `Scanning page ${p} of ${n}…`; });
+    if (!pdfCandidates.length) {
+      statusEl.textContent = 'No recognizable statement line items found. The PDF may be scanned images (no text layer) rather than native text, or use labels this tool doesn\'t know yet.';
+    } else {
+      statusEl.textContent = `Found ${pdfCandidates.length} candidate line item${pdfCandidates.length === 1 ? '' : 's'} — review below, uncheck anything wrong, then save.`;
+      // Best-effort default year labels from any "MARCH 31, YYYY" text seen in headings.
+      const years = [...new Set(pdfCandidates.map((c) => c.heading || '').join(' ').match(/20\d\d/g) || [])].sort().reverse();
+      if (years[0] && !document.getElementById('pdf_col1').value) document.getElementById('pdf_col1').value = 'FY' + years[0];
+      if (years[1] && !document.getElementById('pdf_col2').value) document.getElementById('pdf_col2').value = 'FY' + years[1];
+    }
+  } catch (err) {
+    statusEl.textContent = `Couldn't read that PDF: ${err.message}`;
+  }
+  renderPdfReview();
+  e.target.value = '';
+});
+
+document.getElementById('btnPdfConfirm').addEventListener('click', () => {
+  const c = STATE.companies[STATE.selectedCompanyId];
+  if (!c) { toast('Select a company first'); return; }
+  const col1 = document.getElementById('pdf_col1').value.trim();
+  const col2 = document.getElementById('pdf_col2').value.trim();
+  const unit = document.getElementById('pdf_unit').value;
+  if (!col1) { document.getElementById('pdfConfirmStatus').textContent = 'Give at least Column 1 a fiscal-year label (e.g. FY2025).'; return; }
+  const periodLabels = [col1, col2].filter(Boolean);
+
+  const rows = document.querySelectorAll('#pdfReviewList .extract-row');
+  let saved = 0;
+  rows.forEach((rowEl, i) => {
+    if (!rowEl.querySelector('.c-inc').checked) return;
+    const cand = pdfCandidates[i];
+    const metric = rowEl.querySelector('.c-metric').value;
+    const basis = rowEl.querySelector('.c-basis').value;
+    const v1 = rowEl.querySelector('.c-v1').value;
+    const v2 = rowEl.querySelector('.c-v2').value;
+    [v1, v2].forEach((raw, colIdx) => {
+      if (raw === '' || raw === null) return;
+      const period = periodLabels[colIdx];
+      if (!period) return;
+      const value = Number(raw);
+      if (Number.isNaN(value)) return;
+      c.statements[cand.stmt] = c.statements[cand.stmt] || {};
+      c.statements[cand.stmt][period] = c.statements[cand.stmt][period] || {};
+      c.statements[cand.stmt][period][metric] = c.statements[cand.stmt][period][metric] || { consolidated: null, standalone: null, unspecified: null };
+      c.statements[cand.stmt][period][metric][basis] = {
+        value, unit, metric_raw: cand.rawLabel, source_page: cand.page, source_table: 'PDF extraction',
+        source_heading: cand.heading, extraction_method: 'client_pdf_heuristic', extraction_confidence: 0.6,
+        doc_type: 'uploaded_pdf', fiscal_year: period,
+      };
+      if (!c.periods.includes(period)) c.periods.push(period);
+      saved += 1;
+    });
+  });
+  c.periods.sort();
+  refreshFundamentals(c);
+  if (!STATE.selectedPeriod || !c.periods.includes(STATE.selectedPeriod)) STATE.selectedPeriod = c.periods[c.periods.length - 1];
+  refreshSelectors(); renderAll(); saveLocal(); updateDataStatus();
+  document.getElementById('pdfConfirmStatus').textContent = `Saved ${saved} value${saved === 1 ? '' : 's'} to ${c.name}.`;
+  toast(`Saved ${saved} extracted value${saved === 1 ? '' : 's'}`);
+});
+
+/* =====================================================================
+   16. BOOT
 ===================================================================== */
 loadLocal();
 wireDCFTopInputs();
