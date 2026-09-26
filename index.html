@@ -344,7 +344,8 @@ footer.databar .status.ok .dot { background: var(--positive); }
     <label style="display:flex;align-items:center;margin-bottom:12px;font-size:11.5px;color:var(--text-faint);">
       <input type="checkbox" id="gh_remember"> Remember these fields in this browser (not the token)
     </label>
-    <div style="display:flex;gap:10px;">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn" id="btnGithubTest">Test token</button>
       <button class="btn primary" id="btnGithubLoad">Load index.json from GitHub</button>
       <button class="btn" id="btnGithubSave">Save current company to GitHub</button>
     </div>
@@ -1059,6 +1060,34 @@ function ghFields() {
 }
 function ghStatus(msg) { document.getElementById('ghStatus').textContent = msg; }
 
+/** Read GitHub's own error message out of a failed response, so "401" becomes
+ * "Bad credentials" instead of a bare status code — this is what actually
+ * tells you whether the problem is the token itself vs. the repo/path/branch. */
+async function ghErrorDetail(res) {
+  try {
+    const body = await res.json();
+    if (body && body.message) return `HTTP ${res.status}: ${body.message}`;
+  } catch (e) { /* body wasn't JSON */ }
+  return `HTTP ${res.status}`;
+}
+
+document.getElementById('btnGithubTest').addEventListener('click', async () => {
+  const f = ghFields();
+  if (!f.token) { ghStatus('Enter a token first.'); return; }
+  ghStatus('Testing token…');
+  try {
+    // /user only checks whether GitHub accepts the credential at all —
+    // independent of whether it can see any particular repo. A 401 here
+    // means the token string itself is wrong/expired/revoked, full stop.
+    const res = await fetch('https://api.github.com/user', { headers: { Authorization: `Bearer ${f.token}`, Accept: 'application/vnd.github+json' } });
+    if (!res.ok) throw new Error(await ghErrorDetail(res));
+    const user = await res.json();
+    ghStatus(`Token is valid — authenticated as "${user.login}". If Load/Save still fail, it's a repo-access or path problem, not the token.`);
+  } catch (err) {
+    ghStatus(`Token check failed: ${err.message}. Generate a fresh token at github.com/settings/tokens and paste it in full — this confirms the token itself, before touching the repo.`);
+  }
+});
+
 document.getElementById('btnGithubLoad').addEventListener('click', async () => {
   const f = ghFields();
   if (!f.owner || !f.repo || !f.token) { ghStatus('Owner, repo and token are required.'); return; }
@@ -1066,7 +1095,7 @@ document.getElementById('btnGithubLoad').addEventListener('click', async () => {
   try {
     const idxUrl = `https://api.github.com/repos/${f.owner}/${f.repo}/contents/${f.path}/index.json?ref=${f.branch}`;
     const idxRes = await fetch(idxUrl, { headers: { Authorization: `Bearer ${f.token}`, Accept: 'application/vnd.github.raw' } });
-    if (!idxRes.ok) throw new Error(`index.json: HTTP ${idxRes.status}`);
+    if (!idxRes.ok) throw new Error(`index.json: ${await ghErrorDetail(idxRes)}`);
     const index = await idxRes.json();
     const companies = [];
     for (const entry of index) {
@@ -1098,7 +1127,7 @@ document.getElementById('btnGithubSave').addEventListener('click', async () => {
       headers: { Authorization: `Bearer ${f.token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: `fulcrum: update ${c.id}.json`, content, branch: f.branch, sha }),
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) throw new Error(await ghErrorDetail(res));
     ghStatus(`Saved ${filePath} to GitHub.`);
   } catch (err) {
     ghStatus(`Failed: ${err.message}. If you're viewing this inside a Claude artifact preview, this is expected — self-host the page to use GitHub sync.`);
