@@ -1057,8 +1057,13 @@ function renderFinancials() {
   const citeEl = document.getElementById('financialsCitations');
   if (!c) { tableEl.innerHTML = '<tbody><tr><td class="empty">No company selected.</td></tr></tbody>'; citeEl.innerHTML = ''; return; }
 
-  const periods = c.periods;
   const stData = c.statements[STATE.statement] || {};
+  // Show only the periods that actually carry data for THIS statement —
+  // a balance sheet is point-in-time, so "H1FY2026" or "Q2FY2025" will
+  // never have one, and showing all of a company's periods regardless
+  // reads as most of the data being missing when it's really just not
+  // applicable to this statement type.
+  const periods = c.periods.filter((p) => stData[p] && Object.keys(stData[p]).length > 0);
   const metricSet = new Set();
   periods.forEach((p) => Object.keys(stData[p] || {}).forEach((m) => metricSet.add(m)));
   const metrics = [...metricSet];
