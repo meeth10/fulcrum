@@ -1,0 +1,26 @@
+{
+  "id": "tesla",
+  "name": "Tesla",
+  "ticker": "TSLA",
+  "sector": "Automobile",
+  "currency": "USD",
+  "market": {
+    "price": null,
+    "shares_outstanding": null,
+    "net_debt_override": null
+  },
+  "periods": [
+    "FY2024",
+    "FY2025"
+  ],
+  "statements": {
+    "balance_sheet": {},
+    "income_statement": {},
+    "cash_flow": {}
+  },
+  "fundamentals": {
+    "FY2024": {},
+    "FY2025": {}
+  },
+  "bsFrom": {}
+}
