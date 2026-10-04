@@ -5,6 +5,9 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+  # Weekdays 11:30 UTC (17:00 IST): redeploy with fresh Yahoo Finance prices (see scripts/refresh_market.py)
+  schedule:
+    - cron: "30 11 * * 1-5"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -31,6 +34,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Refresh market data (yfinance)
+        # If Yahoo is down or rate-limits the runner, keep the last committed data/market.json and deploy anyway.
+        continue-on-error: true
+        run: |
+          python -m pip install --quiet yfinance
+          python scripts/refresh_market.py
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

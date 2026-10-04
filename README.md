@@ -1,9 +1,11 @@
 # FULCRUM
 ### Discounted cash flow & scenario valuation
 
-FULCRUM is a fully manual, no-AI, no-live-data DCF workbench. Every number in
-the output was typed in by you — financial statements, cost-of-capital
-inputs, and scenario assumptions. Nothing is fetched, inferred, or generated.
+FULCRUM is a no-AI DCF workbench. Financial statements, scenario assumptions and
+cost-of-capital choices are yours. The only thing fetched automatically is market
+data (share price, share count, beta, US 10-year yield) from Yahoo Finance, written
+to `data/market.json` by `scripts/refresh_market.py` on a weekday schedule and
+clearly labelled in the UI. Type a price yourself and your number wins over Yahoo's.
 That's a deliberate constraint, not a limitation: the tool exists so you can
 see, defend, and hand off every assumption behind a valuation.
 

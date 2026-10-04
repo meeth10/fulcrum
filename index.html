@@ -227,10 +227,13 @@ footer.databar .status.ok .dot { background: var(--positive); }
 }
 .toast.show { opacity: 1; }
 
-.extract-row { display: grid; grid-template-columns: 22px 1fr 130px 90px 90px 60px; gap: 8px; align-items: center; padding: 6px 4px; border-bottom: 1px solid var(--border-soft); font-size: 12px; }
+.extract-row { display: grid; grid-template-columns: 22px minmax(140px, 1fr) minmax(190px, 220px) minmax(90px, 110px) minmax(90px, 110px) minmax(110px, 130px); gap: 8px; align-items: center; padding: 6px 4px; border-bottom: 1px solid var(--border-soft); font-size: 12px; }
 .extract-row.head { font-weight: 600; color: var(--text-dim); font-size: 11px; border-bottom: 1px solid var(--accent); }
 .extract-row input[type=text], .extract-row input[type=number], .extract-row select { padding: 5px 6px; font-size: 12px; }
-.extract-row .raw { color: var(--text-faint); font-size: 11px; }
+.extract-row .raw { color: var(--text-faint); font-size: 11px; overflow-wrap: anywhere; }
+.extract-row > * { min-width: 0; }
+.extract-row select { width: 100%; text-overflow: ellipsis; }
+.extract-scroll { overflow-x: auto; }
 .extract-scroll { max-height: 420px; overflow-y: auto; border: 1px solid var(--border-soft); border-radius: var(--radius); padding: 4px 8px; margin-top: 10px; }
 
 .hidden { display: none !important; }
@@ -266,7 +269,7 @@ footer.databar .status.ok .dot { background: var(--positive); }
     </div>
     <div class="grid cols-4">
       <label class="field"><span class="lbl">Share price</span><input type="number" id="cf_price" step="0.01"></label>
-      <label class="field"><span class="lbl">Shares outstanding (cr)</span><input type="number" id="cf_shares" step="0.01"></label>
+      <label class="field"><span class="lbl">Shares outstanding (cr for INR, mm otherwise)</span><input type="number" id="cf_shares" step="0.01"></label>
       <label class="field"><span class="lbl">Net debt override</span><input type="number" id="cf_netdebt" step="1"></label>
       <label class="field"><span class="lbl">Fiscal years (comma-sep)</span><input type="text" id="cf_periods" placeholder="FY2024,FY2025"></label>
     </div>
@@ -290,13 +293,14 @@ footer.databar .status.ok .dot { background: var(--positive); }
       <div class="panel">
         <h2>Forecast &amp; assumptions</h2>
         <p class="sub">Five-year FCFF build. Edit any cell — the valuation recalculates as you type.</p>
+        <p class="field-note" id="dcfBaseNote"></p>
         <div style="overflow-x:auto;">
           <table class="data" id="dcfForecastTable"></table>
         </div>
         <div class="grid cols-4" style="margin-top:18px;">
-          <label class="field"><span class="lbl">Shares outstanding (cr)</span><input type="number" id="in_shares" step="0.01"></label>
-          <label class="field"><span class="lbl">Cash (₹ cr)</span><input type="number" id="in_cash" step="1"></label>
-          <label class="field"><span class="lbl">Debt (₹ cr)</span><input type="number" id="in_debt" step="1"></label>
+          <label class="field"><span class="lbl" id="lbl_shares">Shares outstanding</span><input type="number" id="in_shares" step="0.01"></label>
+          <label class="field"><span class="lbl" id="lbl_cash">Cash</span><input type="number" id="in_cash" step="1"></label>
+          <label class="field"><span class="lbl" id="lbl_debt">Debt</span><input type="number" id="in_debt" step="1"></label>
           <label class="field"><span class="lbl">Terminal growth (%)</span><input type="number" id="in_termgrowth" step="0.1"></label>
         </div>
       </div>
@@ -423,9 +427,9 @@ footer.databar .status.ok .dot { background: var(--positive); }
       <label class="field"><span class="lbl">Owner / org</span><input type="text" id="gh_owner" placeholder="meeth10"></label>
       <label class="field"><span class="lbl">Repo</span><input type="text" id="gh_repo" placeholder="fulcrum"></label>
       <label class="field"><span class="lbl">Branch</span><input type="text" id="gh_branch" value="main"></label>
-      <label class="field"><span class="lbl">Data path</span><input type="text" id="gh_path" value="site/data"></label>
+      <label class="field"><span class="lbl">Data path</span><input type="text" id="gh_path" value="data"></label>
     </div>
-    <label class="field"><span class="lbl">Personal access token (repo scope)</span><input type="password" id="gh_token" placeholder="ghp_…"></label>
+    <label class="field"><span class="lbl">Personal access token (classic: repo scope · fine-grained: this repo + Contents read/write)</span><input type="password" id="gh_token" placeholder="ghp_…"></label>
     <label style="display:flex;align-items:center;margin-bottom:12px;font-size:11.5px;color:var(--text-faint);">
       <input type="checkbox" id="gh_remember"> Remember these fields in this browser (not the token)
     </label>
@@ -458,7 +462,7 @@ function runDCF(inputs) {
   } = inputs;
 
   const n = revenue.length;
-  if (sharesOutstanding <= 0) throw new Error('Shares outstanding must be positive');
+  if (!(sharesOutstanding > 0)) throw new Error('Shares outstanding is missing. Fill it in under Edit company, or let the market-data refresh supply it.');
 
   let wacc;
   if (waccInput !== null && waccInput !== undefined && !Number.isNaN(waccInput)) {
@@ -480,8 +484,11 @@ function runDCF(inputs) {
   const fcffs = revenue.map((rev, i) =>
     rev * ebitMargin[i] * (1 - taxRate[i]) + da[i] - capex[i] - deltaNwc[i]);
 
+  // An exit multiple (EV/EBITDA) applies to terminal-year EBITDA = EBIT + D&A.
+  // It used to be applied to free cash flow, which understates TV several-fold.
+  const lastEbitda = revenue[n - 1] * ebitMargin[n - 1] + da[n - 1];
   function terminalValue(lastFcff, w, gg, exitMult) {
-    if (exitMult !== null && exitMult !== undefined) return [lastFcff * exitMult, 'EXIT_MULTIPLE'];
+    if (exitMult !== null && exitMult !== undefined) return [lastEbitda * exitMult, 'EXIT_MULTIPLE'];
     return [(lastFcff * (1 + gg)) / (w - gg), 'PERPETUITY_GROWTH'];
   }
   function presentValue(fcffArr, tv, w) {
@@ -514,6 +521,7 @@ function runDCF(inputs) {
     enterpriseValue: ev, equityValue: equity, valuePerShare: perShare,
     wacc, terminalValue: tv, terminalMethod: method,
     projectedFcff: fcffs, discountFactors: dfs, pvOfFcff: pvFcff,
+    pvTerminal: tv * dfs[dfs.length - 1], tvShare: (tv * dfs[dfs.length - 1]) / ev,
     sensitivity, waccSteps, growthSteps,
   };
 }
@@ -598,9 +606,26 @@ let downloadsCapability = null;
 /* =====================================================================
    5. FORMATTING HELPERS
 ===================================================================== */
-function fmtNum(v, digits = 1) {
+// Currency conventions. INR companies are in Rs crore (shares in crore); everything
+// else is treated as millions (shares in millions). Defaults below are PLACEHOLDER
+// assumptions -- edit them; the market-data refresh overrides beta and the USD risk-free rate.
+const CCY = {
+  INR: { sym: '\u20b9', big: 'cr', locale: 'en-IN', rf: 7.0, erp: 6.0, kd: 8.5, tax: 25, g: 4.0, wacc: 11.0 },
+  USD: { sym: '$',      big: 'mm', locale: 'en-US', rf: 4.25, erp: 4.5, kd: 5.5, tax: 21, g: 2.5, wacc: 9.0 },
+};
+function ccyInfo(company) {
+  const code = ((company && company.currency) || 'INR').toUpperCase();
+  return CCY[code] || { ...CCY.USD, sym: code + ' ', code };
+}
+let FMT_LOCALE = 'en-IN';
+function fmtNum(v, digits = 1, locale) {
   if (v === null || v === undefined || Number.isNaN(v)) return '—';
-  return Number(v).toLocaleString('en-IN', { maximumFractionDigits: digits, minimumFractionDigits: digits });
+  return Number(v).toLocaleString(locale || FMT_LOCALE, { maximumFractionDigits: digits, minimumFractionDigits: digits });
+}
+function fmtMoney(v, digits = 2, company) {
+  if (v === null || v === undefined || Number.isNaN(v)) return '—';
+  const ci = ccyInfo(company || STATE.companies[STATE.selectedCompanyId]);
+  return (v < 0 ? '-' : '') + ci.sym + fmtNum(Math.abs(v), digits, ci.locale);
 }
 function fmtCr(v) { return v === null || v === undefined || Number.isNaN(v) ? '—' : fmtNum(v, 0); }
 function fmtPct(v, digits = 1) {
@@ -611,10 +636,7 @@ function fmtX(v, digits = 1) {
   if (v === null || v === undefined || Number.isNaN(v)) return '—';
   return v.toFixed(digits) + '×';
 }
-function fmtRs(v, digits = 2) {
-  if (v === null || v === undefined || Number.isNaN(v)) return '—';
-  return '₹' + fmtNum(v, digits);
-}
+function fmtRs(v, digits = 2) { return fmtMoney(v, digits); }  // kept for older call sites
 function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
@@ -653,6 +675,16 @@ function deriveFundamentalsForPeriod(company, period) {
   }
   return out;
 }
+const BS_METRICS = ['shareholders_equity', 'total_debt', 'cash_and_equivalents'];
+// A balance sheet is a point in time, so a flow period (TTM / half-year / nine-month)
+// has no balance sheet of its own -- borrow the one dated at that period's end.
+function bsFallbackPeriod(period) {
+  let m;
+  if ((m = /^TTM(Q\dFY\d{4})$/i.exec(period))) return m[1].toUpperCase();
+  if ((m = /^(?:H1|6M)(FY\d{4})$/i.exec(period))) return 'Q2' + m[1].toUpperCase();
+  if ((m = /^9M(FY\d{4})$/i.exec(period))) return 'Q3' + m[1].toUpperCase();
+  return null;
+}
 function refreshFundamentals(company) {
   company.fundamentals = company.fundamentals || {};
   for (const period of company.periods) {
@@ -662,6 +694,40 @@ function refreshFundamentals(company) {
     for (const [k, v] of Object.entries(derived)) { if (v !== null && v !== undefined) merged[k] = v; }
     company.fundamentals[period] = merged;
   }
+  company.bsFrom = {};
+  for (const period of company.periods) {
+    const from = bsFallbackPeriod(period);
+    if (!from || !company.fundamentals[from]) continue;
+    const f = company.fundamentals[period];
+    for (const k of BS_METRICS) {
+      if ((f[k] === null || f[k] === undefined) && company.fundamentals[from][k] != null) {
+        f[k] = company.fundamentals[from][k];
+        company.bsFrom[period] = from;
+      }
+    }
+  }
+}
+// How many of this period fit in a year (used only to annualise a DCF base).
+function annualFactor(period) {
+  if (/^(TTM|FY)/i.test(period)) return 1;
+  if (/^(H1|H2|6M)/i.test(period)) return 2;
+  if (/^9M/i.test(period)) return 4 / 3;
+  if (/^(Q\d|3M)/i.test(period)) return 4;
+  return 1;
+}
+// Preferred valuation period: TTM > FY > 9M > H1 > quarter, newest first, and it must have revenue.
+function defaultPeriod(c) {
+  const ps = (c && c.periods) || [];
+  const tiers = [/^TTM/i, /^FY\d{4}$/i, /^9M/i, /^(H1|6M)/i, /^(Q\d|3M)/i];
+  const latest = (re) => ps.filter((p) => re.test(p)).sort((a, b) => (a.match(/\d{4}/g) || []).join('').localeCompare((b.match(/\d{4}/g) || []).join('')) || a.localeCompare(b));
+  for (const re of tiers) {
+    const cand = latest(re);
+    for (let i = cand.length - 1; i >= 0; i--) {
+      const f = (c.fundamentals || {})[cand[i]] || {};
+      if (f.revenue != null) return cand[i];
+    }
+  }
+  return ps.length ? ps[ps.length - 1] : null;
 }
 
 function ingestCompanies(list) {
@@ -678,7 +744,7 @@ function ingestCompanies(list) {
     STATE.selectedCompanyId = STATE.companyOrder[0];
   }
   const c = STATE.companies[STATE.selectedCompanyId];
-  if (c && c.periods.length) STATE.selectedPeriod = c.periods[c.periods.length - 1];
+  if (c && c.periods.length) STATE.selectedPeriod = defaultPeriod(c);
   refreshSelectors();
   renderAll();
   saveLocal();
@@ -689,10 +755,40 @@ function updateDataStatus() {
   const el = document.getElementById('dataStatus');
   const n = STATE.companyOrder.length;
   if (n === 0) { el.innerHTML = '<span class="dot"></span>No data loaded'; el.classList.remove('ok'); return; }
-  el.innerHTML = `<span class="dot"></span>${n} compan${n === 1 ? 'y' : 'ies'} loaded`;
+  el.innerHTML = `<span class="dot"></span>${n} compan${n === 1 ? 'y' : 'ies'} loaded${MARKET.asof ? ' · prices ' + MARKET.asof.slice(0, 10) : ''}`;
   el.classList.add('ok');
 }
 
+// data/market.json is written by scripts/refresh_market.py (yfinance), run on a schedule by the
+// Pages workflow. A browser can't call Yahoo directly (no CORS), so the data is fetched at build time.
+function applyMarketData(mk) {
+  if (!mk || !mk.companies) return 0;
+  MARKET.asof = mk.asof || null;
+  MARKET.rf = mk.rf || {};
+  let n = 0;
+  for (const id of STATE.companyOrder) {
+    const c = STATE.companies[id];
+    const byTicker = Object.values(mk.companies).find((m) => m.ticker && c.ticker && m.ticker.toUpperCase() === c.ticker.toUpperCase());
+    const m = mk.companies[id] || byTicker;
+    if (!m || m.price == null || m.shares_outstanding == null) continue;
+    if (m.currency && c.currency && m.currency.toUpperCase() !== c.currency.toUpperCase()) continue;  // never mix currencies
+    c.market = c.market || {};
+    if (c.market.source === 'manual') continue;           // a number you typed wins over Yahoo
+    c.market = { ...c.market, price: m.price, shares_outstanding: m.shares_outstanding, beta: m.beta ?? null,
+                 source: 'yfinance', as_of: m.as_of || mk.asof || null, warning: m.warning || null };
+    n += 1;
+  }
+  for (const id of STATE.companyOrder) refreshDcfAuto(id);
+  return n;
+}
+async function tryFetchMarketData() {
+  try {
+    const res = await fetch('data/market.json', { cache: 'no-store' });
+    if (!res.ok) return;
+    const n = applyMarketData(await res.json());
+    if (n) { refreshSelectors(); renderAll(); saveLocal(); updateDataStatus(); toast(`Live prices loaded for ${n} compan${n === 1 ? 'y' : 'ies'}`); }
+  } catch (e) { /* no market.json yet -- prices stay manual */ }
+}
 async function tryFetchPublishedData() {
   try {
     const res = await fetch('data/index.json', { cache: 'no-store' });
@@ -706,6 +802,7 @@ async function tryFetchPublishedData() {
       } catch (e) { /* skip this one */ }
     }
     if (companies.length) { ingestCompanies(companies); toast(`Loaded ${companies.length} compan${companies.length === 1 ? 'y' : 'ies'} from data/`); }
+    await tryFetchMarketData();
   } catch (e) { /* no data/ folder here — expected inside the Claude preview, fine */ }
 }
 
@@ -750,34 +847,68 @@ function refreshSelectors() {
 ===================================================================== */
 const DCF_DEFAULT_ROWS = 5;
 
-function dcfStateFor(companyId) {
-  if (!STATE.dcf[companyId]) {
-    const c = STATE.companies[companyId];
-    const latestF = c && c.fundamentals && STATE.selectedPeriod ? c.fundamentals[STATE.selectedPeriod] : null;
-    const baseRevenue = (latestF && latestF.revenue) || 1000;
-    const rows = [];
-    for (let i = 0; i < DCF_DEFAULT_ROWS; i++) {
-      rows.push({
-        revenue: Math.round(baseRevenue * Math.pow(1.12, i + 1)),
-        ebitMargin: latestF && latestF.ebit && latestF.revenue ? Math.round((latestF.ebit / latestF.revenue) * 1000) / 1000 : 0.18,
-        taxRate: 0.25,
-        da: Math.round(baseRevenue * 0.04),
-        capex: Math.round(baseRevenue * 0.08),
-        deltaNwc: Math.round(baseRevenue * 0.015),
-      });
-    }
-    STATE.dcf[companyId] = {
-      rows,
-      shares: (c && c.market && c.market.shares_outstanding) || 10,
-      cash: (latestF && latestF.cash_and_equivalents) || 0,
-      debt: (latestF && latestF.total_debt) || 0,
-      termGrowth: 4.0,
-      wacc: 11.0,
-      useCapm: false,
-      capm: { rf: 7.0, beta: 1.0, erp: 6.0, kd: 8.5, dw: 0.25, tax: 25 },
-    };
+const MARKET = { asof: null, rf: {} };   // filled from data/market.json when present
+const DCF_VERSION = 2;
+
+function dcfBase(c) {
+  const period = defaultPeriod(c);
+  const f = (c && c.fundamentals && period && c.fundamentals[period]) || {};
+  return { period, f, factor: period ? annualFactor(period) : 1 };
+}
+function dcfDefaultsFor(c) {
+  const ci = ccyInfo(c);
+  const { f, factor } = dcfBase(c);
+  const baseRevenue = (f.revenue || 1000) * factor;
+  const margin = f.ebit && f.revenue ? Math.round((f.ebit / f.revenue) * 1000) / 1000 : 0.18;
+  // D&A and capex from the filing when we have them, else a % of revenue placeholder
+  const capexPct = f.capital_expenditure != null && f.revenue ? Math.abs(f.capital_expenditure) / f.revenue : 0.08;
+  const daPct = f.ebitda != null && f.ebit != null && f.revenue ? Math.max(0, (f.ebitda - f.ebit) / f.revenue) : 0.04;
+  // Capex fades from today's intensity toward a maintenance level just above D&A by the final year.
+  // Holding a peak-investment year's capex forever (e.g. an AI build-out) makes terminal FCF negative
+  // and the perpetuity value meaningless, so the default converges; edit the cells to disagree.
+  const capexEnd = Math.max(daPct * 1.1, 0.02);
+  const rows = [];
+  for (let i = 0; i < DCF_DEFAULT_ROWS; i++) {
+    const rev = baseRevenue * Math.pow(1.12, i + 1);
+    const t = DCF_DEFAULT_ROWS > 1 ? i / (DCF_DEFAULT_ROWS - 1) : 1;
+    const capexRatio = capexPct > capexEnd ? capexPct + (capexEnd - capexPct) * t : capexPct;
+    rows.push({
+      revenue: Math.round(rev), ebitMargin: margin, taxRate: ci.tax / 100,
+      da: Math.round(rev * daPct), capex: Math.round(rev * capexRatio), deltaNwc: Math.round(rev * 0.015),
+    });
   }
-  return STATE.dcf[companyId];
+  return { rows, ci };
+}
+// Inputs that come from data (shares, cash, debt, beta, rf) stay "auto" until the user types over
+// them, so a later market-data refresh or re-extraction updates them instead of leaving stale values.
+function refreshDcfAuto(companyId) {
+  const c = STATE.companies[companyId], d = STATE.dcf[companyId];
+  if (!c || !d) return;
+  const { f } = dcfBase(c), ci = ccyInfo(c);
+  if (d.autoShares) d.shares = (c.market && c.market.shares_outstanding) || 0;
+  if (d.autoCash) d.cash = f.cash_and_equivalents || 0;
+  if (d.autoDebt) d.debt = f.total_debt || 0;
+  if (d.autoCapm) {
+    const code = (c.currency || 'INR').toUpperCase();
+    d.capm.beta = (c.market && c.market.beta != null) ? c.market.beta : 1.0;
+    d.capm.rf = MARKET.rf[code] != null ? MARKET.rf[code] : ci.rf;
+  }
+}
+function dcfStateFor(companyId) {
+  let d = STATE.dcf[companyId];
+  if (d && d.v !== DCF_VERSION) { delete STATE.dcf[companyId]; d = null; }   // pre-v2 states used a quarterly base and INR defaults
+  if (!d) {
+    const c = STATE.companies[companyId];
+    const { rows, ci } = dcfDefaultsFor(c);
+    d = STATE.dcf[companyId] = {
+      v: DCF_VERSION, rows, shares: 0, cash: 0, debt: 0,
+      termGrowth: ci.g, wacc: ci.wacc, useCapm: false,
+      capm: { rf: ci.rf, beta: 1.0, erp: ci.erp, kd: ci.kd, dw: 0.25, tax: ci.tax },
+      autoShares: true, autoCash: true, autoDebt: true, autoCapm: true,
+    };
+    refreshDcfAuto(companyId);
+  }
+  return d;
 }
 
 function renderDCFForecastTable() {
@@ -810,6 +941,10 @@ function renderDCFForecastTable() {
 
 function syncDCFTopInputs() {
   const d = dcfStateFor(STATE.selectedCompanyId);
+  const ci = ccyInfo(STATE.companies[STATE.selectedCompanyId]);
+  document.getElementById('lbl_shares').textContent = `Shares outstanding (${ci.big})`;
+  document.getElementById('lbl_cash').textContent = `Cash (${ci.sym.trim()} ${ci.big})`;
+  document.getElementById('lbl_debt').textContent = `Debt (${ci.sym.trim()} ${ci.big})`;
   document.getElementById('in_shares').value = d.shares;
   document.getElementById('in_cash').value = d.cash;
   document.getElementById('in_debt').value = d.debt;
@@ -852,12 +987,29 @@ function computeAndRenderDCF() {
   const sensEl = document.getElementById('dcfSensitivity');
   try {
     const r = runDCF(inputs);
+    const comp = STATE.companies[STATE.selectedCompanyId], ci = ccyInfo(comp);
+    const price = comp && comp.market && comp.market.price;
+    const upside = price ? r.valuePerShare / price - 1 : null;
     statsEl.innerHTML = [
-      ['Enterprise value', fmtRs(r.enterpriseValue, 0) + ' cr'],
-      ['Equity value', fmtRs(r.equityValue, 0) + ' cr'],
-      ['Value per share', fmtRs(r.valuePerShare, 2)],
+      ['Enterprise value', fmtMoney(r.enterpriseValue, 0) + ' ' + ci.big],
+      ['Equity value', fmtMoney(r.equityValue, 0) + ' ' + ci.big],
+      ['Value per share', fmtMoney(r.valuePerShare, 2)],
+      ['Current price' + (comp && comp.market && comp.market.source === 'yfinance' ? ' (Yahoo)' : ''), price ? fmtMoney(price, 2) : '— (not loaded)'],
+      ['Upside / (downside)', upside === null ? '—' : (upside >= 0 ? '+' : '') + fmtPct(upside, 1)],
       ['WACC used', fmtPct(r.wacc, 2)],
     ].map(([k, v]) => `<div class="statline" style="flex-direction:column;align-items:flex-start;"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
+
+    // Sanity flags -- the things that most often make a DCF look precise but wrong
+    const flags = [];
+    if (r.tvShare > 0.75) flags.push(`Terminal value is ${fmtPct(r.tvShare, 0)} of enterprise value — the answer is mostly a statement about the terminal assumptions.`);
+    if (r.wacc - inputs.terminalGrowth < 0.03) flags.push(`WACC minus terminal growth is only ${fmtPct(r.wacc - inputs.terminalGrowth, 1)} — value per share is extremely sensitive here.`);
+    if (d.useCapm && inputs.terminalGrowth >= d.capm.rf / 100) flags.push('Terminal growth is at or above the risk-free rate — a company cannot outgrow the economy forever.');
+    if (!d.shares) flags.push('Shares outstanding is empty, so value per share is meaningless.');
+    if (comp && comp.market && comp.market.warning) flags.push('Market data: ' + comp.market.warning);
+    if (d.cash === 0 && d.debt === 0) flags.push('Cash and debt are both zero — equity value equals enterprise value. Load a balance sheet or enter them.');
+    const lastFcf = r.projectedFcff[r.projectedFcff.length - 1];
+    if (lastFcf <= 0) flags.push('Final-year free cash flow is zero or negative, so the perpetuity terminal value is not meaningful.');
+    if (flags.length) statsEl.insertAdjacentHTML('beforeend', `<div class="empty" style="grid-column:1/-1;text-align:left;color:var(--accent-2);">${flags.map((x) => '⚠ ' + x).join('<br>')}</div>`);
 
     let html = '<thead><tr><th>WACC ＼ g</th>' + r.growthSteps.map((g) => `<th>${fmtPct(g, 2)}</th>`).join('') + '</tr></thead><tbody>';
     r.waccSteps.forEach((w) => {
@@ -866,7 +1018,7 @@ function computeAndRenderDCF() {
       r.growthSteps.forEach((g) => {
         const v = row[g.toFixed(4)];
         const isBase = Math.abs(w - r.wacc) < 1e-9 && Math.abs(g - inputs.terminalGrowth) < 1e-9;
-        html += `<td class="heat" style="${isBase ? 'color:var(--accent-2);font-weight:700;' : ''}">${v === null || Number.isNaN(v) ? '—' : fmtRs(v, 2)}</td>`;
+        html += `<td class="heat" style="${isBase ? 'color:var(--accent-2);font-weight:700;' : ''}">${v === null || Number.isNaN(v) ? '—' : fmtMoney(v, 2)}</td>`;
       });
       html += '</tr>';
     });
@@ -881,9 +1033,12 @@ function computeAndRenderDCF() {
 
 function wireDCFTopInputs() {
   const d = () => dcfStateFor(STATE.selectedCompanyId);
+  const AUTO = { shares: 'autoShares', cash: 'autoCash', debt: 'autoDebt' };
   const bind = (id, key, parse = parseFloat) => {
     document.getElementById(id).addEventListener('input', (e) => {
-      d()[key] = parse(e.target.value); computeAndRenderDCF(); saveLocal();
+      d()[key] = parse(e.target.value);
+      if (AUTO[key]) d()[AUTO[key]] = false;
+      computeAndRenderDCF(); saveLocal();
     });
   };
   bind('in_shares', 'shares'); bind('in_cash', 'cash'); bind('in_debt', 'debt');
@@ -894,12 +1049,23 @@ function wireDCFTopInputs() {
   ['rf', 'beta', 'erp', 'kd', 'dw', 'capmtax'].forEach((k) => {
     document.getElementById('in_' + (k === 'capmtax' ? 'capmtax' : k)).addEventListener('input', (e) => {
       const map = { rf: 'rf', beta: 'beta', erp: 'erp', kd: 'kd', dw: 'dw', capmtax: 'tax' };
-      d().capm[map[k]] = parseFloat(e.target.value); computeAndRenderDCF(); saveLocal();
+      d().capm[map[k]] = parseFloat(e.target.value);
+      if (k === 'beta' || k === 'rf') d().autoCapm = false;
+      computeAndRenderDCF(); saveLocal();
     });
   });
 }
 
 function renderDCF() {
+  const c0 = STATE.companies[STATE.selectedCompanyId];
+  FMT_LOCALE = ccyInfo(c0).locale;
+  if (c0) { dcfStateFor(c0.id); refreshDcfAuto(c0.id); }
+  const noteEl = document.getElementById('dcfBaseNote');
+  if (noteEl && c0) {
+    const ci = ccyInfo(c0), b = dcfBase(c0);
+    const ann = b.factor !== 1 ? ` — annualised ×${b.factor.toFixed(2)} because no full-year figures are loaded` : '';
+    noteEl.textContent = `Base year: ${b.period || '—'}${ann}. Figures in ${ci.sym.trim()} ${ci.big}; shares in ${ci.big}. Beta/risk-free/tax/growth defaults are placeholders — edit them.`;
+  }
   syncDCFTopInputs();
   renderDCFForecastTable();
   computeAndRenderDCF();
@@ -926,12 +1092,13 @@ function renderCompsChecklist() {
 
 function renderComps() {
   renderCompsChecklist();
+  FMT_LOCALE = ccyInfo(STATE.companies[STATE.selectedCompanyId]).locale;
   const period = STATE.selectedPeriod;
   const ids = [...STATE.compsSelection].filter((id) => STATE.companies[id]);
   const fundEl = document.getElementById('compsFundTable');
   const valEl = document.getElementById('compsValTable');
   document.getElementById('compsValNote').textContent =
-    `Period: ${period || '—'}. Multiples use each company's own stored market price/shares — not necessarily the same as-of date.`;
+    `Period: ${period || '—'}. Companies without it use their best available period, and partial years are annualised (tag beside the name). Multiples use each company's own stored market price/shares.`;
 
   if (!ids.length) {
     document.getElementById('compsFundTable').innerHTML = '<tbody><tr><td class="empty">Select two or more companies above.</td></tr></tbody>';
@@ -939,15 +1106,22 @@ function renderComps() {
     return;
   }
 
+  // One global period is selected, but companies don't all have it (Apple has no TTM, an Indian
+  // company has FY only). Each company falls back to its own best period, and a partial year is
+  // annualised so P/E, EV/EBITDA etc. are not inflated 1.3x-4x. The tag next to the name says so.
+  const FLOW = ['revenue', 'ebitda', 'ebit', 'net_income', 'operating_cash_flow', 'capital_expenditure'];
   const rows = ids.map((id) => {
     const c = STATE.companies[id];
-    const periods = c.periods;
-    const idx = periods.indexOf(period);
-    const f = c.fundamentals[period] || {};
-    const prior = idx > 0 ? c.fundamentals[periods[idx - 1]] : null;
+    const per = (c.fundamentals[period] && c.fundamentals[period].revenue != null) ? period : (defaultPeriod(c) || period);
+    const periods = c.periods, idx = periods.indexOf(per);
+    const k = annualFactor(per || '');
+    const ann = (o) => { if (!o || k === 1) return o; const r = { ...o }; FLOW.forEach((m) => { if (r[m] != null) r[m] = r[m] * k; }); return r; };
+    const f = ann(c.fundamentals[per] || {});
+    const prior = ann(idx > 0 ? c.fundamentals[periods[idx - 1]] : null);
     const market = c.market && c.market.price != null ? { price: c.market.price, sharesOutstanding: c.market.shares_outstanding, netDebtOverride: c.market.net_debt_override } : null;
     const comp = buildCompanyComp(f, prior, market);
-    return { id, name: c.name, ticker: c.ticker, ...comp };
+    const tag = per && per !== period ? ` · ${per}${k !== 1 ? ' ×' + k.toFixed(2) : ''}` : (k !== 1 ? ` · ×${k.toFixed(2)} annualised` : '');
+    return { id, name: c.name, ticker: c.ticker, periodTag: tag, company: c, ...comp };
   });
 
   const fundCols = [
@@ -956,7 +1130,7 @@ function renderComps() {
     ['Net margin', (r) => r.metrics.net_margin, fmtPct],
     ['ROE', (r) => r.metrics.roe, fmtPct],
     ['ROIC', (r) => r.metrics.roic, fmtPct],
-    ['FCF (₹cr)', (r) => r.metrics.free_cash_flow, fmtCr],
+    ['Free cash flow (reporting currency)', (r) => r.metrics.free_cash_flow, (v, r) => (v == null || !r ? '—' : fmtMoney(v, 0, r.company)), true],
     ['Net debt/EBITDA', (r) => r.metrics.net_debt_to_ebitda, (v) => fmtX(v, 2)],
   ];
   fundEl.innerHTML = buildCompsTable(rows, fundCols);
@@ -986,17 +1160,17 @@ function median(arr) {
 function buildCompsTable(rows, cols) {
   let html = '<thead><tr><th>Company</th>' + cols.map(([label]) => `<th>${label}</th>`).join('') + '</tr></thead><tbody>';
   rows.forEach((r) => {
-    html += `<tr><td>${r.name}${r.ticker ? ' <span class="muted" style="color:var(--text-faint);">· ' + r.ticker + '</span>' : ''}</td>`;
+    html += `<tr><td>${r.name}${r.ticker ? ' <span class="muted" style="color:var(--text-faint);">· ' + r.ticker + '</span>' : ''}${r.periodTag ? ' <span style="color:var(--text-faint);font-size:11px;">' + r.periodTag + '</span>' : ''}</td>`;
     cols.forEach(([, raw, fmt]) => {
       const v = raw(r);
       const cls = v === null || v === undefined ? 'muted' : (v < 0 ? 'neg' : '');
-      html += `<td class="${cls}">${fmt(v)}</td>`;
+      html += `<td class="${cls}">${fmt(v, r)}</td>`;
     });
     html += '</tr>';
   });
   if (rows.length > 1) {
     html += '<tr class="total"><td>Median</td>';
-    cols.forEach(([, raw, fmt]) => { html += `<td>${fmt(median(rows.map(raw)))}</td>`; });
+    cols.forEach(([, raw, fmt, noMedian]) => { html += `<td>${noMedian ? '—' : fmt(median(rows.map(raw)))}</td>`; });
     html += '</tr>';
   }
   html += '</tbody>';
@@ -1128,7 +1302,7 @@ document.querySelectorAll('nav.tabs button').forEach((btn) => {
 document.getElementById('companySelect').addEventListener('change', (e) => {
   STATE.selectedCompanyId = e.target.value;
   const c = STATE.companies[STATE.selectedCompanyId];
-  if (c && c.periods.length) STATE.selectedPeriod = c.periods[c.periods.length - 1];
+  if (c && c.periods.length) STATE.selectedPeriod = defaultPeriod(c);
   refreshSelectors(); renderAll(); saveLocal();
 });
 document.getElementById('periodSelect').addEventListener('change', (e) => {
@@ -1199,28 +1373,44 @@ function ghStatus(msg) { document.getElementById('ghStatus').textContent = msg; 
  * "Bad credentials" instead of a bare status code — this is what actually
  * tells you whether the problem is the token itself vs. the repo/path/branch. */
 async function ghErrorDetail(res) {
-  try {
-    const body = await res.json();
-    if (body && body.message) return `HTTP ${res.status}: ${body.message}`;
-  } catch (e) { /* body wasn't JSON */ }
-  return `HTTP ${res.status}`;
+  let msg = '';
+  try { const body = await res.json(); if (body && body.message) msg = body.message; } catch (e) { /* body wasn't JSON */ }
+  let hint = '';
+  if (res.status === 401) hint = ' → The token itself is wrong, expired or revoked. Create a new one.';
+  else if (res.status === 403 && /not accessible by personal access token/i.test(msg))
+    hint = ' → The token is valid but has no access to this repo. Fine-grained token: under "Repository access" select this repo AND set Repository permissions → Contents = Read and write. Classic token: tick the "repo" scope.';
+  else if (res.status === 403) hint = ' → Forbidden (or rate-limited). Check the token\'s permissions and try again in a minute.';
+  else if (res.status === 404) hint = ' → Not found. Check owner, repo, branch and data path spelling (a private repo also shows 404 when the token can\'t see it).';
+  return `HTTP ${res.status}: ${msg || 'no message'}${hint}`;
+}
+// The "preview" hint is only true for a file:// page or a sandboxed preview, never for GitHub Pages.
+function ghPreviewHint() {
+  const h = location.hostname || '';
+  const sandboxed = location.protocol === 'file:' || /claude\.(ai|site)|claudeusercontent/i.test(h);
+  return sandboxed ? " This page looks sandboxed/local; GitHub sync needs it served over http(s), e.g. GitHub Pages." : '';
 }
 
 document.getElementById('btnGithubTest').addEventListener('click', async () => {
   const f = ghFields();
   if (!f.token) { ghStatus('Enter a token first.'); return; }
   ghStatus('Testing token…');
+  const H = { Authorization: `Bearer ${f.token}`, Accept: 'application/vnd.github+json' };
+  const steps = [];
   try {
-    // /user only checks whether GitHub accepts the credential at all —
-    // independent of whether it can see any particular repo. A 401 here
-    // means the token string itself is wrong/expired/revoked, full stop.
-    const res = await fetch('https://api.github.com/user', { headers: { Authorization: `Bearer ${f.token}`, Accept: 'application/vnd.github+json' } });
-    if (!res.ok) throw new Error(await ghErrorDetail(res));
-    const user = await res.json();
-    ghStatus(`Token is valid — authenticated as "${user.login}". If Load/Save still fail, it's a repo-access or path problem, not the token.`);
-  } catch (err) {
-    ghStatus(`Token check failed: ${err.message}. Generate a fresh token at github.com/settings/tokens and paste it in full — this confirms the token itself, before touching the repo.`);
-  }
+    const u = await fetch('https://api.github.com/user', { headers: H });
+    if (!u.ok) throw new Error('Token check failed — ' + await ghErrorDetail(u));
+    steps.push(`✓ token valid (${(await u.json()).login})`);
+    if (f.owner && f.repo) {
+      const r = await fetch(`https://api.github.com/repos/${f.owner}/${f.repo}`, { headers: H });
+      if (!r.ok) throw new Error(`${steps.join(' · ')} · ✗ repo ${f.owner}/${f.repo} — ` + await ghErrorDetail(r));
+      const rj = await r.json();
+      steps.push(`✓ repo visible${rj.permissions && rj.permissions.push ? ', write access' : ', READ-ONLY (saving will fail)'}`);
+      const c = await fetch(`https://api.github.com/repos/${f.owner}/${f.repo}/contents/${f.path}?ref=${f.branch}`, { headers: H });
+      if (!c.ok) throw new Error(`${steps.join(' · ')} · ✗ folder "${f.path}" on ${f.branch} — ` + await ghErrorDetail(c));
+      steps.push(`✓ folder "${f.path}" readable`);
+    }
+    ghStatus(steps.join(' · '));
+  } catch (err) { ghStatus(err.message); }
 });
 
 document.getElementById('btnGithubLoad').addEventListener('click', async () => {
@@ -1241,7 +1431,7 @@ document.getElementById('btnGithubLoad').addEventListener('click', async () => {
     ingestCompanies(companies);
     ghStatus(`Loaded ${companies.length} compan${companies.length === 1 ? 'y' : 'ies'} from GitHub.`);
   } catch (err) {
-    ghStatus(`Failed: ${err.message}. If you're viewing this inside a Claude artifact preview, this is expected — self-host the page to use GitHub sync.`);
+    ghStatus(`Failed: ${err.message}${ghPreviewHint()}`);
   }
 });
 
@@ -1265,7 +1455,7 @@ document.getElementById('btnGithubSave').addEventListener('click', async () => {
     if (!res.ok) throw new Error(await ghErrorDetail(res));
     ghStatus(`Saved ${filePath} to GitHub.`);
   } catch (err) {
-    ghStatus(`Failed: ${err.message}. If you're viewing this inside a Claude artifact preview, this is expected — self-host the page to use GitHub sync.`);
+    ghStatus(`Failed: ${err.message}${ghPreviewHint()}`);
   }
 });
 
@@ -1277,7 +1467,7 @@ document.getElementById('btnGithubSave').addEventListener('click', async () => {
       document.getElementById('gh_owner').value = saved.owner || '';
       document.getElementById('gh_repo').value = saved.repo || '';
       document.getElementById('gh_branch').value = saved.branch || 'main';
-      document.getElementById('gh_path').value = saved.path || 'site/data';
+      document.getElementById('gh_path').value = saved.path || 'data';
       document.getElementById('gh_remember').checked = true;
     }
   } catch (e) { /* ignore */ }
@@ -1363,7 +1553,11 @@ document.getElementById('btnCompanySave').addEventListener('click', () => {
     const c = STATE.companies[STATE.selectedCompanyId];
     if (!c) return;
     c.name = name; c.ticker = ticker; c.sector = sector; c.currency = currency;
-    c.market = { price, shares_outstanding: shares, net_debt_override: netDebt };
+    const prev = c.market || {};
+    const changed = price !== (prev.price ?? null) || shares !== (prev.shares_outstanding ?? null);
+    const source = (price === null && shares === null) ? undefined : (changed ? 'manual' : prev.source);
+    c.market = { ...prev, price, shares_outstanding: shares, net_debt_override: netDebt, source };
+    if (changed && STATE.dcf[c.id]) { STATE.dcf[c.id].autoShares = true; }
     refreshSelectors(); renderAll(); saveLocal();
     toast(`Saved "${name}"`);
     closeCompanyPanel();
@@ -1373,14 +1567,14 @@ document.getElementById('btnCompanySave').addEventListener('click', () => {
     const id = slugId(name, new Set(STATE.companyOrder));
     const company = {
       id, name, ticker, sector, currency,
-      market: { price, shares_outstanding: shares, net_debt_override: netDebt },
+      market: { price, shares_outstanding: shares, net_debt_override: netDebt, source: (price !== null || shares !== null) ? 'manual' : undefined },
       periods,
       statements: { balance_sheet: {}, income_statement: {}, cash_flow: {} },
       fundamentals: {},
     };
     ingestCompanies([company]);
     STATE.selectedCompanyId = id;
-    STATE.selectedPeriod = periods[periods.length - 1];
+    STATE.selectedPeriod = periods[periods.length - 1];  // brand-new company: no data yet
     refreshSelectors(); renderAll(); saveLocal();
     toast(`Added "${name}" — now add its numbers via Upload PDF or the Financials tab`);
     closeCompanyPanel();
@@ -1396,7 +1590,7 @@ document.getElementById('btnCompanyDelete').addEventListener('click', () => {
   STATE.compsSelection.delete(c.id);
   STATE.selectedCompanyId = STATE.companyOrder[0] || null;
   const next = STATE.companies[STATE.selectedCompanyId];
-  STATE.selectedPeriod = next && next.periods.length ? next.periods[next.periods.length - 1] : null;
+  STATE.selectedPeriod = next && next.periods.length ? defaultPeriod(next) : null;
   refreshSelectors(); renderAll(); saveLocal(); updateDataStatus();
   toast(`Deleted "${c.name}"`);
   closeCompanyPanel();
@@ -1423,37 +1617,39 @@ function loadPdfJs() {
 }
 
 const METRIC_ALIASES = [
-  // [statementType, metricKey, [alias substrings, longest/most specific first]]
-  ['income_statement', 'revenue', ['revenue from operations', 'total revenue from operations', 'total income', 'total revenue', 'net sales', 'sales']],
+  // [statementType, metricKey, [alias substrings]] -- compared AFTER the same normalisation as the
+  // row label (lower-case, punctuation -> space), so commas/hyphens in aliases are safe.
+  ['income_statement', 'revenue', ['revenue from operations', 'total revenue from operations', 'total income', 'total revenues', 'total revenue', 'total net sales', 'net revenues', 'net revenue', 'net sales', 'revenues']],
   ['income_statement', 'ebitda', ['ebitda']],
-  ['income_statement', 'ebit', ['operating profit before', 'profit before interest and tax', 'operating profit', 'ebit']],
-  ['income_statement', 'net_income', ['profit for the year', 'profit for the period', 'profit after tax', 'net profit', 'net income']],
-  ['balance_sheet', 'shareholders_equity', ["total equity attributable", 'shareholders funds', "shareholders' equity", 'total equity', 'net worth']],
-  ['balance_sheet', 'total_debt', ['total borrowings', 'total debt', 'borrowings']],
+  ['income_statement', 'ebit', ['operating profit before', 'profit before interest and tax', 'operating profit', 'operating income', 'income from operations', 'ebit']],
+  ['income_statement', 'net_income', ['profit for the year', 'profit for the period', 'profit after tax', 'net profit', 'net income', 'net earnings']],
+  ['balance_sheet', 'shareholders_equity', ["total equity attributable", 'shareholders funds', "total stockholders' equity", 'total stockholders equity', "total shareholders' equity", 'total shareholders equity', "shareholders' equity", 'total equity', 'net worth']],
+  ['balance_sheet', 'total_debt', ['total borrowings', 'total debt', 'long-term debt', 'borrowings']],
   ['balance_sheet', 'cash_and_equivalents', ['cash and cash equivalents', 'cash and bank balances', 'cash & cash equivalents']],
   ['balance_sheet', 'total_assets', ['total assets']],
-  ['balance_sheet', 'total_liabilities', ['total equity and liabilities', 'total liabilities']],
-  ['cash_flow', 'operating_cash_flow', ['net cash generated from operating', 'net cash from operating activities', 'cash generated from operations', 'cash flow from operating activities']],
-  ['cash_flow', 'capital_expenditure', ['purchase of property, plant', 'purchase of fixed assets', 'capital expenditure', 'payments for property']],
+  ['cash_flow', 'operating_cash_flow', ['net cash generated from operating', 'net cash from operating activities', 'net cash provided by operating activities', 'net cash provided by (used in) operating activities', 'cash provided by operating activities', 'cash generated from operations', 'cash flow from operating activities']],
+  ['cash_flow', 'capital_expenditure', ['purchase of property, plant', 'purchases of property, plant', 'purchases of property and equipment', 'purchase of fixed assets', 'payments for property', 'payments for acquisition of property', 'capital expenditures', 'capital expenditure']],
 ];
 const HEADING_HINTS = [
-  ['balance_sheet', /balance sheet/i],
-  ['income_statement', /(profit\s*(&|and)\s*loss|statement of profit|income statement)/i],
-  ['cash_flow', /cash flow/i],
+  ['balance_sheet', /balance sheets?|statements? of financial position/i],
+  ['income_statement', /(profit\s*(&|and)\s*loss|statements? of profit|income statements?|statements? of (consolidated )?(operations|income|earnings))/i],
+  ['cash_flow', /cash flows?/i],
 ];
+const normText = (t) => t.toLowerCase().replace(/[^a-z0-9&' ]/g, ' ').replace(/\s+/g, ' ').trim();
+// Lines that look like a known label but are not that metric:
+//  - "Total liabilities and stockholders' equity" / "Total equity and liabilities" equal TOTAL ASSETS,
+//    they are not total liabilities (the old matcher filed them as total_liabilities)
+//  - "Cost of sales", "Sales and marketing", per-share lines are not revenue/income
+const LABEL_BLOCKLIST = /(liabilities and (stockholders|shareholders|equity)|equity and liabilities|^cost of|cost of (sales|revenue)|marketing|per share|attributable to non ?controlling|comprehensive)/i;
 function matchMetric(label) {
-  const norm = label.toLowerCase().replace(/[^a-z0-9&' ]/g, ' ').replace(/\s+/g, ' ').trim();
-  // Pick the longest matching alias across ALL metrics, not the first
-  // array match — otherwise a short alias like "total equity" (for
-  // shareholders_equity) wrongly wins against a row actually labelled
-  // "Total Equity and Liabilities" (a total_liabilities line) just
-  // because it appears earlier in the list.
+  const norm = normText(label);
+  if (LABEL_BLOCKLIST.test(norm)) return null;
+  // Longest matching alias across ALL metrics wins, so "total equity and..." can't be eaten by a shorter alias.
   let best = null;
   for (const [stmt, metric, aliases] of METRIC_ALIASES) {
     for (const alias of aliases) {
-      if (norm.includes(alias) && (!best || alias.length > best.alias.length)) {
-        best = { stmt, metric, alias };
-      }
+      const a = normText(alias);
+      if (norm.includes(a) && (!best || a.length > best.alias.length)) best = { stmt, metric, alias: a };
     }
   }
   return best;
@@ -1471,6 +1667,7 @@ async function extractPdfCandidates(file, onProgress) {
   const buf = await file.arrayBuffer();
   const doc = await pdfjsLib.getDocument({ data: buf }).promise;
   const candidates = [];
+  const unitSeen = {};
   let section = { stmt: null, basis: 'consolidated', heading: null };
 
   for (let p = 1; p <= doc.numPages; p++) {
@@ -1491,10 +1688,11 @@ async function extractPdfCandidates(file, onProgress) {
     rows.sort((a, b) => b.y - a.y);
     for (const row of rows) {
       row.items.sort((a, b) => a.x - b.x);
+      if (p <= 8) { const t = row.items.map((i) => i.str).join(' '); if (/in millions|\$\s*in millions|usd in millions/i.test(t)) unitSeen.usd_mm = true; if (/in crore|\u20b9\s*(in )?crore|rs\.? in crore/i.test(t)) unitSeen.cr_inr = true; }
       const text = row.items.map((i) => i.str).join(' ').replace(/\s+/g, ' ').trim();
       if (!text) continue;
 
-      const headingHit = HEADING_HINTS.find(([, re]) => re.test(text));
+      const headingHit = !/comprehensive/i.test(text) && HEADING_HINTS.find(([, re]) => re.test(text));
       if (headingHit && text.length < 120) {
         section = {
           stmt: headingHit[0],
@@ -1508,7 +1706,7 @@ async function extractPdfCandidates(file, onProgress) {
       // Label = leading non-numeric run; values = numeric tokens after it.
       const numMatches = [...text.matchAll(/\(?-?[\d,]+(?:\.\d+)?\)?/g)];
       if (!numMatches.length) continue;
-      const label = text.slice(0, numMatches[0].index).replace(/[.\s]+$/, '').trim();
+      const label = text.slice(0, numMatches[0].index).replace(/[.\s$\u20b9\u20ac\u00a3]+$/, '').trim();
       if (!label || label.length < 3) continue;
       const match = matchMetric(label);
       if (!match || match.stmt !== section.stmt) continue;
@@ -1521,6 +1719,7 @@ async function extractPdfCandidates(file, onProgress) {
       });
     }
   }
+  candidates.unitHint = unitSeen.usd_mm ? 'usd_mm' : (unitSeen.cr_inr ? 'cr_inr' : null);
   return candidates;
 }
 
@@ -1533,7 +1732,8 @@ function renderPdfReview() {
   const list = document.getElementById('pdfReviewList');
   if (!pdfCandidates.length) { wrap.classList.add('hidden'); return; }
   wrap.classList.remove('hidden');
-  let html = `<div class="extract-row head"><span></span><span>Line item found</span><span>Metric</span><span>Value 1</span><span>Value 2</span><span>Basis</span></div>`;
+  const lab1 = document.getElementById('pdf_col1').value.trim() || 'Value 1', lab2 = document.getElementById('pdf_col2').value.trim() || 'Value 2';
+  let html = `<div class="extract-row head"><span></span><span>Line item found</span><span>Metric</span><span>${lab1}</span><span>${lab2}</span><span>Basis</span></div>`;
   pdfCandidates.forEach((c, i) => {
     html += `<div class="extract-row" data-i="${i}">
       <input type="checkbox" class="c-inc" ${c.metric ? 'checked' : ''}>
@@ -1567,6 +1767,7 @@ document.getElementById('filePdf').addEventListener('change', async (e) => {
       statusEl.textContent = 'No recognizable statement line items found. The PDF may be scanned images (no text layer) rather than native text, or use labels this tool doesn\'t know yet.';
     } else {
       statusEl.textContent = `Found ${pdfCandidates.length} candidate line item${pdfCandidates.length === 1 ? '' : 's'} — review below, uncheck anything wrong, then save.`;
+      if (pdfCandidates.unitHint) { document.getElementById('pdf_unit').value = pdfCandidates.unitHint; statusEl.textContent += ` Reporting unit set to ${pdfCandidates.unitHint === 'usd_mm' ? 'US$ million' : '₹ crore'} from the page text — change it if wrong.`; }
       // Best-effort default year labels from any "MARCH 31, YYYY" text seen in headings.
       const years = [...new Set(pdfCandidates.map((c) => c.heading || '').join(' ').match(/20\d\d/g) || [])].sort().reverse();
       if (years[0] && !document.getElementById('pdf_col1').value) document.getElementById('pdf_col1').value = 'FY' + years[0];
@@ -1588,11 +1789,12 @@ document.getElementById('btnPdfConfirm').addEventListener('click', () => {
   if (!col1) { document.getElementById('pdfConfirmStatus').textContent = 'Give at least Column 1 a fiscal-year label (e.g. FY2025).'; return; }
   const periodLabels = [col1, col2].filter(Boolean);
 
-  const rows = document.querySelectorAll('#pdfReviewList .extract-row');
+  // [data-i] skips the header row (it has no checkbox) and gives the true candidate index
+  const rows = document.querySelectorAll('#pdfReviewList .extract-row[data-i]');
   let saved = 0;
-  rows.forEach((rowEl, i) => {
+  rows.forEach((rowEl) => {
     if (!rowEl.querySelector('.c-inc').checked) return;
-    const cand = pdfCandidates[i];
+    const cand = pdfCandidates[Number(rowEl.dataset.i)];
     const metric = rowEl.querySelector('.c-metric').value;
     const basis = rowEl.querySelector('.c-basis').value;
     const v1 = rowEl.querySelector('.c-v1').value;
@@ -1617,7 +1819,7 @@ document.getElementById('btnPdfConfirm').addEventListener('click', () => {
   });
   c.periods.sort();
   refreshFundamentals(c);
-  if (!STATE.selectedPeriod || !c.periods.includes(STATE.selectedPeriod)) STATE.selectedPeriod = c.periods[c.periods.length - 1];
+  if (!STATE.selectedPeriod || !c.periods.includes(STATE.selectedPeriod)) STATE.selectedPeriod = defaultPeriod(c) || c.periods[c.periods.length - 1];
   refreshSelectors(); renderAll(); saveLocal(); updateDataStatus();
   document.getElementById('pdfConfirmStatus').textContent = `Saved ${saved} value${saved === 1 ? '' : 's'} to ${c.name}.`;
   toast(`Saved ${saved} extracted value${saved === 1 ? '' : 's'}`);

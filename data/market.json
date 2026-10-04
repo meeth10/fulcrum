@@ -1,0 +1,30 @@
+{
+  "asof": "2026-10-04T17:28:09Z",
+  "source": "yfinance",
+  "rf": {
+    "USD": 5.277
+  },
+  "companies": {
+    "amazon-com-inc": {
+      "ticker": "AMZN",
+      "yahoo_symbol": "AMZN",
+      "currency": "USD",
+      "price": 251.52,
+      "shares_outstanding": 10786.3136,
+      "unit": "mm",
+      "beta": 1.443,
+      "as_of": "2026-10-04T17:28:09Z"
+    },
+    "apple": {
+      "ticker": "AAPL",
+      "yahoo_symbol": "AAPL",
+      "currency": "USD",
+      "price": 333.69,
+      "shares_outstanding": 14594.18,
+      "unit": "mm",
+      "beta": 1.085,
+      "as_of": "2026-10-04T17:28:09Z"
+    }
+  },
+  "skipped": {}
+}
