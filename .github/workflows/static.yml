@@ -38,12 +38,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Refresh market data (yfinance)
-        # If Yahoo is down or rate-limits the runner, keep the last committed data/market.json and deploy anyway.
+      - name: Refresh company data from Yahoo Finance
+        # Every ticker in data/watchlist.json + data/index.json: statements, price, shares, beta.
+        # Filings you extracted are never overwritten. If Yahoo blocks the runner, the site deploys
+        # with whatever data/ already contains.
         continue-on-error: true
         run: |
           python -m pip install --quiet yfinance
-          python scripts/refresh_market.py
+          python scripts/yahoo_company.py --all
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
