@@ -127,3 +127,22 @@ To extend the calculation engine (a new terminal-value method, a different
 sensitivity variable), everything lives in `js/calc/` and has no DOM
 dependency — you can unit-test additions the same way this was built:
 `node -e "require('./js/calc/dcf.js') ..."`.
+
+
+## Company data: one place
+
+Everything about a company lives in one record, `data/<id>.json` (statements, fundamentals, market).
+The DCF, Comps and Financials tabs all read only that record, so anything that fills it flows everywhere.
+
+| Source | How it gets in | Priority |
+|---|---|---|
+| Filing / PDF | `fulcrum-extract` pipeline, or **Upload PDF** in the page | highest, never overwritten |
+| Yahoo Finance | `python3 scripts/yahoo_company.py NVDA`, or **Data tab → Add & fetch** | fills periods a filing doesn't cover |
+| Typed by hand | Edit company panel | a hand-typed price/shares is kept |
+
+* `data/watchlist.json` is the list of tickers to keep fresh. Adding a ticker (Data tab, or the command above)
+  puts it there. The deploy workflow runs `scripts/yahoo_company.py --all` on every push and every weekday evening.
+* Yahoo periods are labelled the way filings are: `FY2025`, `Q2FY2026`, and a computed `TTMQ2FY2026`
+  (sum of the last four quarters). Each company's own fiscal year-end is detected.
+* Ticker suffixes: bare Indian tickers (`RELIANCE`) try `.NS` then `.BO`; use `TCS.NS` explicitly to be sure.
+* If a price is quoted in a different currency than the statements (some ADRs), the price is not stored.

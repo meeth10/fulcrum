@@ -237,6 +237,14 @@ footer.databar .status.ok .dot { background: var(--positive); }
 .extract-scroll { max-height: 420px; overflow-y: auto; border: 1px solid var(--border-soft); border-radius: var(--radius); padding: 4px 8px; margin-top: 10px; }
 
 .hidden { display: none !important; }
+.src { display:inline-block; padding:1px 6px; border-radius:2px; font-size:10.5px; font-weight:600; letter-spacing:.3px; white-space:nowrap; }
+.src.y { background:#DCE6F2; color:#1F3A5C; }
+.src.f { background:#DDEBDD; color:#2F5B3C; }
+.src.m { background:#F1E6CC; color:#6E5316; }
+.dh-row { cursor:pointer; }
+.dh-row:hover td { background: var(--bg-panel-2); }
+.dh-row.sel td { background: var(--accent-soft); }
+.dh-cmd { font-family: var(--mono); font-size: 11.5px; background: var(--bg-inset); padding: 8px 10px; border-radius: 2px; overflow-x:auto; white-space:pre; margin:6px 0; }
 </style>
 </head>
 <body>
@@ -284,6 +292,7 @@ footer.databar .status.ok .dot { background: var(--positive); }
     <button data-tab="dcf" class="active">DCF</button>
     <button data-tab="comps">Comps</button>
     <button data-tab="financials">Financials</button>
+    <button data-tab="data">Data</button>
   </nav>
 
   <main>
@@ -370,6 +379,38 @@ footer.databar .status.ok .dot { background: var(--positive); }
         </div>
         <div style="overflow-x:auto;margin-top:14px;"><table class="data" id="financialsTable"></table></div>
         <div id="financialsCitations" style="margin-top:14px;"></div>
+      </div>
+    </section>
+
+    <!-- ============================= DATA TAB: one place for company data ============================= -->
+    <section id="tab-data" class="hidden">
+      <div class="panel">
+        <h2 style="margin-bottom:2px;">Add a company</h2>
+        <p class="sub">Type any ticker Yahoo Finance knows (NVDA, MSFT, RELIANCE, TCS.NS). Its statements, price, share count and beta are fetched into one record that feeds the DCF, Comps and Financials tabs. A filing you upload always takes priority over Yahoo for the periods it covers.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+          <label class="field" style="flex:1;min-width:220px;margin:0;"><span class="lbl">Ticker</span><input type="text" id="dh_ticker" placeholder="e.g. NVDA, RELIANCE, TCS.NS" autocomplete="off"></label>
+          <button class="btn primary" id="dh_add">Add &amp; fetch from Yahoo</button>
+          <button class="btn" id="dh_reload" title="Re-read everything in data/ (unsaved local edits are replaced)">Reload data</button>
+          <button class="btn" id="dh_pdf">Upload a filing (PDF)</button>
+          <button class="btn ghost" id="dh_gh">GitHub settings ▾</button>
+        </div>
+        <p class="gh-note" id="dh_status"></p>
+        <details style="margin-top:8px;"><summary style="cursor:pointer;font-size:11.5px;color:var(--text-dim);">No GitHub token? Fetch on your own computer instead</summary>
+          <div class="dh-cmd" id="dh_cmd">python3 scripts/yahoo_company.py NVDA
+git add -A &amp;&amp; git commit -m "Add NVDA" &amp;&amp; git push</div>
+          <p class="gh-note">Run it in the site repo folder (needs <code>python3 -m pip install yfinance</code> once). The site redeploys after the push.</p>
+        </details>
+      </div>
+      <div class="panel">
+        <h2 style="margin-bottom:2px;">Your companies</h2>
+        <p class="sub">Click a row to select it. Price comes from Yahoo unless you typed one yourself.</p>
+        <div style="overflow-x:auto;"><table class="data" id="dh_companies"></table></div>
+      </div>
+      <div class="panel">
+        <h2 style="margin-bottom:2px;" id="dh_cov_title">Coverage</h2>
+        <p class="sub">Where each statement-period came from.
+          <span class="src f">Filing</span> extracted from a PDF/release &nbsp;<span class="src y">Yahoo</span> Yahoo Finance &nbsp;<span class="src m">Manual</span> typed in. The number is how many line items it holds.</p>
+        <div style="overflow-x:auto;"><table class="data" id="dh_coverage"></table></div>
       </div>
     </section>
 
@@ -1287,13 +1328,164 @@ function renderAll() {
   renderDCF();
   renderComps();
   renderFinancials();
+  renderDataHub();
 }
+
+/* =====================================================================
+   DATA HUB: one place to see where every number came from, and to add a
+   company by ticker. Yahoo is fetched at build time (scripts/yahoo_company.py)
+   because a browser can't call Yahoo directly; the site asks GitHub to do it
+   by adding the ticker to data/watchlist.json, which triggers a deploy.
+===================================================================== */
+function srcClass(method) {
+  if (method === 'yfinance') return 'y';
+  if (!method || /manual/i.test(method)) return 'm';
+  return 'f';
+}
+const SRC_NAME = { y: 'Yahoo', f: 'Filing', m: 'Manual' };
+function periodSources(c, stmt, period) {
+  const metrics = (c.statements && c.statements[stmt] && c.statements[stmt][period]) || {};
+  const counts = { y: 0, f: 0, m: 0 }; let n = 0;
+  for (const variants of Object.values(metrics)) {
+    const cell = variants && (variants.consolidated || variants.standalone || variants.unspecified);
+    if (!cell) continue;
+    counts[srcClass(cell.extraction_method)] += 1; n += 1;
+  }
+  return { counts, n };
+}
+function periodOrder(a, b) {
+  const yr = (p) => (p.match(/\d{4}/g) || ['0']).slice(-1)[0];
+  const tier = (p) => (/^FY/.test(p) ? 0 : /^TTM/.test(p) ? 3 : /^(H|9M|6M)/.test(p) ? 2 : 1);
+  return yr(a).localeCompare(yr(b)) || tier(a) - tier(b) || a.localeCompare(b);
+}
+function srcChip(counts, n) {
+  if (!n) return '<span class="muted">—</span>';
+  const main = counts.f ? 'f' : (counts.y ? 'y' : 'm');
+  return `<span class="src ${main}" title="${n} line items">${SRC_NAME[main]} · ${n}</span>`;
+}
+function renderDataHub() {
+  const tbl = document.getElementById('dh_companies');
+  if (!tbl) return;
+  const ids = STATE.companyOrder;
+  if (!ids.length) {
+    tbl.innerHTML = '<tbody><tr><td class="muted">No companies yet. Add one by ticker above, or use + Add company.</td></tr></tbody>';
+    document.getElementById('dh_coverage').innerHTML = '';
+    return;
+  }
+  let html = '<thead><tr><th>Company</th><th>Currency</th><th>Price</th><th>Shares</th><th>Statements (periods)</th><th>Sources</th></tr></thead><tbody>';
+  for (const id of ids) {
+    const c = STATE.companies[id], m = c.market || {};
+    let is = 0, bs = 0, cf = 0; const tot = { y: 0, f: 0, m: 0 };
+    for (const [stmt, label] of [['income_statement', 'is'], ['balance_sheet', 'bs'], ['cash_flow', 'cf']]) {
+      for (const p of Object.keys((c.statements && c.statements[stmt]) || {})) {
+        const ps = periodSources(c, stmt, p); if (!ps.n) continue;
+        if (label === 'is') is++; else if (label === 'bs') bs++; else cf++;
+        tot[ps.counts.f ? 'f' : (ps.counts.y ? 'y' : 'm')]++;
+      }
+    }
+    const price = m.price != null
+      ? `${fmtMoney(m.price, 2, c)} <span class="src ${m.source === 'yfinance' ? 'y' : 'm'}">${m.source === 'yfinance' ? 'Yahoo' : 'Manual'}</span>` +
+        (m.as_of ? ` <span class="muted" style="font-size:11px;">${String(m.as_of).slice(0, 10)}</span>` : '') +
+        (m.warning ? ` <span title="${String(m.warning).replace(/"/g, '&quot;')}" style="color:var(--negative);cursor:help;">⚠</span>` : '')
+      : `<span class="muted">${m.warning ? '⚠ ' + String(m.warning).slice(0, 60) : '— not loaded'}</span>`;
+    const shares = m.shares_outstanding != null ? fmtNum(m.shares_outstanding, 1, ccyInfo(c).locale) + ' ' + ccyInfo(c).big : '<span class="muted">—</span>';
+    html += `<tr class="dh-row${id === STATE.selectedCompanyId ? ' sel' : ''}" data-id="${id}">` +
+      `<td>${c.name}${c.ticker ? ' <span class="muted" style="color:var(--text-faint);">· ' + c.ticker + '</span>' : ''}</td>` +
+      `<td>${(c.currency || 'INR').toUpperCase()}</td><td>${price}</td><td>${shares}</td>` +
+      `<td>IS ${is} · BS ${bs} · CF ${cf}</td>` +
+      `<td>${tot.f ? `<span class="src f">Filing ${tot.f}</span> ` : ''}${tot.y ? `<span class="src y">Yahoo ${tot.y}</span> ` : ''}${tot.m ? `<span class="src m">Manual ${tot.m}</span>` : ''}${!(tot.f + tot.y + tot.m) ? '<span class="muted">no statements</span>' : ''}</td></tr>`;
+  }
+  tbl.innerHTML = html + '</tbody>';
+  tbl.querySelectorAll('.dh-row').forEach((row) => row.addEventListener('click', () => {
+    STATE.selectedCompanyId = row.dataset.id;
+    const c = STATE.companies[row.dataset.id];
+    if (c && c.periods.length) STATE.selectedPeriod = defaultPeriod(c);
+    refreshSelectors(); renderAll(); saveLocal();
+  }));
+
+  // coverage grid for the selected company
+  const c = STATE.companies[STATE.selectedCompanyId];
+  const cov = document.getElementById('dh_coverage');
+  document.getElementById('dh_cov_title').textContent = c ? `Coverage — ${c.name}` : 'Coverage';
+  if (!c) { cov.innerHTML = ''; return; }
+  const periods = [...new Set(Object.values(c.statements || {}).flatMap((x) => Object.keys(x)))].sort(periodOrder);
+  if (!periods.length) { cov.innerHTML = '<tbody><tr><td class="muted">No statement data yet for this company.</td></tr></tbody>'; return; }
+  let g = '<thead><tr><th>Statement</th>' + periods.map((p) => `<th>${p}</th>`).join('') + '</tr></thead><tbody>';
+  for (const [stmt, label] of [['income_statement', 'Income statement'], ['balance_sheet', 'Balance sheet'], ['cash_flow', 'Cash flow']]) {
+    g += `<tr><td>${label}</td>` + periods.map((p) => { const ps = periodSources(c, stmt, p); return `<td>${srcChip(ps.counts, ps.n)}</td>`; }).join('') + '</tr>';
+  }
+  cov.innerHTML = g + '</tbody>';
+}
+
+function dhStatus(msg) { document.getElementById('dh_status').innerHTML = msg; }
+const b64 = (str) => btoa(unescape(encodeURIComponent(str)));
+
+async function dhAddTicker() {
+  const raw = document.getElementById('dh_ticker').value.trim().toUpperCase();
+  if (!/^[A-Z0-9.\-^=]{1,15}$/.test(raw)) { dhStatus('Enter a ticker such as NVDA, RELIANCE or TCS.NS.'); return; }
+  document.getElementById('dh_cmd').textContent = `python3 scripts/yahoo_company.py ${raw}\ngit add -A && git commit -m "Add ${raw}" && git push`;
+  const f = ghFields();
+  if (!f.token || !f.owner || !f.repo) {
+    dhStatus('To add a ticker from this page the site needs GitHub access: open <b>GitHub settings</b>, fill owner, repo and a token (Contents: read &amp; write), then try again. Or use the terminal option below.');
+    document.getElementById('ghPanel').classList.add('open');
+    return;
+  }
+  const api = `https://api.github.com/repos/${f.owner}/${f.repo}/contents/${f.path}/watchlist.json`;
+  const H = { Authorization: `Bearer ${f.token}`, Accept: 'application/vnd.github+json' };
+  dhStatus(`Adding ${raw} to the watchlist…`);
+  try {
+    let sha, tickers = [];
+    const cur = await fetch(`${api}?ref=${f.branch}`, { headers: H });
+    if (cur.ok) {
+      const j = await cur.json(); sha = j.sha;
+      try { tickers = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))))).tickers || []; } catch (e) { tickers = []; }
+    } else if (cur.status !== 404) throw new Error(await ghErrorDetail(cur));
+    if (tickers.map((t) => t.toUpperCase()).includes(raw)) {
+      dhStatus(`${raw} is already on the watchlist. Yahoo data refreshes on every deploy (weekday evenings, or whenever you push). Pressing <b>Reload data</b> shows the latest.`);
+      return;
+    }
+    tickers.push(raw);
+    const put = await fetch(api, { method: 'PUT', headers: { ...H, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: `Add ${raw} to watchlist`, content: b64(JSON.stringify({ tickers }, null, 1) + '\n'), branch: f.branch, ...(sha ? { sha } : {}) }) });
+    if (!put.ok) throw new Error(await ghErrorDetail(put));
+    dhStatus(`✓ ${raw} added. GitHub is now fetching it from Yahoo and redeploying the site — this takes about 2 minutes. This page checks every 15 seconds and loads it when it appears.`);
+    dhPoll(raw);
+  } catch (err) { dhStatus(`Failed: ${err.message}${ghPreviewHint()}`); }
+}
+
+let dhPollTimer = null;
+function dhPoll(ticker, tries = 0) {
+  clearTimeout(dhPollTimer);
+  if (tries > 28) { dhStatus(`${ticker} hasn't appeared after 7 minutes. Check the Actions tab of your repo for a failed run (Yahoo may have blocked the runner). You can also fetch it in the terminal.`); return; }
+  dhPollTimer = setTimeout(async () => {
+    try {
+      const r = await fetch(`data/index.json?cb=${Date.now()}`, { cache: 'no-store' });
+      if (r.ok) {
+        const idx = await r.json();
+        if (idx.some((e) => (e.ticker || '').toUpperCase() === ticker)) {
+          await tryFetchPublishedData();
+          const hit = STATE.companyOrder.find((id) => (STATE.companies[id].ticker || '').toUpperCase() === ticker);
+          if (hit) { STATE.selectedCompanyId = hit; STATE.selectedPeriod = defaultPeriod(STATE.companies[hit]); refreshSelectors(); renderAll(); }
+          dhStatus(`✓ ${ticker} loaded. It now feeds the DCF, Comps and Financials tabs.`);
+          return;
+        }
+      }
+    } catch (e) { /* keep polling */ }
+    dhPoll(ticker, tries + 1);
+  }, 15000);
+}
+
+document.getElementById('dh_add').addEventListener('click', dhAddTicker);
+document.getElementById('dh_ticker').addEventListener('keydown', (e) => { if (e.key === 'Enter') dhAddTicker(); });
+document.getElementById('dh_reload').addEventListener('click', async () => { dhStatus('Reloading…'); await tryFetchPublishedData(); dhStatus('Reloaded from data/.'); });
+document.getElementById('dh_pdf').addEventListener('click', () => document.getElementById('btnUploadPdf').click());
+document.getElementById('dh_gh').addEventListener('click', () => document.getElementById('ghPanel').classList.toggle('open'));
 
 document.querySelectorAll('nav.tabs button').forEach((btn) => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('nav.tabs button').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
-    ['dcf', 'comps', 'financials'].forEach((t) => {
+    ['dcf', 'comps', 'financials', 'data'].forEach((t) => {
       document.getElementById('tab-' + t).classList.toggle('hidden', t !== btn.dataset.tab);
     });
   });
