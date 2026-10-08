@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FULCRUM — Valuation, Comps &amp; Financials</title>
+<title>FULCRUM — Valuation &amp; Comps</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -253,7 +253,7 @@ footer.databar .status.ok .dot { background: var(--positive); }
   <header class="top">
     <div class="brand">
       <h1>FUL<span>C</span>RUM</h1>
-      <p>Discounted cash flow, comparable companies, and extracted financials, worked in one page with no backend server.</p>
+      <p>Discounted cash flow and comparable companies, fed automatically by Yahoo Finance and the filings you upload — no backend server.</p>
     </div>
     <div class="context">
       <select id="companySelect" class="select"></select>
@@ -268,7 +268,7 @@ footer.databar .status.ok .dot { background: var(--positive); }
       <span id="companyPanelTitle">Add a company</span>
       <button class="icon-btn" id="companyPanelClose">&#10005;</button>
     </div>
-    <p class="sub">Name it, then use <strong>Financials &rarr; Upload PDF</strong> or the Financials table to add its numbers.</p>
+    <p class="sub">Name it, then add its numbers from the <strong>Data</strong> tab (a Yahoo ticker or a PDF upload).</p>
     <div class="grid cols-2">
       <label class="field"><span class="lbl">Company name</span><input type="text" id="cf_name" placeholder="Acme Industries Ltd"></label>
       <label class="field"><span class="lbl">Ticker</span><input type="text" id="cf_ticker" placeholder="ACME"></label>
@@ -291,7 +291,6 @@ footer.databar .status.ok .dot { background: var(--positive); }
   <nav class="tabs">
     <button data-tab="dcf" class="active">DCF</button>
     <button data-tab="comps">Comps</button>
-    <button data-tab="financials">Financials</button>
     <button data-tab="data">Data</button>
   </nav>
 
@@ -303,6 +302,13 @@ footer.databar .status.ok .dot { background: var(--positive); }
         <h2>Forecast &amp; assumptions</h2>
         <p class="sub">Five-year FCFF build. Edit any cell — the valuation recalculates as you type.</p>
         <p class="field-note" id="dcfBaseNote"></p>
+        <h3 style="font-size:13px;margin:14px 0 4px;">History (read from your statements)</h3>
+        <div style="overflow-x:auto;"><table class="data" id="dcfHistory"></table></div>
+        <p class="field-note" id="dcfAssumptions"></p>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 2px;">
+          <button class="btn btn-sm" id="btnDcfReset">Rebuild forecast from the data</button>
+          <span class="field-note" id="dcfAutoState" style="margin:0;"></span>
+        </div>
         <div style="overflow-x:auto;">
           <table class="data" id="dcfForecastTable"></table>
         </div>
@@ -362,31 +368,11 @@ footer.databar .status.ok .dot { background: var(--positive); }
       </div>
     </section>
 
-    <!-- ============================= FINANCIALS TAB ============================= -->
-    <section id="tab-financials" class="hidden">
-      <div class="panel">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-          <div>
-            <h2 style="margin-bottom:2px;">Statements</h2>
-            <p class="sub" style="margin-bottom:0;">Extracted line items, every figure traceable to a filing page and its bold heading.</p>
-          </div>
-          <div class="checklist" id="statementTabs"></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;margin-top:12px;">
-          <span class="lbl" style="color:var(--text-faint);font-size:10.5px;text-transform:uppercase;letter-spacing:1px;">Basis</span>
-          <div class="checklist" id="basisTabs"></div>
-          <span class="badge" id="basisBadge" style="margin-left:auto;"></span>
-        </div>
-        <div style="overflow-x:auto;margin-top:14px;"><table class="data" id="financialsTable"></table></div>
-        <div id="financialsCitations" style="margin-top:14px;"></div>
-      </div>
-    </section>
-
     <!-- ============================= DATA TAB: one place for company data ============================= -->
     <section id="tab-data" class="hidden">
       <div class="panel">
         <h2 style="margin-bottom:2px;">Add a company</h2>
-        <p class="sub">Type any ticker Yahoo Finance knows (NVDA, MSFT, RELIANCE, TCS.NS). Its statements, price, share count and beta are fetched into one record that feeds the DCF, Comps and Financials tabs. A filing you upload always takes priority over Yahoo for the periods it covers.</p>
+        <p class="sub">Type any ticker Yahoo Finance knows (NVDA, MSFT, RELIANCE, TCS.NS). Its statements, price, share count and beta are fetched into one record that feeds the DCF and Comps tabs. A filing you upload always takes priority over Yahoo for the periods it covers.</p>
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
           <label class="field" style="flex:1;min-width:220px;margin:0;"><span class="lbl">Ticker</span><input type="text" id="dh_ticker" placeholder="e.g. NVDA, RELIANCE, TCS.NS" autocomplete="off"></label>
           <button class="btn primary" id="dh_add">Add &amp; fetch from Yahoo</button>
@@ -698,7 +684,7 @@ function titleCase(metric) {
 // fundamentals pre-baked by the Python pipeline; anything ingested here
 // in the browser (a manually added company, an edited cell, a PDF
 // extraction) needs that same resolution step run client-side, or its
-// numbers would show up in the Financials tab but never reach DCF/Comps.
+// numbers would be stored but never reach DCF/Comps.
 const FUNDAMENTAL_METRICS_BY_STATEMENT = {
   balance_sheet: ['shareholders_equity', 'total_debt', 'cash_and_equivalents'],
   income_statement: ['revenue', 'ebitda', 'ebit', 'net_income'],
@@ -889,42 +875,127 @@ function refreshSelectors() {
 const DCF_DEFAULT_ROWS = 5;
 
 const MARKET = { asof: null, rf: {} };   // filled from data/market.json when present
-const DCF_VERSION = 2;
+const DCF_VERSION = 3;
 
 function dcfBase(c) {
   const period = defaultPeriod(c);
   const f = (c && c.fundamentals && period && c.fundamentals[period]) || {};
   return { period, f, factor: period ? annualFactor(period) : 1 };
 }
+/* ---------- history, read straight from the statements (no tab to browse, no retyping) ---------- */
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+function stmtVal(c, period, keys, stmts) {
+  for (const st of (stmts || ['income_statement', 'cash_flow', 'balance_sheet'])) {
+    const metrics = (c.statements && c.statements[st] && c.statements[st][period]) || {};
+    for (const k of keys) {
+      const v = metrics[k]; const cell = v && (v.consolidated || v.standalone || v.unspecified);
+      if (cell && cell.value != null) return cell.value;
+    }
+  }
+  return null;
+}
+function stmtSource(c, period) {
+  const v = (c.statements && c.statements.income_statement && c.statements.income_statement[period] || {}).revenue;
+  const cell = v && (v.consolidated || v.standalone || v.unspecified);
+  return cell ? srcClass(cell.extraction_method) : null;
+}
+// One row of history for a period: ratios the DCF assumptions are built from.
+function histRow(c, period, prevRevenue) {
+  const f = (c.fundamentals && c.fundamentals[period]) || {};
+  const rev = f.revenue != null ? f.revenue : stmtVal(c, period, ['revenue'], ['income_statement']);
+  if (rev == null) return null;
+  const ebit = f.ebit != null ? f.ebit : stmtVal(c, period, ['ebit'], ['income_statement']);
+  const tax = stmtVal(c, period, ['tax_expense', 'income_tax_expense', 'provision_for_income_taxes'], ['income_statement']);
+  const pbt = stmtVal(c, period, ['pbt', 'pretax_income', 'income_before_income_taxes'], ['income_statement']);
+  let da = stmtVal(c, period, ['depreciation_and_amortization'], ['cash_flow', 'income_statement']);
+  if (da == null) {
+    const d1 = stmtVal(c, period, ['depreciation'], ['cash_flow', 'income_statement']), d2 = stmtVal(c, period, ['amortisation'], ['cash_flow', 'income_statement']);
+    if (d1 != null || d2 != null) da = (d1 || 0) + (d2 || 0);
+  }
+  if (da == null && f.ebitda != null && ebit != null) da = f.ebitda - ebit;
+  const capex = f.capital_expenditure != null ? Math.abs(f.capital_expenditure) : null;
+  const ocf = f.operating_cash_flow;
+  const dWc = stmtVal(c, period, ['change_in_working_capital'], ['cash_flow']);   // + = cash released, so investment = -value
+  return {
+    period, source: stmtSource(c, period), revenue: rev,
+    growth: prevRevenue ? rev / prevRevenue - 1 : null,
+    ebitMargin: ebit != null ? ebit / rev : null,
+    taxRate: tax != null && pbt != null && pbt > 0 ? clamp(Math.abs(tax) / pbt, 0, 0.6) : null,
+    daPct: da != null ? Math.abs(da) / rev : null,
+    capexPct: capex != null ? capex / rev : null,
+    nwcPct: dWc != null ? -dWc / rev : null,
+    fcf: ocf != null && capex != null ? ocf - capex : null,
+  };
+}
+function history(c) {
+  if (!c) return [];
+  const fys = (c.periods || []).filter((p) => /^FY\d{4}$/.test(p)).sort().slice(-4);
+  const rows = []; let prev = null;
+  for (const p of fys) {
+    const r = histRow(c, p, prev && prev.revenue); if (!r) continue; rows.push(r); prev = r;
+  }
+  const ttm = (c.periods || []).filter((p) => /^TTM/.test(p)).sort(periodOrder).slice(-1)[0];
+  if (ttm) { const r = histRow(c, ttm, rows.length ? rows[rows.length - 1].revenue : null); if (r) { r.growth = null; rows.push(r); } }
+  return rows;
+}
+const avg = (xs) => { const v = xs.filter((x) => x != null && Number.isFinite(x)); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+
 function dcfDefaultsFor(c) {
   const ci = ccyInfo(c);
   const { f, factor } = dcfBase(c);
+  const hist = history(c);
+  const fy = hist.filter((h) => /^FY/.test(h.period));
   const baseRevenue = (f.revenue || 1000) * factor;
-  const margin = f.ebit && f.revenue ? Math.round((f.ebit / f.revenue) * 1000) / 1000 : 0.18;
-  // D&A and capex from the filing when we have them, else a % of revenue placeholder
-  const capexPct = f.capital_expenditure != null && f.revenue ? Math.abs(f.capital_expenditure) / f.revenue : 0.08;
-  const daPct = f.ebitda != null && f.ebit != null && f.revenue ? Math.max(0, (f.ebitda - f.ebit) / f.revenue) : 0.04;
-  // Capex fades from today's intensity toward a maintenance level just above D&A by the final year.
-  // Holding a peak-investment year's capex forever (e.g. an AI build-out) makes terminal FCF negative
-  // and the perpetuity value meaningless, so the default converges; edit the cells to disagree.
-  const capexEnd = Math.max(daPct * 1.1, 0.02);
-  const rows = [];
-  for (let i = 0; i < DCF_DEFAULT_ROWS; i++) {
-    const rev = baseRevenue * Math.pow(1.12, i + 1);
-    const t = DCF_DEFAULT_ROWS > 1 ? i / (DCF_DEFAULT_ROWS - 1) : 1;
-    const capexRatio = capexPct > capexEnd ? capexPct + (capexEnd - capexPct) * t : capexPct;
-    rows.push({
-      revenue: Math.round(rev), ebitMargin: margin, taxRate: ci.tax / 100,
-      da: Math.round(rev * daPct), capex: Math.round(rev * capexRatio), deltaNwc: Math.round(rev * 0.015),
-    });
+  const notes = [];
+
+  // Revenue growth: CAGR over the available fiscal years (capped), fading to a mature rate by year 5.
+  let g1 = null;
+  if (fy.length >= 2) {
+    const n = fy.length - 1, cagr = Math.pow(fy[fy.length - 1].revenue / fy[0].revenue, 1 / n) - 1;
+    if (Number.isFinite(cagr)) { g1 = clamp(cagr, -0.05, 0.30); notes.push(`growth ${fmtPct(g1, 1)} (${n}-yr revenue CAGR${cagr !== g1 ? ', capped' : ''})`); }
   }
-  return { rows, ci };
+  if (g1 === null) {            // no multi-year history: compare the base period with the same period a year earlier
+    const base = dcfBase(c).period, prior = base && base.replace(/\d{4}$/, (m) => String(+m - 1));
+    const pf = prior && c && c.fundamentals && c.fundamentals[prior];
+    const cur = (c && c.fundamentals && base && c.fundamentals[base] || {}).revenue;
+    if (pf && pf.revenue && cur) { const yoy = cur / pf.revenue - 1; g1 = clamp(yoy, -0.05, 0.30); notes.push(`growth ${fmtPct(g1, 1)} (${base} vs ${prior}${yoy !== g1 ? ', capped' : ''})`); }
+  }
+  if (g1 === null) { g1 = 0.10; notes.push('growth 10% (placeholder: no prior-year figures loaded)'); }
+  const gEnd = Math.min(g1, ci.g / 100 + 0.02);
+
+  const margin = f.ebit != null && f.revenue ? Math.round((f.ebit / f.revenue) * 1000) / 1000 : (avg(fy.map((h) => h.ebitMargin)) ?? 0.18);
+  notes.push(`EBIT margin ${fmtPct(margin, 1)} (${f.ebit != null ? 'latest base period' : 'placeholder'})`);
+  const effTax = avg(fy.slice(-3).map((h) => h.taxRate));
+  const taxRate = effTax != null ? clamp(effTax, 0.05, 0.40) : ci.tax / 100;
+  notes.push(`tax ${fmtPct(taxRate, 1)} (${effTax != null ? 'average effective rate' : 'statutory placeholder'})`);
+
+  const daPct = f.ebitda != null && f.ebit != null && f.revenue ? Math.max(0, (f.ebitda - f.ebit) / f.revenue)
+    : (avg(fy.slice(-3).map((h) => h.daPct)) ?? 0.04);
+  const capexPct = f.capital_expenditure != null && f.revenue ? Math.abs(f.capital_expenditure) / f.revenue
+    : (avg(fy.slice(-3).map((h) => h.capexPct)) ?? 0.08);
+  const nwcAvg = avg(fy.slice(-3).map((h) => h.nwcPct));
+  const nwcPct = nwcAvg != null ? clamp(nwcAvg, -0.03, 0.06) : 0.015;
+  notes.push(`capex ${fmtPct(capexPct, 1)} of revenue fading toward maintenance; NWC ${fmtPct(nwcPct, 1)} of revenue (${nwcAvg != null ? 'from cash flow' : 'placeholder'})`);
+
+  // Capex fades from today's intensity toward a maintenance level just above D&A by the final year.
+  // Holding a peak-investment year's capex forever makes terminal FCF negative.
+  const capexEnd = Math.max(daPct * 1.1, 0.02);
+  const rows = []; let rev = baseRevenue;
+  for (let i = 0; i < DCF_DEFAULT_ROWS; i++) {
+    const t = DCF_DEFAULT_ROWS > 1 ? i / (DCF_DEFAULT_ROWS - 1) : 1;
+    rev = rev * (1 + g1 + (gEnd - g1) * t);
+    const capexRatio = capexPct > capexEnd ? capexPct + (capexEnd - capexPct) * t : capexPct;
+    rows.push({ revenue: Math.round(rev), ebitMargin: margin, taxRate, da: Math.round(rev * daPct),
+                capex: Math.round(rev * capexRatio), deltaNwc: Math.round(rev * nwcPct) });
+  }
+  return { rows, ci, notes };
 }
 // Inputs that come from data (shares, cash, debt, beta, rf) stay "auto" until the user types over
 // them, so a later market-data refresh or re-extraction updates them instead of leaving stale values.
 function refreshDcfAuto(companyId) {
   const c = STATE.companies[companyId], d = STATE.dcf[companyId];
   if (!c || !d) return;
+  if (d.rowsAuto) { const def = dcfDefaultsFor(c); d.rows = def.rows; d.assumptionNotes = def.notes; }
   const { f } = dcfBase(c), ci = ccyInfo(c);
   if (d.autoShares) d.shares = (c.market && c.market.shares_outstanding) || 0;
   if (d.autoCash) d.cash = f.cash_and_equivalents || 0;
@@ -940,9 +1011,9 @@ function dcfStateFor(companyId) {
   if (d && d.v !== DCF_VERSION) { delete STATE.dcf[companyId]; d = null; }   // pre-v2 states used a quarterly base and INR defaults
   if (!d) {
     const c = STATE.companies[companyId];
-    const { rows, ci } = dcfDefaultsFor(c);
+    const { rows, ci, notes } = dcfDefaultsFor(c);
     d = STATE.dcf[companyId] = {
-      v: DCF_VERSION, rows, shares: 0, cash: 0, debt: 0,
+      v: DCF_VERSION, rows, rowsAuto: true, assumptionNotes: notes, shares: 0, cash: 0, debt: 0,
       termGrowth: ci.g, wacc: ci.wacc, useCapm: false,
       capm: { rf: ci.rf, beta: 1.0, erp: ci.erp, kd: ci.kd, dw: 0.25, tax: ci.tax },
       autoShares: true, autoCash: true, autoDebt: true, autoCapm: true,
@@ -951,6 +1022,29 @@ function dcfStateFor(companyId) {
   }
   return d;
 }
+
+function renderDcfHistory() {
+  const c = STATE.companies[STATE.selectedCompanyId], tbl = document.getElementById('dcfHistory');
+  if (!c || !tbl) return;
+  const h = history(c), d = dcfStateFor(c.id);
+  document.getElementById('dcfAssumptions').textContent = (d.assumptionNotes && d.assumptionNotes.length)
+    ? 'Forecast built from this history: ' + d.assumptionNotes.join(' · ') + '.' : '';
+  document.getElementById('dcfAutoState').textContent = d.rowsAuto ? 'Forecast rows update automatically when new data arrives.' : 'Edited by you — new data will not change these rows.';
+  if (!h.length) { tbl.innerHTML = '<tbody><tr><td class="muted">No annual statements loaded yet — add the ticker in the Data tab or upload a filing.</td></tr></tbody>'; return; }
+  const pct = (v) => (v == null ? '<span class="muted">—</span>' : fmtPct(v, 1));
+  const rows = [['Revenue', (x) => fmtMoney(x.revenue, 0, c)], ['Growth', (x) => pct(x.growth)], ['EBIT margin', (x) => pct(x.ebitMargin)],
+    ['Effective tax', (x) => pct(x.taxRate)], ['D&amp;A % revenue', (x) => pct(x.daPct)], ['Capex % revenue', (x) => pct(x.capexPct)],
+    ['Free cash flow', (x) => (x.fcf == null ? '<span class="muted">—</span>' : fmtMoney(x.fcf, 0, c))]];
+  tbl.innerHTML = '<thead><tr><th></th>' + h.map((x) => `<th>${x.period} ${x.source ? `<span class="src ${x.source}">${SRC_NAME[x.source]}</span>` : ''}</th>`).join('') + '</tr></thead><tbody>' +
+    rows.map(([label, fn]) => `<tr><td>${label}</td>` + h.map((x) => `<td>${fn(x)}</td>`).join('') + '</tr>').join('') + '</tbody>';
+}
+
+document.addEventListener('click', (e) => {
+  if (e.target && e.target.id === 'btnDcfReset') {
+    const d = dcfStateFor(STATE.selectedCompanyId); d.rowsAuto = true;
+    refreshDcfAuto(STATE.selectedCompanyId); renderDCF(); saveLocal();
+  }
+});
 
 function renderDCFForecastTable() {
   const d = dcfStateFor(STATE.selectedCompanyId);
@@ -974,6 +1068,8 @@ function renderDCFForecastTable() {
       const val = parseFloat(inp.value);
       const d2 = dcfStateFor(STATE.selectedCompanyId);
       d2.rows[row][key] = pctKeys.has(key) ? (Number.isNaN(val) ? 0 : val / 100) : (Number.isNaN(val) ? 0 : val);
+      d2.rowsAuto = false;                       // typed over: stop re-deriving from the data
+      document.getElementById('dcfAutoState').textContent = 'Edited by you — new data will not change these rows.';
       computeAndRenderDCF();
       saveLocal();
     });
@@ -1107,6 +1203,7 @@ function renderDCF() {
     const ann = b.factor !== 1 ? ` — annualised ×${b.factor.toFixed(2)} because no full-year figures are loaded` : '';
     noteEl.textContent = `Base year: ${b.period || '—'}${ann}. Figures in ${ci.sym.trim()} ${ci.big}; shares in ${ci.big}. Beta/risk-free/tax/growth defaults are placeholders — edit them.`;
   }
+  renderDcfHistory();
   syncDCFTopInputs();
   renderDCFForecastTable();
   computeAndRenderDCF();
@@ -1219,115 +1316,11 @@ function buildCompsTable(rows, cols) {
 }
 
 /* =====================================================================
-   11. FINANCIALS TAB
-===================================================================== */
-const BASIS_LABELS = { consolidated: 'Consolidated', standalone: 'Standalone', unspecified: 'Unmarked' };
-
-function renderStatementTabs() {
-  const el = document.getElementById('statementTabs');
-  const statements = [['balance_sheet', 'Balance Sheet'], ['income_statement', 'Income Statement'], ['cash_flow', 'Cash Flow']];
-  el.innerHTML = statements.map(([k, label]) =>
-    `<label style="cursor:pointer;"><button class="btn ${STATE.statement === k ? 'primary' : 'ghost'}" data-st="${k}" style="font-size:10.5px;">${label}</button></label>`
-  ).join('');
-  el.querySelectorAll('button').forEach((b) => {
-    b.addEventListener('click', () => { STATE.statement = b.dataset.st; renderFinancials(); });
-  });
-}
-
-// Every consolidated/standalone statement is introduced by its own bold
-// heading on the page, not a data column — so a metric can carry BOTH a
-// consolidated and a standalone figure for the same period. This scans
-// what's actually present for the current company/statement and only
-// offers the bases that exist, defaulting to Consolidated when available.
-function availableBases(c, statement) {
-  const found = new Set();
-  const stData = (c && c.statements[statement]) || {};
-  Object.values(stData).forEach((block) => {
-    Object.values(block).forEach((variants) => {
-      ['consolidated', 'standalone', 'unspecified'].forEach((b) => { if (variants[b]) found.add(b); });
-    });
-  });
-  return ['consolidated', 'standalone', 'unspecified'].filter((b) => found.has(b));
-}
-
-function renderBasisTabs() {
-  const el = document.getElementById('basisTabs');
-  const c = STATE.companies[STATE.selectedCompanyId];
-  const bases = availableBases(c, STATE.statement);
-  if (!bases.includes(STATE.basis)) STATE.basis = bases[0] || 'consolidated';
-  el.innerHTML = bases.length
-    ? bases.map((b) => `<label style="cursor:pointer;"><button class="btn ${STATE.basis === b ? 'primary' : 'ghost'}" data-basis="${b}" style="font-size:10.5px;">${BASIS_LABELS[b]}</button></label>`).join('')
-    : '<span class="empty" style="padding:0;">—</span>';
-  el.querySelectorAll('button').forEach((b) => {
-    b.addEventListener('click', () => { STATE.basis = b.dataset.basis; renderFinancials(); saveLocal(); });
-  });
-  document.getElementById('basisBadge').textContent = bases.length > 1 ? `${bases.length} bases available for this statement` : '';
-}
-
-function renderFinancials() {
-  renderStatementTabs();
-  renderBasisTabs();
-  const c = STATE.companies[STATE.selectedCompanyId];
-  const tableEl = document.getElementById('financialsTable');
-  const citeEl = document.getElementById('financialsCitations');
-  if (!c) { tableEl.innerHTML = '<tbody><tr><td class="empty">No company selected.</td></tr></tbody>'; citeEl.innerHTML = ''; return; }
-
-  const stData = c.statements[STATE.statement] || {};
-  // Show only the periods that actually carry data for THIS statement —
-  // a balance sheet is point-in-time, so "H1FY2026" or "Q2FY2025" will
-  // never have one, and showing all of a company's periods regardless
-  // reads as most of the data being missing when it's really just not
-  // applicable to this statement type.
-  const periods = c.periods.filter((p) => stData[p] && Object.keys(stData[p]).length > 0);
-  const metricSet = new Set();
-  periods.forEach((p) => Object.keys(stData[p] || {}).forEach((m) => metricSet.add(m)));
-  const metrics = [...metricSet];
-
-  if (!metrics.length) {
-    tableEl.innerHTML = '<tbody><tr><td class="empty">No extracted data for this statement.</td></tr></tbody>';
-    citeEl.innerHTML = '';
-    return;
-  }
-
-  // Fall back to whichever basis IS present for a given cell, so a metric
-  // that only has a standalone figure still shows on the Consolidated tab
-  // rather than going blank — the citation makes clear which basis it is.
-  function cellFor(period, metric) {
-    const variants = (stData[period] || {})[metric];
-    if (!variants) return null;
-    return variants[STATE.basis] || variants.consolidated || variants.standalone || variants.unspecified || null;
-  }
-
-  let html = '<thead><tr><th>Line item</th>' + periods.map((p) => `<th>${p}</th>`).join('') + '</tr></thead><tbody>';
-  const citations = [];
-  metrics.forEach((m) => {
-    html += `<tr><td>${titleCase(m)}</td>`;
-    periods.forEach((p) => {
-      const cell = cellFor(p, m);
-      if (cell) {
-        const offBasis = cell.metric_raw !== undefined && !( (stData[p] || {})[m] && (stData[p] || {})[m][STATE.basis] );
-        html += `<td${offBasis ? ' class="muted"' : ''}>${fmtCr(cell.value)}<sup style="color:var(--accent-2);">${citations.push(cell)}</sup></td>`;
-      } else {
-        html += '<td class="muted">—</td>';
-      }
-    });
-    html += '</tr>';
-  });
-  html += '</tbody>';
-  tableEl.innerHTML = html;
-
-  citeEl.innerHTML = citations.map((cit, i) =>
-    `<div class="citation">[${i + 1}] "${cit.metric_raw}" — <span class="pg">page ${cit.source_page ?? '—'}</span>, ${cit.source_table || 'source table n/a'}${cit.source_heading ? ', under heading "' + cit.source_heading + '"' : ''} (${cit.doc_type || ''} ${cit.fiscal_year || ''}, ${cit.extraction_method || 'unknown method'}${cit.extraction_confidence != null ? ', ' + fmtPct(cit.extraction_confidence, 0) + ' confidence' : ''})</div>`
-  ).join('');
-}
-
-/* =====================================================================
    12. TAB SWITCHING + GLOBAL SELECTOR WIRING
 ===================================================================== */
 function renderAll() {
   renderDCF();
   renderComps();
-  renderFinancials();
   renderDataHub();
 }
 
@@ -1466,7 +1459,7 @@ function dhPoll(ticker, tries = 0) {
           await tryFetchPublishedData();
           const hit = STATE.companyOrder.find((id) => (STATE.companies[id].ticker || '').toUpperCase() === ticker);
           if (hit) { STATE.selectedCompanyId = hit; STATE.selectedPeriod = defaultPeriod(STATE.companies[hit]); refreshSelectors(); renderAll(); }
-          dhStatus(`✓ ${ticker} loaded. It now feeds the DCF, Comps and Financials tabs.`);
+          dhStatus(`✓ ${ticker} loaded. It now feeds the DCF and Comps tabs.`);
           return;
         }
       }
@@ -1485,7 +1478,7 @@ document.querySelectorAll('nav.tabs button').forEach((btn) => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('nav.tabs button').forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
-    ['dcf', 'comps', 'financials', 'data'].forEach((t) => {
+    ['dcf', 'comps', 'data'].forEach((t) => {
       document.getElementById('tab-' + t).classList.toggle('hidden', t !== btn.dataset.tab);
     });
   });
@@ -1768,7 +1761,7 @@ document.getElementById('btnCompanySave').addEventListener('click', () => {
     STATE.selectedCompanyId = id;
     STATE.selectedPeriod = periods[periods.length - 1];  // brand-new company: no data yet
     refreshSelectors(); renderAll(); saveLocal();
-    toast(`Added "${name}" — now add its numbers via Upload PDF or the Financials tab`);
+    toast(`Added "${name}" — now add its numbers from the Data tab (Yahoo ticker or PDF upload)`);
     closeCompanyPanel();
   }
 });

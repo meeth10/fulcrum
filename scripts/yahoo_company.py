@@ -44,6 +44,18 @@ CORE = {   # canonical key -> Yahoo row labels in priority order (first one pres
         "capital_expenditure": ["Capital Expenditure"],
     },
 }
+EXTRA = {   # not "fundamentals", but the DCF history reads them -- keys match the filing extractor's names
+    "income_statement": {
+        "tax_expense": ["Tax Provision"],
+        "pbt": ["Pretax Income"],
+        "depreciation_and_amortization": ["Reconciled Depreciation"],
+    },
+    "balance_sheet": {},
+    "cash_flow": {
+        "depreciation_and_amortization": ["Depreciation And Amortization", "Depreciation Amortization Depletion"],
+        "change_in_working_capital": ["Change In Working Capital"],
+    },
+}
 FRAMES = {  # statement -> (annual attr, quarterly attr)
     "income_statement": ("income_stmt", "quarterly_income_stmt"),
     "balance_sheet": ("balance_sheet", "quarterly_balance_sheet"),
@@ -189,7 +201,7 @@ def rows_of(df):
 
 
 def metric_key(stmt: str, label: str, rows: dict) -> str:
-    for key, labels in CORE[stmt].items():
+    for key, labels in {**CORE[stmt], **EXTRA[stmt]}.items():
         for l in labels:                       # first label that actually exists in this frame wins
             if l in rows:
                 if l == label:
