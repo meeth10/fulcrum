@@ -146,3 +146,19 @@ The DCF, Comps and Financials tabs all read only that record, so anything that f
   (sum of the last four quarters). Each company's own fiscal year-end is detected.
 * Ticker suffixes: bare Indian tickers (`RELIANCE`) try `.NS` then `.BO`; use `TCS.NS` explicitly to be sure.
 * If a price is quoted in a different currency than the statements (some ADRs), the price is not stored.
+
+
+## Focus: DCF and Comps (no Financials tab)
+
+The statement tables are no longer a screen to browse or retype. They are plumbing: Yahoo and your filings
+fill `data/<id>.json`, and the DCF and Comps tabs read from it. The **DCF** tab shows a *History* strip
+(revenue, growth, EBIT margin, effective tax, D&A %, capex %, free cash flow, with a Yahoo/Filing tag per year)
+and builds its forecast from it:
+
+* revenue growth = multi-year revenue CAGR (capped at 30%), fading to a mature rate by year 5; if only one year
+  is loaded it uses year-over-year growth of the base period
+* EBIT margin = latest base period; tax = average effective rate (tax / pre-tax income); D&A, capex and working
+  capital from the cash-flow history; capex fades toward maintenance by year 5
+* forecast rows follow the data until you type over a cell; **Rebuild forecast from the data** re-links them
+
+The **Data** tab shows which source every statement-period came from.

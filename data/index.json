@@ -1,30 +1,49 @@
 [
-  {
-    "id": "amazon-com-inc",
-    "name": "Amazon.com, Inc.",
-    "ticker": "AMZN",
-    "sector": "Technology",
-    "periods": [
-      "FY2025",
-      "H1FY2025",
-      "H1FY2026",
-      "Q2FY2025",
-      "Q2FY2026",
-      "TTMQ2FY2025",
-      "TTMQ2FY2026"
-    ]
-  },
-  {
-    "id": "apple",
-    "name": "Apple",
-    "ticker": "AAPL",
-    "sector": "Technology",
-    "periods": [
-      "9MFY2025",
-      "9MFY2026",
-      "FY2025",
-      "Q3FY2025",
-      "Q3FY2026"
-    ]
-  }
+ {
+  "id": "amazon-com-inc",
+  "name": "Amazon.com, Inc.",
+  "ticker": "AMZN",
+  "sector": "Technology",
+  "currency": "USD",
+  "periods": [
+   "FY2021",
+   "FY2022",
+   "FY2023",
+   "FY2024",
+   "FY2025",
+   "Q1FY2025",
+   "Q2FY2025",
+   "Q3FY2025",
+   "Q4FY2025",
+   "TTMQ2FY2025",
+   "H1FY2025",
+   "Q1FY2026",
+   "Q2FY2026",
+   "TTMQ1FY2026",
+   "TTMQ2FY2026",
+   "H1FY2026"
+  ]
+ },
+ {
+  "id": "apple",
+  "name": "Apple",
+  "ticker": "AAPL",
+  "sector": "Technology",
+  "currency": "USD",
+  "periods": [
+   "FY2022",
+   "FY2023",
+   "FY2024",
+   "FY2025",
+   "Q2FY2025",
+   "Q3FY2025",
+   "Q4FY2025",
+   "9MFY2025",
+   "Q1FY2026",
+   "Q2FY2026",
+   "Q3FY2026",
+   "TTMQ3FY2026",
+   "9MFY2026"
+  ]
+ }
 ]
