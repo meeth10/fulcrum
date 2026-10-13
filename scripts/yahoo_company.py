@@ -23,6 +23,7 @@ import datetime as dt
 import json
 import re
 import sys
+import time
 from pathlib import Path
 
 CORE = {   # canonical key -> Yahoo row labels in priority order (first one present wins)
@@ -298,6 +299,33 @@ def derive_fundamentals(statements: dict, prebaked: dict) -> dict:
     return out
 
 
+KEEP = {k for group in (CORE, EXTRA) for stmt in group.values() for k in stmt}
+
+
+def make_lite(company: dict) -> dict:
+    """A small copy for the website: only the line items the DCF and Comps read (about 30 KB instead of ~600 KB).
+    The full record stays in data/<id>.json so filings still win over Yahoo on the next refresh."""
+    lite = {k: v for k, v in company.items() if k != "statements"}
+    st: dict = {}
+    for stmt, periods in company.get("statements", {}).items():
+        st[stmt] = {}
+        for p, metrics in periods.items():
+            keep = {}
+            for k, variants in metrics.items():
+                if k not in KEEP:
+                    continue
+                c = (variants or {}).get("consolidated") or (variants or {}).get("standalone") or (variants or {}).get("unspecified")
+                if c:
+                    keep[k] = {"consolidated": {"value": c["value"], "unit": c.get("unit"),
+                                                "extraction_method": c.get("extraction_method"), "fiscal_year": c.get("fiscal_year")},
+                               "standalone": None, "unspecified": None}
+            if keep:
+                st[stmt][p] = keep
+    lite["statements"] = st
+    lite["lite"] = True
+    return lite
+
+
 def period_sort_key(p: str):
     tier = 0 if p.startswith("FY") else 1 if p.startswith("Q") else 2 if p.startswith("TTM") else 3
     years = re.findall(r"\d{4}", p)
@@ -319,7 +347,8 @@ def build_company(yf, ticker: str, data: Path, existing_by_ticker: dict, market_
     company = json.loads(path.read_text()) if path.exists() else {}
     company.update({"id": cid, "ticker": company.get("ticker") or ticker.upper().split(".")[0],
                     "name": company.get("name") or info.get("longName") or info.get("shortName") or ticker.upper(),
-                    "sector": company.get("sector") or info.get("sector") or "", "currency": ccy})
+                    "sector": company.get("sector") or info.get("sector") or "",
+                    "industry": company.get("industry") or info.get("industry") or "", "currency": ccy})
     notes = []
 
     # --- statements
@@ -399,8 +428,14 @@ def main(argv=None) -> int:
     yf = _yf()
     now = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     done, market = 0, {}
-    for t in wanted:
+    (data / "lite").mkdir(parents=True, exist_ok=True)
+    for n, t in enumerate(wanted):
+        if n:
+            time.sleep(1.0)          # be polite to Yahoo: one ticker a second avoids most rate limiting
         company, note = build_company(yf, t, data, by_ticker, a.market_only, now)
+        if company is None and "Too Many Requests" in note:
+            time.sleep(8)
+            company, note = build_company(yf, t, data, by_ticker, a.market_only, now)
         if company is None:
             print(f"  FAIL {t:12s} {note}")
             continue
@@ -410,8 +445,9 @@ def main(argv=None) -> int:
               f"periods {len(company['periods'])}" + (f"  [{note}]" if note else "") + (f"  WARNING: {mk['warning']}" if mk.get("warning") else ""))
         if not a.dry_run:
             (data / f"{company['id']}.json").write_text(json.dumps(company, indent=1) + "\n")
+            (data / "lite" / f"{company['id']}.json").write_text(json.dumps(make_lite(company), separators=(",", ":")) + "\n")
             entry = {"id": company["id"], "name": company["name"], "ticker": company["ticker"], "sector": company["sector"],
-                     "currency": company["currency"], "periods": company["periods"]}
+                     "industry": company.get("industry", ""), "currency": company["currency"], "periods": company["periods"], "lite": True}
             index = [e for e in index if e["id"] != company["id"]] + [entry]
             by_ticker[company["ticker"].upper()] = {"id": company["id"], "currency": company["currency"]}
             if company["ticker"].upper() not in [w.upper() for w in watch]:
