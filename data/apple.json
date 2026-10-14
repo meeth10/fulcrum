@@ -5,12 +5,12 @@
  "sector": "Technology",
  "currency": "USD",
  "market": {
-  "price": 336.67,
+  "price": 341.27,
   "shares_outstanding": 14594.18,
   "beta": 1.069,
   "net_debt_override": null,
   "source": "yfinance",
-  "as_of": "2026-10-08T12:51:16Z",
+  "as_of": "2026-10-14T09:21:55Z",
   "warning": null
  },
  "periods": [
@@ -21871,5 +21871,6 @@
    "total_debt": null,
    "cash_and_equivalents": null
   }
- }
+ },
+ "industry": "Consumer Electronics"
 }
