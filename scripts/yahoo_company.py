@@ -28,15 +28,18 @@ from pathlib import Path
 
 CORE = {   # canonical key -> Yahoo row labels in priority order (first one present wins)
     "income_statement": {
-        "revenue": ["Total Revenue", "Operating Revenue"],
+        "revenue": ["Total Revenue", "Operating Revenue", "Total Revenues"],
         "ebitda": ["EBITDA", "Normalized EBITDA"],
-        "ebit": ["Operating Income", "EBIT"],
-        "net_income": ["Net Income", "Net Income Common Stockholders", "Net Income From Continuing Operation Net Minority Interest"],
+        "ebit": ["Operating Income", "Total Operating Income As Reported", "EBIT"],
+        "net_income": ["Net Income", "Net Income Common Stockholders", "Net Income From Continuing Operation Net Minority Interest",
+                       "Net Income Including Noncontrolling Interests"],
+        "interest_expense": ["Interest Expense", "Interest Expense Non Operating"],
     },
     "balance_sheet": {
         "shareholders_equity": ["Stockholders Equity", "Common Stock Equity", "Total Equity Gross Minority Interest"],
-        "total_debt": ["Total Debt"],
-        "cash_and_equivalents": ["Cash And Cash Equivalents", "Cash Cash Equivalents And Short Term Investments"],
+        "total_debt": ["Total Debt", "Long Term Debt And Capital Lease Obligation"],
+        "cash_and_equivalents": ["Cash Cash Equivalents And Short Term Investments", "Cash And Cash Equivalents"],   # includes short-term investments: a big part of value for cash-rich firms
+        "minority_interest": ["Minority Interest"],
         "total_assets": ["Total Assets"],
         "total_liabilities": ["Total Liabilities Net Minority Interest"],
     },
@@ -50,11 +53,13 @@ EXTRA = {   # not "fundamentals", but the DCF history reads them -- keys match t
         "tax_expense": ["Tax Provision"],
         "pbt": ["Pretax Income"],
         "depreciation_and_amortization": ["Reconciled Depreciation"],
+        "research_and_development": ["Research And Development", "Research Development"],
     },
     "balance_sheet": {},
     "cash_flow": {
         "depreciation_and_amortization": ["Depreciation And Amortization", "Depreciation Amortization Depletion"],
         "change_in_working_capital": ["Change In Working Capital"],
+        "stock_based_compensation": ["Stock Based Compensation"],
     },
 }
 FRAMES = {  # statement -> (annual attr, quarterly attr)
@@ -63,7 +68,8 @@ FRAMES = {  # statement -> (annual attr, quarterly attr)
     "cash_flow": ("cashflow", "quarterly_cashflow"),
 }
 FUNDAMENTALS = ["revenue", "ebitda", "ebit", "net_income", "shareholders_equity", "total_debt",
-                "cash_and_equivalents", "operating_cash_flow", "capital_expenditure"]
+                "cash_and_equivalents", "operating_cash_flow", "capital_expenditure", "minority_interest", "interest_expense",
+                "total_assets", "total_liabilities"]
 SHARE_ROWS = re.compile(r"(shares|share issued)", re.I)
 PER_SHARE = re.compile(r"\beps\b|per share", re.I)
 SKIP_ROWS = re.compile(r"tax rate", re.I)
@@ -155,6 +161,7 @@ def fetch(yf, ticker: str, currency: str | None, market_only: bool = False) -> d
                    "fin_ccy": (info.get("financialCurrency") or "").upper(),
                    "frames": {}}
             if not market_only:
+                out["est"] = fetch_estimates(tk)
                 for stmt, (ann, qtr) in FRAMES.items():
                     for kind, attr in (("annual", ann), ("quarterly", qtr)):
                         try:
@@ -166,6 +173,28 @@ def fetch(yf, ticker: str, currency: str | None, market_only: bool = False) -> d
         except Exception as e:
             last = f"{sym}: {type(e).__name__}: {e}"
     return {"error": last}
+
+
+def fetch_estimates(tk) -> dict:
+    """Analyst consensus revenue and EPS growth (this fiscal year and next). Best effort: any failure just returns less."""
+    est: dict = {}
+    for attr, prefix in (("revenue_estimate", "rev"), ("earnings_estimate", "eps")):
+        try:
+            df = getattr(tk, attr)
+            if df is None or df.empty or "growth" not in df.columns:
+                continue
+            for idx, key in (("0y", f"{prefix}_g_cy"), ("+1y", f"{prefix}_g_ny")):
+                if idx in df.index:
+                    v = num(df.loc[idx, "growth"])
+                    if v is not None and -0.9 < v < 3:
+                        est[key] = round(v, 4)
+            if prefix == "rev" and "0y" in df.index and "numberOfAnalysts" in df.columns:
+                n = num(df.loc["0y", "numberOfAnalysts"])
+                if n:
+                    est["analysts"] = int(n)
+        except Exception:
+            continue
+    return est
 
 
 def fetch_us_10y(yf):
@@ -378,8 +407,9 @@ def build_company(yf, ticker: str, data: Path, existing_by_ticker: dict, market_
     if mk.get("source") == "manual":
         notes.append("price/shares kept: typed by hand")
     else:
+        old_est = mk.get("est")
         mk = {"price": None, "shares_outstanding": None, "beta": None, "net_debt_override": mk.get("net_debt_override"),
-              "source": "yfinance", "as_of": now, "warning": None}
+              "source": "yfinance", "as_of": now, "warning": None, "est": r.get("est") or old_est or {}}
         if r["price_ccy"] and r["price_ccy"] != ccy:
             mk["warning"] = f"price quoted in {r['price_ccy']} but statements are in {ccy}; price not stored"
         elif not r["shares"]:
@@ -455,7 +485,7 @@ def main(argv=None) -> int:
         if mk.get("price") is not None:
             market[company["id"]] = {"ticker": company["ticker"], "currency": company["currency"], "price": mk["price"],
                                      "shares_outstanding": mk["shares_outstanding"], "beta": mk.get("beta"),
-                                     "as_of": now, "warning": mk.get("warning")}
+                                     "est": mk.get("est") or {}, "as_of": now, "warning": mk.get("warning")}
     if not done:
         print("nothing could be fetched - existing files left untouched", file=sys.stderr)
         return 1

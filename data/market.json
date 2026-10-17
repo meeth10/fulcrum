@@ -1,26 +1,4032 @@
 {
- "asof": "2026-10-08T12:51:16Z",
+ "asof": "2026-10-17T16:08:04Z",
  "source": "yfinance",
  "rf": {
-  "USD": 5.326
+  "USD": 5.098
  },
  "companies": {
-  "amazon-com-inc": {
-   "ticker": "AMZN",
-   "currency": "USD",
-   "price": 259.92,
-   "shares_outstanding": 10786.3136,
-   "beta": 1.456,
-   "as_of": "2026-10-08T12:51:16Z",
-   "warning": null
-  },
   "apple": {
    "ticker": "AAPL",
    "currency": "USD",
-   "price": 336.67,
+   "price": 343.46,
    "shares_outstanding": 14594.18,
    "beta": 1.069,
-   "as_of": "2026-10-08T12:51:16Z",
+   "est": {
+    "rev_g_cy": 0.1491,
+    "rev_g_ny": 0.1043,
+    "analysts": 40,
+    "eps_g_cy": 0.1823,
+    "eps_g_ny": 0.0851
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "msft": {
+   "ticker": "MSFT",
+   "currency": "USD",
+   "price": 529.05,
+   "shares_outstanding": 7425.5455,
+   "beta": 1.099,
+   "est": {
+    "rev_g_cy": 0.1793,
+    "rev_g_ny": 0.1966,
+    "analysts": 50,
+    "eps_g_cy": 0.1446,
+    "eps_g_ny": 0.1993
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "googl": {
+   "ticker": "GOOGL",
+   "currency": "USD",
+   "price": 340.59,
+   "shares_outstanding": 5867.1558,
+   "beta": 1.211,
+   "est": {
+    "rev_g_cy": 0.2405,
+    "rev_g_ny": 0.248,
+    "analysts": 52,
+    "eps_g_cy": 0.9046,
+    "eps_g_ny": -0.2677
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": "price x shares differs from Yahoo market cap by >25% (multiple share classes?) - check the share count"
+  },
+  "meta": {
+   "ticker": "META",
+   "currency": "USD",
+   "price": 709.33,
+   "shares_outstanding": 2205.1285,
+   "beta": 1.185,
+   "est": {
+    "rev_g_cy": 0.2648,
+    "rev_g_ny": 0.2075,
+    "analysts": 60,
+    "eps_g_cy": 0.3031,
+    "eps_g_ny": 0.1081
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "nvda": {
+   "ticker": "NVDA",
+   "currency": "USD",
+   "price": 214.13,
+   "shares_outstanding": 24147.0,
+   "beta": 2.216,
+   "est": {
+    "rev_g_cy": 0.9064,
+    "rev_g_ny": 0.6815,
+    "analysts": 54,
+    "eps_g_cy": 0.9523,
+    "eps_g_ny": 0.709
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "avgo": {
+   "ticker": "AVGO",
+   "currency": "USD",
+   "price": 328.75,
+   "shares_outstanding": 4773.6299,
+   "beta": 1.476,
+   "est": {
+    "rev_g_cy": 0.6588,
+    "rev_g_ny": 0.6416,
+    "analysts": 40,
+    "eps_g_cy": 0.7094,
+    "eps_g_ny": 0.6638
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "orcl": {
+   "ticker": "ORCL",
+   "currency": "USD",
+   "price": 128.23,
+   "shares_outstanding": 3031.5011,
+   "beta": 1.77,
+   "est": {
+    "rev_g_cy": 0.3425,
+    "rev_g_ny": 0.4566,
+    "analysts": 39,
+    "eps_g_cy": 0.0669,
+    "eps_g_ny": 0.3502
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "crm": {
+   "ticker": "CRM",
+   "currency": "USD",
+   "price": 240.7,
+   "shares_outstanding": 823.0,
+   "beta": 1.256,
+   "est": {
+    "rev_g_cy": 0.1149,
+    "rev_g_ny": 0.0973,
+    "analysts": 46,
+    "eps_g_cy": 0.3383,
+    "eps_g_ny": -0.0437
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "adbe": {
+   "ticker": "ADBE",
+   "currency": "USD",
+   "price": 245.2,
+   "shares_outstanding": 389.2,
+   "beta": 1.415,
+   "est": {
+    "rev_g_cy": 0.1194,
+    "rev_g_ny": 0.0914,
+    "analysts": 34,
+    "eps_g_cy": 0.1689,
+    "eps_g_ny": 0.1239
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "amd": {
+   "ticker": "AMD",
+   "currency": "USD",
+   "price": 528.75,
+   "shares_outstanding": 1632.475,
+   "beta": 2.454,
+   "est": {
+    "rev_g_cy": 0.4708,
+    "rev_g_ny": 0.7479,
+    "analysts": 48,
+    "eps_g_cy": 0.8194,
+    "eps_g_ny": 1.0767
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "intc": {
+   "ticker": "INTC",
+   "currency": "USD",
+   "price": 89.85,
+   "shares_outstanding": 5286.1053,
+   "beta": 2.23,
+   "est": {
+    "rev_g_cy": 0.1951,
+    "rev_g_ny": 0.1507,
+    "analysts": 43,
+    "eps_g_cy": 2.6382,
+    "eps_g_ny": 0.3775
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "csco": {
+   "ticker": "CSCO",
+   "currency": "USD",
+   "price": 107.39,
+   "shares_outstanding": 3942.5869,
+   "beta": 0.979,
+   "est": {
+    "rev_g_cy": 0.1555,
+    "rev_g_ny": 0.0672,
+    "analysts": 25,
+    "eps_g_cy": 0.1884,
+    "eps_g_ny": 0.0925
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ibm": {
+   "ticker": "IBM",
+   "currency": "USD",
+   "price": 232.14,
+   "shares_outstanding": 942.1344,
+   "beta": 0.724,
+   "est": {
+    "rev_g_cy": 0.0422,
+    "rev_g_ny": 0.0386,
+    "analysts": 23,
+    "eps_g_cy": 0.0622,
+    "eps_g_ny": 0.0681
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "qcom": {
+   "ticker": "QCOM",
+   "currency": "USD",
+   "price": 172.11,
+   "shares_outstanding": 1067.8395,
+   "beta": 1.651,
+   "est": {
+    "rev_g_cy": -0.0288,
+    "rev_g_ny": 0.0468,
+    "analysts": 31,
+    "eps_g_cy": -0.1286,
+    "eps_g_ny": -0.0279
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "txn": {
+   "ticker": "TXN",
+   "currency": "USD",
+   "price": 276.48,
+   "shares_outstanding": 913.2477,
+   "beta": 1.339,
+   "est": {
+    "rev_g_cy": 0.2402,
+    "rev_g_ny": 0.1396,
+    "analysts": 31,
+    "eps_g_cy": 0.5623,
+    "eps_g_ny": 0.196
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "amat": {
+   "ticker": "AMAT",
+   "currency": "USD",
+   "price": 409.29,
+   "shares_outstanding": 793.5974,
+   "beta": 1.591,
+   "est": {
+    "rev_g_cy": 0.2077,
+    "rev_g_ny": 0.3518,
+    "analysts": 34,
+    "eps_g_cy": 0.3573,
+    "eps_g_ny": 0.4436
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "mu": {
+   "ticker": "MU",
+   "currency": "USD",
+   "price": 878.84,
+   "shares_outstanding": 1131.4232,
+   "beta": 2.226,
+   "est": {
+    "rev_g_cy": 1.0685,
+    "rev_g_ny": 0.1574,
+    "analysts": 41,
+    "eps_g_cy": 1.3377,
+    "eps_g_ny": 0.1719
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "lrcx": {
+   "ticker": "LRCX",
+   "currency": "USD",
+   "price": 263.94,
+   "shares_outstanding": 1251.4244,
+   "beta": 1.854,
+   "est": {
+    "rev_g_cy": 0.5032,
+    "rev_g_ny": 0.1903,
+    "analysts": 30,
+    "eps_g_cy": 0.6283,
+    "eps_g_ny": 0.2416
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "klac": {
+   "ticker": "KLAC",
+   "currency": "USD",
+   "price": 165.74,
+   "shares_outstanding": 1305.0065,
+   "beta": 1.447,
+   "est": {
+    "rev_g_cy": 0.336,
+    "rev_g_ny": 0.1892,
+    "analysts": 24,
+    "eps_g_cy": 0.4462,
+    "eps_g_ny": 0.2396
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "now": {
+   "ticker": "NOW",
+   "currency": "USD",
+   "price": 141.97,
+   "shares_outstanding": 1033.862,
+   "beta": 0.99,
+   "est": {
+    "rev_g_cy": 0.2214,
+    "rev_g_ny": 0.188,
+    "analysts": 45,
+    "eps_g_cy": 0.1586,
+    "eps_g_ny": 0.2308
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "intu": {
+   "ticker": "INTU",
+   "currency": "USD",
+   "price": 325.15,
+   "shares_outstanding": 267.236,
+   "beta": 1.009,
+   "est": {
+    "rev_g_cy": 0.0915,
+    "rev_g_ny": 0.0907,
+    "analysts": 29,
+    "eps_g_cy": -0.0189,
+    "eps_g_ny": 0.1316
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "panw": {
+   "ticker": "PANW",
+   "currency": "USD",
+   "price": 342.0,
+   "shares_outstanding": 818.0,
+   "beta": 0.933,
+   "est": {
+    "rev_g_cy": 0.2346,
+    "rev_g_ny": 0.1449,
+    "analysts": 51,
+    "eps_g_cy": 0.0914,
+    "eps_g_ny": 0.4025
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "snps": {
+   "ticker": "SNPS",
+   "currency": "USD",
+   "price": 454.63,
+   "shares_outstanding": 191.6366,
+   "beta": 1.208,
+   "est": {
+    "rev_g_cy": 0.3782,
+    "rev_g_ny": 0.1366,
+    "analysts": 22,
+    "eps_g_cy": 0.1725,
+    "eps_g_ny": 0.2333
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "cdns": {
+   "ticker": "CDNS",
+   "currency": "USD",
+   "price": 319.51,
+   "shares_outstanding": 275.393,
+   "beta": 1.128,
+   "est": {
+    "rev_g_cy": 0.1934,
+    "rev_g_ny": 0.1351,
+    "analysts": 23,
+    "eps_g_cy": 0.185,
+    "eps_g_ny": 0.1743
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "adsk": {
+   "ticker": "ADSK",
+   "currency": "USD",
+   "price": 239.9,
+   "shares_outstanding": 209.0,
+   "beta": 1.327,
+   "est": {
+    "rev_g_cy": 0.1552,
+    "rev_g_ny": 0.1102,
+    "analysts": 34,
+    "eps_g_cy": 0.2092,
+    "eps_g_ny": 0.1258
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "wday": {
+   "ticker": "WDAY",
+   "currency": "USD",
+   "price": 190.81,
+   "shares_outstanding": 196.0,
+   "beta": 1.074,
+   "est": {
+    "rev_g_cy": 0.1167,
+    "rev_g_ny": 0.1046,
+    "analysts": 40,
+    "eps_g_cy": 0.2002,
+    "eps_g_ny": 0.194
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ftnt": {
+   "ticker": "FTNT",
+   "currency": "USD",
+   "price": 169.13,
+   "shares_outstanding": 733.7137,
+   "beta": 1.037,
+   "est": {
+    "rev_g_cy": 0.1942,
+    "rev_g_ny": 0.1125,
+    "analysts": 41,
+    "eps_g_cy": 0.2506,
+    "eps_g_ny": 0.0945
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "anet": {
+   "ticker": "ANET",
+   "currency": "USD",
+   "price": 176.98,
+   "shares_outstanding": 1261.2246,
+   "beta": 1.605,
+   "est": {
+    "rev_g_cy": 0.4081,
+    "rev_g_ny": 0.2903,
+    "analysts": 27,
+    "eps_g_cy": 0.3815,
+    "eps_g_ny": 0.2686
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "pltr": {
+   "ticker": "PLTR",
+   "currency": "USD",
+   "price": 186.03,
+   "shares_outstanding": 2300.7133,
+   "beta": 1.602,
+   "est": {
+    "rev_g_cy": 0.8356,
+    "rev_g_ny": 0.5012,
+    "analysts": 29,
+    "eps_g_cy": 1.1583,
+    "eps_g_ny": 0.4521
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "dell": {
+   "ticker": "DELL",
+   "currency": "USD",
+   "price": 451.71,
+   "shares_outstanding": 315.4332,
+   "beta": 1.442,
+   "est": {
+    "rev_g_cy": 0.7038,
+    "rev_g_ny": 0.1844,
+    "analysts": 22,
+    "eps_g_cy": 1.5142,
+    "eps_g_ny": 0.0959
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": "price x shares differs from Yahoo market cap by >25% (multiple share classes?) - check the share count"
+  },
+  "hpq": {
+   "ticker": "HPQ",
+   "currency": "USD",
+   "price": 30.01,
+   "shares_outstanding": 901.791,
+   "beta": 1.19,
+   "est": {
+    "rev_g_cy": 0.0824,
+    "rev_g_ny": 0.0015,
+    "analysts": 14,
+    "eps_g_cy": 0.0401,
+    "eps_g_ny": -0.0304
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "hpe": {
+   "ticker": "HPE",
+   "currency": "USD",
+   "price": 55.13,
+   "shares_outstanding": 1327.4648,
+   "beta": 1.404,
+   "est": {
+    "rev_g_cy": 0.3554,
+    "rev_g_ny": 0.1767,
+    "analysts": 21,
+    "eps_g_cy": 0.9722,
+    "eps_g_ny": 0.2307
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "nxpi": {
+   "ticker": "NXPI",
+   "currency": "USD",
+   "price": 229.33,
+   "shares_outstanding": 252.1642,
+   "beta": 1.811,
+   "est": {
+    "rev_g_cy": 0.1625,
+    "rev_g_ny": 0.1173,
+    "analysts": 28,
+    "eps_g_cy": 0.278,
+    "eps_g_ny": 0.2088
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "mchp": {
+   "ticker": "MCHP",
+   "currency": "USD",
+   "price": 73.85,
+   "shares_outstanding": 543.0087,
+   "beta": 1.759,
+   "est": {
+    "rev_g_cy": 0.3584,
+    "rev_g_ny": 0.1627,
+    "analysts": 24,
+    "eps_g_cy": 1.2274,
+    "eps_g_ny": 0.2579
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "on": {
+   "ticker": "ON",
+   "currency": "USD",
+   "price": 72.02,
+   "shares_outstanding": 389.3186,
+   "beta": 2.052,
+   "est": {
+    "rev_g_cy": 0.0945,
+    "rev_g_ny": 0.1313,
+    "analysts": 30,
+    "eps_g_cy": 0.3644,
+    "eps_g_ny": 0.4153
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "adi": {
+   "ticker": "ADI",
+   "currency": "USD",
+   "price": 395.44,
+   "shares_outstanding": 484.5655,
+   "beta": 1.231,
+   "est": {
+    "rev_g_cy": 0.3701,
+    "rev_g_ny": 0.213,
+    "analysts": 30,
+    "eps_g_cy": 0.6495,
+    "eps_g_ny": 0.2788
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "mrvl": {
+   "ticker": "MRVL",
+   "currency": "USD",
+   "price": 227.83,
+   "shares_outstanding": 876.9266,
+   "beta": 2.26,
+   "est": {
+    "rev_g_cy": 0.4729,
+    "rev_g_ny": 0.6321,
+    "analysts": 40,
+    "eps_g_cy": 0.486,
+    "eps_g_ny": 0.7289
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "crwd": {
+   "ticker": "CRWD",
+   "currency": "USD",
+   "price": 227.39,
+   "shares_outstanding": 1023.9348,
+   "beta": 1.197,
+   "est": {
+    "rev_g_cy": 0.2485,
+    "rev_g_ny": 0.2282,
+    "analysts": 49,
+    "eps_g_cy": 0.3478,
+    "eps_g_ny": 0.282
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "snow": {
+   "ticker": "SNOW",
+   "currency": "USD",
+   "price": 306.84,
+   "shares_outstanding": 352.8,
+   "beta": 1.351,
+   "est": {
+    "rev_g_cy": 0.3492,
+    "rev_g_ny": 0.2821,
+    "analysts": 45,
+    "eps_g_cy": 0.779,
+    "eps_g_ny": 0.3526
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ddog": {
+   "ticker": "DDOG",
+   "currency": "USD",
+   "price": 247.11,
+   "shares_outstanding": 334.9046,
+   "beta": 1.512,
+   "est": {
+    "rev_g_cy": 0.3048,
+    "rev_g_ny": 0.2253,
+    "analysts": 46,
+    "eps_g_cy": 0.233,
+    "eps_g_ny": 0.1768
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "net": {
+   "ticker": "NET",
+   "currency": "USD",
+   "price": 296.3,
+   "shares_outstanding": 322.6188,
+   "beta": 1.645,
+   "est": {
+    "rev_g_cy": 0.3246,
+    "rev_g_ny": 0.2871,
+    "analysts": 31,
+    "eps_g_cy": 0.3582,
+    "eps_g_ny": 0.3269
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "team": {
+   "ticker": "TEAM",
+   "currency": "USD",
+   "price": 207.82,
+   "shares_outstanding": 159.0052,
+   "beta": 1.228,
+   "est": {
+    "rev_g_cy": 0.1359,
+    "rev_g_ny": 0.1487,
+    "analysts": 32,
+    "eps_g_cy": -0.0702,
+    "eps_g_ny": 1.1936
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": "price x shares differs from Yahoo market cap by >25% (multiple share classes?) - check the share count"
+  },
+  "zs": {
+   "ticker": "ZS",
+   "currency": "USD",
+   "price": 207.38,
+   "shares_outstanding": 163.0547,
+   "beta": 0.936,
+   "est": {
+    "rev_g_cy": 0.1727,
+    "rev_g_ny": 0.1648,
+    "analysts": 45,
+    "eps_g_cy": 0.1658,
+    "eps_g_ny": 0.1457
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "mdb": {
+   "ticker": "MDB",
+   "currency": "USD",
+   "price": 337.57,
+   "shares_outstanding": 80.4319,
+   "beta": 1.748,
+   "est": {
+    "rev_g_cy": 0.228,
+    "rev_g_ny": 0.1905,
+    "analysts": 35,
+    "eps_g_cy": 0.3164,
+    "eps_g_ny": 0.1993
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "uber": {
+   "ticker": "UBER",
+   "currency": "USD",
+   "price": 70.35,
+   "shares_outstanding": 2042.5601,
+   "beta": 1.265,
+   "est": {
+    "rev_g_cy": 0.1128,
+    "rev_g_ny": 0.1538,
+    "analysts": 51,
+    "eps_g_cy": -0.3287,
+    "eps_g_ny": 0.4284
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "shop": {
+   "ticker": "SHOP",
+   "currency": "USD",
+   "price": 169.52,
+   "shares_outstanding": 1219.581,
+   "beta": 2.625,
+   "est": {
+    "rev_g_cy": 0.3197,
+    "rev_g_ny": 0.2595,
+    "analysts": 49,
+    "eps_g_cy": 0.3363,
+    "eps_g_ny": 0.2849
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "amazon-com-inc": {
+   "ticker": "AMZN",
+   "currency": "USD",
+   "price": 250.0,
+   "shares_outstanding": 10786.3136,
+   "beta": 1.456,
+   "est": {
+    "rev_g_cy": 0.1559,
+    "rev_g_ny": 0.1459,
+    "analysts": 56,
+    "eps_g_cy": 0.7994,
+    "eps_g_ny": -0.1821
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "nflx": {
+   "ticker": "NFLX",
+   "currency": "USD",
+   "price": 70.53,
+   "shares_outstanding": 4163.9397,
+   "beta": 1.613,
+   "est": {
+    "rev_g_cy": 0.1335,
+    "rev_g_ny": 0.1117,
+    "analysts": 46,
+    "eps_g_cy": 0.4162,
+    "eps_g_ny": 0.0592
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tsla": {
+   "ticker": "TSLA",
+   "currency": "USD",
+   "price": 354.72,
+   "shares_outstanding": 3949.5474,
+   "beta": 1.916,
+   "est": {
+    "rev_g_cy": 0.1303,
+    "rev_g_ny": 0.1352,
+    "analysts": 41,
+    "eps_g_cy": 0.0505,
+    "eps_g_ny": 0.2435
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ebay": {
+   "ticker": "EBAY",
+   "currency": "USD",
+   "price": 120.28,
+   "shares_outstanding": 445.0,
+   "beta": 1.322,
+   "est": {
+    "rev_g_cy": 0.1287,
+    "rev_g_ny": 0.0667,
+    "analysts": 27,
+    "eps_g_cy": 0.1114,
+    "eps_g_ny": 0.0944
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "etsy": {
+   "ticker": "ETSY",
+   "currency": "USD",
+   "price": 85.14,
+   "shares_outstanding": 91.7817,
+   "beta": 1.859,
+   "est": {
+    "rev_g_cy": -0.0119,
+    "rev_g_ny": 0.0466,
+    "analysts": 29,
+    "eps_g_cy": 1.4353,
+    "eps_g_ny": 0.3423
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "bkng": {
+   "ticker": "BKNG",
+   "currency": "USD",
+   "price": 163.45,
+   "shares_outstanding": 751.3805,
+   "beta": 1.128,
+   "est": {
+    "rev_g_cy": 0.0867,
+    "rev_g_ny": 0.093,
+    "analysts": 35,
+    "eps_g_cy": 0.1459,
+    "eps_g_ny": 0.1841
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "abnb": {
+   "ticker": "ABNB",
+   "currency": "USD",
+   "price": 173.7,
+   "shares_outstanding": 419.5296,
+   "beta": 1.244,
+   "est": {
+    "rev_g_cy": 0.158,
+    "rev_g_ny": 0.1165,
+    "analysts": 42,
+    "eps_g_cy": 0.3176,
+    "eps_g_ny": 0.1793
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": "price x shares differs from Yahoo market cap by >25% (multiple share classes?) - check the share count"
+  },
+  "mar": {
+   "ticker": "MAR",
+   "currency": "USD",
+   "price": 388.05,
+   "shares_outstanding": 260.7663,
+   "beta": 1.167,
+   "est": {
+    "rev_g_cy": 0.0607,
+    "rev_g_ny": 0.0611,
+    "analysts": 22,
+    "eps_g_cy": 0.1708,
+    "eps_g_ny": 0.121
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "hlt": {
+   "ticker": "HLT",
+   "currency": "USD",
+   "price": 345.12,
+   "shares_outstanding": 225.0649,
+   "beta": 1.105,
+   "est": {
+    "rev_g_cy": 0.0818,
+    "rev_g_ny": 0.0856,
+    "analysts": 21,
+    "eps_g_cy": 0.1156,
+    "eps_g_ny": 0.152
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "dis": {
+   "ticker": "DIS",
+   "currency": "USD",
+   "price": 110.59,
+   "shares_outstanding": 1726.6869,
+   "beta": 1.417,
+   "est": {
+    "rev_g_cy": 0.0757,
+    "rev_g_ny": 0.0443,
+    "analysts": 29,
+    "eps_g_cy": 0.1678,
+    "eps_g_ny": 0.0815
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "cmcsa": {
+   "ticker": "CMCSA",
+   "currency": "USD",
+   "price": 21.9,
+   "shares_outstanding": 3539.1922,
+   "beta": 0.669,
+   "est": {
+    "rev_g_cy": -0.0316,
+    "rev_g_ny": -0.0201,
+    "analysts": 16,
+    "eps_g_cy": -0.192,
+    "eps_g_ny": 0.0306
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "lulu": {
+   "ticker": "LULU",
+   "currency": "USD",
+   "price": 97.1,
+   "shares_outstanding": 105.5941,
+   "beta": 0.922,
+   "est": {
+    "rev_g_cy": -0.0573,
+    "rev_g_ny": -0.0114,
+    "analysts": 31,
+    "eps_g_cy": -0.2713,
+    "eps_g_ny": -0.1043
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "nke": {
+   "ticker": "NKE",
+   "currency": "USD",
+   "price": 37.13,
+   "shares_outstanding": 1203.9211,
+   "beta": 1.099,
+   "est": {
+    "rev_g_cy": -0.0773,
+    "rev_g_ny": 0.0129,
+    "analysts": 37,
+    "eps_g_cy": -0.4049,
+    "eps_g_ny": 0.2602
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "sbux": {
+   "ticker": "SBUX",
+   "currency": "USD",
+   "price": 97.52,
+   "shares_outstanding": 1140.0,
+   "beta": 0.975,
+   "est": {
+    "rev_g_cy": 0.0218,
+    "rev_g_ny": 0.0146,
+    "analysts": 31,
+    "eps_g_cy": 0.2215,
+    "eps_g_ny": 0.2025
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "mcd": {
+   "ticker": "MCD",
+   "currency": "USD",
+   "price": 242.97,
+   "shares_outstanding": 707.6415,
+   "beta": 0.447,
+   "est": {
+    "rev_g_cy": 0.0469,
+    "rev_g_ny": 0.0286,
+    "analysts": 31,
+    "eps_g_cy": 0.057,
+    "eps_g_ny": 0.0673
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "yum": {
+   "ticker": "YUM",
+   "currency": "USD",
+   "price": 150.51,
+   "shares_outstanding": 272.9011,
+   "beta": 0.546,
+   "est": {
+    "rev_g_cy": 0.0573,
+    "rev_g_ny": -0.0101,
+    "analysts": 12,
+    "eps_g_cy": 0.0488,
+    "eps_g_ny": 0.084
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "cmg": {
+   "ticker": "CMG",
+   "currency": "USD",
+   "price": 29.89,
+   "shares_outstanding": 1265.418,
+   "beta": 0.958,
+   "est": {
+    "rev_g_cy": 0.0925,
+    "rev_g_ny": 0.1083,
+    "analysts": 33,
+    "eps_g_cy": -0.0177,
+    "eps_g_ny": 0.1903
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tjx": {
+   "ticker": "TJX",
+   "currency": "USD",
+   "price": 147.33,
+   "shares_outstanding": 1099.9741,
+   "beta": 0.561,
+   "est": {
+    "rev_g_cy": 0.0606,
+    "rev_g_ny": 0.0626,
+    "analysts": 21,
+    "eps_g_cy": 0.1099,
+    "eps_g_ny": 0.0997
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "rost": {
+   "ticker": "ROST",
+   "currency": "USD",
+   "price": 236.89,
+   "shares_outstanding": 320.7811,
+   "beta": 0.837,
+   "est": {
+    "rev_g_cy": 0.1301,
+    "rev_g_ny": 0.0683,
+    "analysts": 19,
+    "eps_g_cy": 0.3277,
+    "eps_g_ny": 0.0206
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "dg": {
+   "ticker": "DG",
+   "currency": "USD",
+   "price": 134.36,
+   "shares_outstanding": 220.6168,
+   "beta": 0.226,
+   "est": {
+    "rev_g_cy": 0.0427,
+    "rev_g_ny": 0.0405,
+    "analysts": 27,
+    "eps_g_cy": 0.1545,
+    "eps_g_ny": 0.0593
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "dltr": {
+   "ticker": "DLTR",
+   "currency": "USD",
+   "price": 124.18,
+   "shares_outstanding": 187.6303,
+   "beta": 0.716,
+   "est": {
+    "rev_g_cy": 0.0657,
+    "rev_g_ny": 0.0605,
+    "analysts": 20,
+    "eps_g_cy": 0.3788,
+    "eps_g_ny": -0.0023
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "hd": {
+   "ticker": "HD",
+   "currency": "USD",
+   "price": 309.63,
+   "shares_outstanding": 997.6896,
+   "beta": 0.999,
+   "est": {
+    "rev_g_cy": 0.0417,
+    "rev_g_ny": 0.0337,
+    "analysts": 33,
+    "eps_g_cy": 0.0227,
+    "eps_g_ny": 0.0643
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "low": {
+   "ticker": "LOW",
+   "currency": "USD",
+   "price": 197.38,
+   "shares_outstanding": 561.054,
+   "beta": 0.878,
+   "est": {
+    "rev_g_cy": 0.0678,
+    "rev_g_ny": 0.0244,
+    "analysts": 31,
+    "eps_g_cy": 0.0022,
+    "eps_g_ny": 0.0564
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tgt": {
+   "ticker": "TGT",
+   "currency": "USD",
+   "price": 154.26,
+   "shares_outstanding": 454.2967,
+   "beta": 0.981,
+   "est": {
+    "rev_g_cy": 0.0517,
+    "rev_g_ny": 0.033,
+    "analysts": 36,
+    "eps_g_cy": 0.3527,
+    "eps_g_ny": -0.0678
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "wmt": {
+   "ticker": "WMT",
+   "currency": "USD",
+   "price": 118.81,
+   "shares_outstanding": 7958.0792,
+   "beta": 0.578,
+   "est": {
+    "rev_g_cy": 0.0657,
+    "rev_g_ny": 0.0434,
+    "analysts": 37,
+    "eps_g_cy": 0.0933,
+    "eps_g_ny": 0.1179
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "cost": {
+   "ticker": "COST",
+   "currency": "USD",
+   "price": 989.11,
+   "shares_outstanding": 443.1293,
+   "beta": 0.87,
+   "est": {
+    "rev_g_cy": 0.0866,
+    "rev_g_ny": 0.073,
+    "analysts": 33,
+    "eps_g_cy": 0.0985,
+    "eps_g_ny": 0.0993
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "orly": {
+   "ticker": "ORLY",
+   "currency": "USD",
+   "price": 89.27,
+   "shares_outstanding": 808.9608,
+   "beta": 0.542,
+   "est": {
+    "rev_g_cy": 0.0756,
+    "rev_g_ny": 0.061,
+    "analysts": 26,
+    "eps_g_cy": 0.1054,
+    "eps_g_ny": 0.1122
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "azo": {
+   "ticker": "AZO",
+   "currency": "USD",
+   "price": 3120.5901,
+   "shares_outstanding": 16.173,
+   "beta": 0.398,
+   "est": {
+    "rev_g_cy": 0.0741,
+    "rev_g_ny": 0.0711,
+    "analysts": 24,
+    "eps_g_cy": 0.1124,
+    "eps_g_ny": 0.1251
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "f": {
+   "ticker": "F",
+   "currency": "USD",
+   "price": 12.43,
+   "shares_outstanding": 3916.7436,
+   "beta": 1.939,
+   "est": {
+    "rev_g_cy": 0.0231,
+    "rev_g_ny": 0.0189,
+    "analysts": 10,
+    "eps_g_cy": 0.6913,
+    "eps_g_ny": 0.0412
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "gm": {
+   "ticker": "GM",
+   "currency": "USD",
+   "price": 83.96,
+   "shares_outstanding": 877.4515,
+   "beta": 1.4,
+   "est": {
+    "rev_g_cy": 0.0048,
+    "rev_g_ny": 0.0205,
+    "analysts": 17,
+    "eps_g_cy": 0.2659,
+    "eps_g_ny": 0.1263
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "el": {
+   "ticker": "EL",
+   "currency": "USD",
+   "price": 104.54,
+   "shares_outstanding": 247.8154,
+   "beta": 1.265,
+   "est": {
+    "rev_g_cy": 0.0453,
+    "rev_g_ny": 0.0429,
+    "analysts": 27,
+    "eps_g_cy": 0.3242,
+    "eps_g_ny": 0.1824
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": "price x shares differs from Yahoo market cap by >25% (multiple share classes?) - check the share count"
+  },
+  "ko": {
+   "ticker": "KO",
+   "currency": "USD",
+   "price": 93.9,
+   "shares_outstanding": 4302.5492,
+   "beta": 0.318,
+   "est": {
+    "rev_g_cy": 0.0368,
+    "rev_g_ny": -0.0007,
+    "analysts": 18,
+    "eps_g_cy": 0.1011,
+    "eps_g_ny": 0.0666
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "pep": {
+   "ticker": "PEP",
+   "currency": "USD",
+   "price": 131.49,
+   "shares_outstanding": 1362.7411,
+   "beta": 0.364,
+   "est": {
+    "rev_g_cy": 0.0572,
+    "rev_g_ny": 0.0249,
+    "analysts": 19,
+    "eps_g_cy": 0.0313,
+    "eps_g_ny": 0.029
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "pg": {
+   "ticker": "PG",
+   "currency": "USD",
+   "price": 159.35,
+   "shares_outstanding": 2322.6723,
+   "beta": 0.377,
+   "est": {
+    "rev_g_cy": 0.021,
+    "rev_g_ny": 0.0303,
+    "analysts": 22,
+    "eps_g_cy": 0.0125,
+    "eps_g_ny": 0.0595
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "cl": {
+   "ticker": "CL",
+   "currency": "USD",
+   "price": 94.11,
+   "shares_outstanding": 797.1728,
+   "beta": 0.322,
+   "est": {
+    "rev_g_cy": 0.05,
+    "rev_g_ny": 0.031,
+    "analysts": 18,
+    "eps_g_cy": 0.0479,
+    "eps_g_ny": 0.0566
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "kmb": {
+   "ticker": "KMB",
+   "currency": "USD",
+   "price": 105.57,
+   "shares_outstanding": 332.579,
+   "beta": 0.275,
+   "est": {
+    "rev_g_cy": 0.0089,
+    "rev_g_ny": 0.0255,
+    "analysts": 14,
+    "eps_g_cy": -0.0208,
+    "eps_g_ny": 0.0039
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "mdlz": {
+   "ticker": "MDLZ",
+   "currency": "USD",
+   "price": 63.91,
+   "shares_outstanding": 1276.3081,
+   "beta": 0.391,
+   "est": {
+    "rev_g_cy": 0.0406,
+    "rev_g_ny": 0.0282,
+    "analysts": 21,
+    "eps_g_cy": 0.0444,
+    "eps_g_ny": 0.1025
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "gis": {
+   "ticker": "GIS",
+   "currency": "USD",
+   "price": 33.13,
+   "shares_outstanding": 534.6871,
+   "beta": 0.02,
+   "est": {
+    "rev_g_cy": -0.0402,
+    "rev_g_ny": 0.0027,
+    "analysts": 18,
+    "eps_g_cy": -0.133,
+    "eps_g_ny": 0.0242
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "hsy": {
+   "ticker": "HSY",
+   "currency": "USD",
+   "price": 170.83,
+   "shares_outstanding": 146.3121,
+   "beta": 0.089,
+   "est": {
+    "rev_g_cy": 0.0505,
+    "rev_g_ny": 0.0249,
+    "analysts": 20,
+    "eps_g_cy": 0.3445,
+    "eps_g_ny": 0.1603
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": "price x shares differs from Yahoo market cap by >25% (multiple share classes?) - check the share count"
+  },
+  "mo": {
+   "ticker": "MO",
+   "currency": "USD",
+   "price": 75.11,
+   "shares_outstanding": 1669.7439,
+   "beta": 0.461,
+   "est": {
+    "rev_g_cy": 0.0209,
+    "rev_g_ny": 0.0077,
+    "analysts": 12,
+    "eps_g_cy": 0.0475,
+    "eps_g_ny": 0.0329
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "pm": {
+   "ticker": "PM",
+   "currency": "USD",
+   "price": 205.2,
+   "shares_outstanding": 1558.6134,
+   "beta": 0.36,
+   "est": {
+    "rev_g_cy": 0.0715,
+    "rev_g_ny": 0.055,
+    "analysts": 13,
+    "eps_g_cy": 0.1148,
+    "eps_g_ny": 0.0932
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "khc": {
+   "ticker": "KHC",
+   "currency": "USD",
+   "price": 23.68,
+   "shares_outstanding": 1185.8238,
+   "beta": 0.111,
+   "est": {
+    "rev_g_cy": -0.0127,
+    "rev_g_ny": 0.0022,
+    "analysts": 17,
+    "eps_g_cy": -0.2134,
+    "eps_g_ny": 0.0163
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "kdp": {
+   "ticker": "KDP",
+   "currency": "USD",
+   "price": 34.62,
+   "shares_outstanding": 1360.826,
+   "beta": 0.41,
+   "est": {
+    "rev_g_cy": 0.5849,
+    "rev_g_ny": 0.1383,
+    "analysts": 17,
+    "eps_g_cy": 0.1184,
+    "eps_g_ny": 0.1039
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "stz": {
+   "ticker": "STZ",
+   "currency": "USD",
+   "price": 131.35,
+   "shares_outstanding": 169.1985,
+   "beta": 0.429,
+   "est": {
+    "rev_g_cy": -0.002,
+    "rev_g_ny": 0.0147,
+    "analysts": 22,
+    "eps_g_cy": -0.0004,
+    "eps_g_ny": 0.0239
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "jnj": {
+   "ticker": "JNJ",
+   "currency": "USD",
+   "price": 255.56,
+   "shares_outstanding": 2409.8986,
+   "beta": 0.206,
+   "est": {
+    "rev_g_cy": 0.0746,
+    "rev_g_ny": 0.066,
+    "analysts": 21,
+    "eps_g_cy": 0.0305,
+    "eps_g_ny": 0.0528
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "pfe": {
+   "ticker": "PFE",
+   "currency": "USD",
+   "price": 29.58,
+   "shares_outstanding": 5699.6736,
+   "beta": 0.276,
+   "est": {
+    "rev_g_cy": -0.0058,
+    "rev_g_ny": -0.0379,
+    "analysts": 25,
+    "eps_g_cy": -0.081,
+    "eps_g_ny": -0.0247
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "mrk": {
+   "ticker": "MRK",
+   "currency": "USD",
+   "price": 145.95,
+   "shares_outstanding": 2467.1716,
+   "beta": 0.222,
+   "est": {
+    "rev_g_cy": 0.0312,
+    "rev_g_ny": 0.0431,
+    "analysts": 24,
+    "eps_g_cy": -0.7042,
+    "eps_g_ny": 2.4975
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "abbv": {
+   "ticker": "ABBV",
+   "currency": "USD",
+   "price": 285.42,
+   "shares_outstanding": 1767.1173,
+   "beta": 0.228,
+   "est": {
+    "rev_g_cy": 0.1057,
+    "rev_g_ny": 0.0879,
+    "analysts": 24,
+    "eps_g_cy": 0.3961,
+    "eps_g_ny": 0.1614
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "lly": {
+   "ticker": "LLY",
+   "currency": "USD",
+   "price": 1257.03,
+   "shares_outstanding": 891.7414,
+   "beta": 0.453,
+   "est": {
+    "rev_g_cy": 0.3578,
+    "rev_g_ny": 0.1527,
+    "analysts": 29,
+    "eps_g_cy": 0.4464,
+    "eps_g_ny": 0.3476
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "bmy": {
+   "ticker": "BMY",
+   "currency": "USD",
+   "price": 59.75,
+   "shares_outstanding": 2042.7147,
+   "beta": 0.184,
+   "est": {
+    "rev_g_cy": 0.035,
+    "rev_g_ny": -0.028,
+    "analysts": 26,
+    "eps_g_cy": 0.0762,
+    "eps_g_ny": -0.0009
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "amgn": {
+   "ticker": "AMGN",
+   "currency": "USD",
+   "price": 432.49,
+   "shares_outstanding": 540.632,
+   "beta": 0.407,
+   "est": {
+    "rev_g_cy": 0.0603,
+    "rev_g_ny": 0.0357,
+    "analysts": 31,
+    "eps_g_cy": 0.0539,
+    "eps_g_ny": 0.0643
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "gild": {
+   "ticker": "GILD",
+   "currency": "USD",
+   "price": 156.19,
+   "shares_outstanding": 1239.9552,
+   "beta": 0.332,
+   "est": {
+    "rev_g_cy": 0.0436,
+    "rev_g_ny": 0.0688,
+    "analysts": 25
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "unh": {
+   "ticker": "UNH",
+   "currency": "USD",
+   "price": 401.43,
+   "shares_outstanding": 897.5948,
+   "beta": 0.615,
+   "est": {
+    "rev_g_cy": 0.0025,
+    "rev_g_ny": 0.0337,
+    "analysts": 20,
+    "eps_g_cy": 0.2546,
+    "eps_g_ny": 0.1324
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "cvs": {
+   "ticker": "CVS",
+   "currency": "USD",
+   "price": 92.36,
+   "shares_outstanding": 1278.9704,
+   "beta": 0.596,
+   "est": {
+    "rev_g_cy": 0.0397,
+    "rev_g_ny": 0.0287,
+    "analysts": 21,
+    "eps_g_cy": 0.1915,
+    "eps_g_ny": 0.0612
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ci": {
+   "ticker": "CI",
+   "currency": "USD",
+   "price": 302.3,
+   "shares_outstanding": 264.2405,
+   "beta": 0.298,
+   "est": {
+    "rev_g_cy": 0.0457,
+    "rev_g_ny": 0.0407,
+    "analysts": 16,
+    "eps_g_cy": 0.0225,
+    "eps_g_ny": 0.0975
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "hum": {
+   "ticker": "HUM",
+   "currency": "USD",
+   "price": 413.16,
+   "shares_outstanding": 120.0803,
+   "beta": 0.744,
+   "est": {
+    "rev_g_cy": 0.2551,
+    "rev_g_ny": 0.0365,
+    "analysts": 21,
+    "eps_g_cy": -0.4656,
+    "eps_g_ny": 0.8657
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "elv": {
+   "ticker": "ELV",
+   "currency": "USD",
+   "price": 428.26,
+   "shares_outstanding": 216.8693,
+   "beta": 0.711,
+   "est": {
+    "rev_g_cy": -0.0058,
+    "rev_g_ny": 0.0193,
+    "analysts": 12,
+    "eps_g_cy": -0.1006,
+    "eps_g_ny": 0.0865
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tmo": {
+   "ticker": "TMO",
+   "currency": "USD",
+   "price": 690.0,
+   "shares_outstanding": 369.7473,
+   "beta": 0.877,
+   "est": {
+    "rev_g_cy": 0.0747,
+    "rev_g_ny": 0.0517,
+    "analysts": 26,
+    "eps_g_cy": 0.0995,
+    "eps_g_ny": 0.097
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "dhr": {
+   "ticker": "DHR",
+   "currency": "USD",
+   "price": 229.04,
+   "shares_outstanding": 702.9861,
+   "beta": 0.797,
+   "est": {
+    "rev_g_cy": 0.0726,
+    "rev_g_ny": 0.0809,
+    "analysts": 23,
+    "eps_g_cy": 0.0905,
+    "eps_g_ny": 0.093
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "abt": {
+   "ticker": "ABT",
+   "currency": "USD",
+   "price": 104.89,
+   "shares_outstanding": 1730.3833,
+   "beta": 0.583,
+   "est": {
+    "rev_g_cy": 0.1324,
+    "rev_g_ny": 0.0862,
+    "analysts": 27,
+    "eps_g_cy": 0.0715,
+    "eps_g_ny": 0.0992
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "mdt": {
+   "ticker": "MDT",
+   "currency": "USD",
+   "price": 94.75,
+   "shares_outstanding": 1279.1379,
+   "beta": 0.567,
+   "est": {
+    "rev_g_cy": 0.0729,
+    "rev_g_ny": 0.0366,
+    "analysts": 28,
+    "eps_g_cy": 0.0805,
+    "eps_g_ny": 0.0721
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "isrg": {
+   "ticker": "ISRG",
+   "currency": "USD",
+   "price": 426.7,
+   "shares_outstanding": 353.278,
+   "beta": 1.463,
+   "est": {
+    "rev_g_cy": 0.168,
+    "rev_g_ny": 0.1281,
+    "analysts": 31,
+    "eps_g_cy": 0.2095,
+    "eps_g_ny": 0.121
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "syk": {
+   "ticker": "SYK",
+   "currency": "USD",
+   "price": 294.66,
+   "shares_outstanding": 383.573,
+   "beta": 0.781,
+   "est": {
+    "rev_g_cy": 0.0818,
+    "rev_g_ny": 0.0854,
+    "analysts": 27,
+    "eps_g_cy": 0.0972,
+    "eps_g_ny": 0.1142
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "bsx": {
+   "ticker": "BSX",
+   "currency": "USD",
+   "price": 44.39,
+   "shares_outstanding": 1449.2295,
+   "beta": 0.575,
+   "est": {
+    "rev_g_cy": 0.0541,
+    "rev_g_ny": 0.0485,
+    "analysts": 27,
+    "eps_g_cy": 0.0603,
+    "eps_g_ny": 0.0408
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "vrtx": {
+   "ticker": "VRTX",
+   "currency": "USD",
+   "price": 499.74,
+   "shares_outstanding": 253.4609,
+   "beta": 0.281,
+   "est": {
+    "rev_g_cy": 0.1056,
+    "rev_g_ny": 0.0977,
+    "analysts": 19,
+    "eps_g_cy": -0.0309,
+    "eps_g_ny": 0.1434
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "regn": {
+   "ticker": "REGN",
+   "currency": "USD",
+   "price": 790.74,
+   "shares_outstanding": 101.1378,
+   "beta": 0.153,
+   "est": {
+    "rev_g_cy": 0.2171,
+    "rev_g_ny": 0.0652,
+    "analysts": 26,
+    "eps_g_cy": 0.3054,
+    "eps_g_ny": 0.1145
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "zts": {
+   "ticker": "ZTS",
+   "currency": "USD",
+   "price": 79.38,
+   "shares_outstanding": 413.2236,
+   "beta": 0.74,
+   "est": {
+    "rev_g_cy": -0.0226,
+    "rev_g_ny": 0.0251,
+    "analysts": 13,
+    "eps_g_cy": -0.0306,
+    "eps_g_ny": 0.0538
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "cat": {
+   "ticker": "CAT",
+   "currency": "USD",
+   "price": 730.76,
+   "shares_outstanding": 459.6749,
+   "beta": 1.58,
+   "est": {
+    "rev_g_cy": 0.1777,
+    "rev_g_ny": 0.1139,
+    "analysts": 17,
+    "eps_g_cy": 0.4339,
+    "eps_g_ny": 0.1923
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "de": {
+   "ticker": "DE",
+   "currency": "USD",
+   "price": 641.86,
+   "shares_outstanding": 269.6254,
+   "beta": 0.872,
+   "est": {
+    "rev_g_cy": 0.0567,
+    "rev_g_ny": 0.0851,
+    "analysts": 13,
+    "eps_g_cy": -0.021,
+    "eps_g_ny": 0.2692
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ba": {
+   "ticker": "BA",
+   "currency": "USD",
+   "price": 190.21,
+   "shares_outstanding": 790.37,
+   "beta": 1.257,
+   "est": {
+    "rev_g_cy": 0.09,
+    "rev_g_ny": 0.1487,
+    "analysts": 26
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "lmt": {
+   "ticker": "LMT",
+   "currency": "USD",
+   "price": 552.09,
+   "shares_outstanding": 230.7908,
+   "beta": 0.095,
+   "est": {
+    "rev_g_cy": 0.0792,
+    "rev_g_ny": 0.0569,
+    "analysts": 21,
+    "eps_g_cy": 0.4154,
+    "eps_g_ny": 0.076
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "rtx": {
+   "ticker": "RTX",
+   "currency": "USD",
+   "price": 193.92,
+   "shares_outstanding": 1347.7581,
+   "beta": 0.308,
+   "est": {
+    "rev_g_cy": 0.0856,
+    "rev_g_ny": 0.0756,
+    "analysts": 22,
+    "eps_g_cy": 0.153,
+    "eps_g_ny": 0.0852
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ge": {
+   "ticker": "GE",
+   "currency": "USD",
+   "price": 313.83,
+   "shares_outstanding": 1037.5625,
+   "beta": 1.374,
+   "est": {
+    "rev_g_cy": 0.19,
+    "rev_g_ny": 0.1105,
+    "analysts": 17,
+    "eps_g_cy": 0.2447,
+    "eps_g_ny": 0.1368
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "hon": {
+   "ticker": "HON",
+   "currency": "USD",
+   "price": 211.41,
+   "shares_outstanding": 316.94,
+   "beta": 0.888,
+   "est": {
+    "rev_g_cy": -0.4619,
+    "rev_g_ny": 0.0202,
+    "analysts": 23,
+    "eps_g_cy": -0.5757,
+    "eps_g_ny": 0.1828
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ups": {
+   "ticker": "UPS",
+   "currency": "USD",
+   "price": 97.48,
+   "shares_outstanding": 749.3494,
+   "beta": 1.046,
+   "est": {
+    "rev_g_cy": 0.033,
+    "rev_g_ny": 0.0367,
+    "analysts": 24,
+    "eps_g_cy": 0.0057,
+    "eps_g_ny": 0.1188
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "fdx": {
+   "ticker": "FDX",
+   "currency": "USD",
+   "price": 293.55,
+   "shares_outstanding": 236.6704,
+   "beta": 1.328,
+   "est": {
+    "rev_g_cy": 0.0429,
+    "rev_g_ny": 0.0365,
+    "analysts": 11,
+    "eps_g_cy": -0.0233,
+    "eps_g_ny": 0.1741
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "unp": {
+   "ticker": "UNP",
+   "currency": "USD",
+   "price": 289.04,
+   "shares_outstanding": 594.0755,
+   "beta": 0.954,
+   "est": {
+    "rev_g_cy": 0.1062,
+    "rev_g_ny": 0.0484,
+    "analysts": 23,
+    "eps_g_cy": 0.1228,
+    "eps_g_ny": 0.0874
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "csx": {
+   "ticker": "CSX",
+   "currency": "USD",
+   "price": 48.68,
+   "shares_outstanding": 1852.4749,
+   "beta": 1.203,
+   "est": {
+    "rev_g_cy": 0.0839,
+    "rev_g_ny": 0.0523,
+    "analysts": 20,
+    "eps_g_cy": 0.298,
+    "eps_g_ny": 0.1411
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "nsc": {
+   "ticker": "NSC",
+   "currency": "USD",
+   "price": 326.92,
+   "shares_outstanding": 224.6084,
+   "beta": 1.283,
+   "est": {
+    "rev_g_cy": 0.0927,
+    "rev_g_ny": 0.0446,
+    "analysts": 18,
+    "eps_g_cy": 0.0291,
+    "eps_g_ny": 0.1139
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "mmm": {
+   "ticker": "MMM",
+   "currency": "USD",
+   "price": 164.75,
+   "shares_outstanding": 515.7224,
+   "beta": 1.058,
+   "est": {
+    "rev_g_cy": 0.0473,
+    "rev_g_ny": 0.0447,
+    "analysts": 15,
+    "eps_g_cy": 0.1094,
+    "eps_g_ny": 0.0982
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "emr": {
+   "ticker": "EMR",
+   "currency": "USD",
+   "price": 161.47,
+   "shares_outstanding": 557.8,
+   "beta": 1.207,
+   "est": {
+    "rev_g_cy": 0.0491,
+    "rev_g_ny": 0.056,
+    "analysts": 27,
+    "eps_g_cy": 0.0941,
+    "eps_g_ny": 0.109
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "etn": {
+   "ticker": "ETN",
+   "currency": "USD",
+   "price": 391.25,
+   "shares_outstanding": 388.4,
+   "beta": 1.128,
+   "est": {
+    "rev_g_cy": 0.1983,
+    "rev_g_ny": 0.1218,
+    "analysts": 25,
+    "eps_g_cy": 0.1263,
+    "eps_g_ny": 0.198
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "itw": {
+   "ticker": "ITW",
+   "currency": "USD",
+   "price": 272.28,
+   "shares_outstanding": 284.8,
+   "beta": 0.975,
+   "est": {
+    "rev_g_cy": 0.0488,
+    "rev_g_ny": 0.0366,
+    "analysts": 14,
+    "eps_g_cy": 0.0909,
+    "eps_g_ny": 0.0796
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "wm": {
+   "ticker": "WM",
+   "currency": "USD",
+   "price": 226.86,
+   "shares_outstanding": 399.7152,
+   "beta": 0.43,
+   "est": {
+    "rev_g_cy": 0.0486,
+    "rev_g_ny": 0.054,
+    "analysts": 26,
+    "eps_g_cy": 0.0852,
+    "eps_g_ny": 0.1163
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "rsg": {
+   "ticker": "RSG",
+   "currency": "USD",
+   "price": 231.54,
+   "shares_outstanding": 306.213,
+   "beta": 0.397,
+   "est": {
+    "rev_g_cy": 0.0435,
+    "rev_g_ny": 0.0488,
+    "analysts": 25,
+    "eps_g_cy": 0.0356,
+    "eps_g_ny": 0.1099
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "luv": {
+   "ticker": "LUV",
+   "currency": "USD",
+   "price": 39.5,
+   "shares_outstanding": 489.2082,
+   "beta": 1.155,
+   "est": {
+    "rev_g_cy": 0.1842,
+    "rev_g_ny": 0.0515,
+    "analysts": 15,
+    "eps_g_cy": 2.0291,
+    "eps_g_ny": 0.5382
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "dal": {
+   "ticker": "DAL",
+   "currency": "USD",
+   "price": 75.37,
+   "shares_outstanding": 657.9124,
+   "beta": 1.336,
+   "est": {
+    "rev_g_cy": 0.1826,
+    "rev_g_ny": 0.031,
+    "analysts": 12,
+    "eps_g_cy": -0.0699,
+    "eps_g_ny": 0.4488
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ual": {
+   "ticker": "UAL",
+   "currency": "USD",
+   "price": 96.1,
+   "shares_outstanding": 324.5838,
+   "beta": 1.304,
+   "est": {
+    "rev_g_cy": 0.1528,
+    "rev_g_ny": 0.0617,
+    "analysts": 21,
+    "eps_g_cy": -0.2667,
+    "eps_g_ny": 0.6245
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "xom": {
+   "ticker": "XOM",
+   "currency": "USD",
+   "price": 178.98,
+   "shares_outstanding": 4111.912,
+   "beta": 0.209,
+   "est": {
+    "rev_g_cy": 0.2682,
+    "rev_g_ny": -0.0003,
+    "analysts": 12,
+    "eps_g_cy": 0.8462,
+    "eps_g_ny": -0.0809
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "cvx": {
+   "ticker": "CVX",
+   "currency": "USD",
+   "price": 224.99,
+   "shares_outstanding": 1961.6033,
+   "beta": 0.523,
+   "est": {
+    "rev_g_cy": 0.2671,
+    "rev_g_ny": -0.0606,
+    "analysts": 13,
+    "eps_g_cy": 1.3712,
+    "eps_g_ny": -0.1214
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "cop": {
+   "ticker": "COP",
+   "currency": "USD",
+   "price": 146.51,
+   "shares_outstanding": 1201.3375,
+   "beta": 0.244,
+   "est": {
+    "rev_g_cy": 0.1539,
+    "rev_g_ny": -0.0532,
+    "analysts": 12,
+    "eps_g_cy": 0.8264,
+    "eps_g_ny": -0.0653
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "slb": {
+   "ticker": "SLB",
+   "currency": "USD",
+   "price": 49.5,
+   "shares_outstanding": 1484.1432,
+   "beta": 0.839,
+   "est": {
+    "rev_g_cy": 0.0341,
+    "rev_g_ny": 0.0797,
+    "analysts": 25,
+    "eps_g_cy": -0.1567,
+    "eps_g_ny": 0.2852
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "eog": {
+   "ticker": "EOG",
+   "currency": "USD",
+   "price": 158.01,
+   "shares_outstanding": 524.5292,
+   "beta": 0.371,
+   "est": {
+    "rev_g_cy": 0.3407,
+    "rev_g_ny": -0.0999,
+    "analysts": 7,
+    "eps_g_cy": 0.7515,
+    "eps_g_ny": -0.1102
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "oxy": {
+   "ticker": "OXY",
+   "currency": "USD",
+   "price": 62.38,
+   "shares_outstanding": 999.6374,
+   "beta": 0.245,
+   "est": {
+    "rev_g_cy": 0.238,
+    "rev_g_ny": -0.0646,
+    "analysts": 15,
+    "eps_g_cy": 2.0242,
+    "eps_g_ny": -0.2873
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "lin": {
+   "ticker": "LIN",
+   "currency": "USD",
+   "price": 498.43,
+   "shares_outstanding": 460.9802,
+   "beta": 0.713,
+   "est": {
+    "rev_g_cy": 0.069,
+    "rev_g_ny": 0.0487,
+    "analysts": 25,
+    "eps_g_cy": 0.086,
+    "eps_g_ny": 0.1112
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "shw": {
+   "ticker": "SHW",
+   "currency": "USD",
+   "price": 335.2,
+   "shares_outstanding": 242.7582,
+   "beta": 1.083,
+   "est": {
+    "rev_g_cy": 0.0656,
+    "rev_g_ny": 0.0454,
+    "analysts": 25,
+    "eps_g_cy": 0.0582,
+    "eps_g_ny": 0.1192
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "apd": {
+   "ticker": "APD",
+   "currency": "USD",
+   "price": 299.59,
+   "shares_outstanding": 222.6855,
+   "beta": 0.761,
+   "est": {
+    "rev_g_cy": 0.0605,
+    "rev_g_ny": 0.0573,
+    "analysts": 20,
+    "eps_g_cy": 0.1183,
+    "eps_g_ny": 0.074
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "fcx": {
+   "ticker": "FCX",
+   "currency": "USD",
+   "price": 69.54,
+   "shares_outstanding": 1436.0175,
+   "beta": 1.389,
+   "est": {
+    "rev_g_cy": 0.1622,
+    "rev_g_ny": 0.2111,
+    "analysts": 16,
+    "eps_g_cy": 0.8047,
+    "eps_g_ny": 0.3546
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "nem": {
+   "ticker": "NEM",
+   "currency": "USD",
+   "price": 118.6,
+   "shares_outstanding": 1053.6923,
+   "beta": 0.53,
+   "est": {
+    "rev_g_cy": 0.1627,
+    "rev_g_ny": 0.0687,
+    "analysts": 16,
+    "eps_g_cy": 0.3256,
+    "eps_g_ny": 0.1138
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "nee": {
+   "ticker": "NEE",
+   "currency": "USD",
+   "price": 79.8,
+   "shares_outstanding": 2085.9782,
+   "beta": 0.639,
+   "est": {
+    "rev_g_cy": 0.1419,
+    "rev_g_ny": 0.103,
+    "analysts": 16,
+    "eps_g_cy": 0.0834,
+    "eps_g_ny": 0.088
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "duk": {
+   "ticker": "DUK",
+   "currency": "USD",
+   "price": 121.47,
+   "shares_outstanding": 779.7022,
+   "beta": 0.345,
+   "est": {
+    "rev_g_cy": 0.0466,
+    "rev_g_ny": 0.0457,
+    "analysts": 15,
+    "eps_g_cy": 0.0641,
+    "eps_g_ny": 0.0676
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "so": {
+   "ticker": "SO",
+   "currency": "USD",
+   "price": 91.18,
+   "shares_outstanding": 1150.363,
+   "beta": 0.301,
+   "est": {
+    "rev_g_cy": 0.0462,
+    "rev_g_ny": 0.0596,
+    "analysts": 15,
+    "eps_g_cy": 0.068,
+    "eps_g_ny": 0.072
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "d": {
+   "ticker": "D",
+   "currency": "USD",
+   "price": 63.56,
+   "shares_outstanding": 879.5259,
+   "beta": 0.619,
+   "est": {
+    "rev_g_cy": 0.1001,
+    "rev_g_ny": 0.0696,
+    "analysts": 8,
+    "eps_g_cy": 0.0485,
+    "eps_g_ny": 0.0643
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "t": {
+   "ticker": "T",
+   "currency": "USD",
+   "price": 23.44,
+   "shares_outstanding": 6852.3857,
+   "beta": 0.442,
+   "est": {
+    "rev_g_cy": 0.0283,
+    "rev_g_ny": 0.0223,
+    "analysts": 20,
+    "eps_g_cy": 0.1031,
+    "eps_g_ny": 0.0992
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "vz": {
+   "ticker": "VZ",
+   "currency": "USD",
+   "price": 44.79,
+   "shares_outstanding": 4154.7752,
+   "beta": 0.248,
+   "est": {
+    "rev_g_cy": 0.0189,
+    "rev_g_ny": 0.0197,
+    "analysts": 21,
+    "eps_g_cy": 0.0654,
+    "eps_g_ny": 0.0506
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tmus": {
+   "ticker": "TMUS",
+   "currency": "USD",
+   "price": 159.1,
+   "shares_outstanding": 1072.6716,
+   "beta": 0.317,
+   "est": {
+    "rev_g_cy": 0.0682,
+    "rev_g_ny": 0.0443,
+    "analysts": 24,
+    "eps_g_cy": 0.1269,
+    "eps_g_ny": 0.272
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "jpm": {
+   "ticker": "JPM",
+   "currency": "USD",
+   "price": 339.72,
+   "shares_outstanding": 2655.6,
+   "beta": 1.015,
+   "est": {
+    "rev_g_cy": 0.1398,
+    "rev_g_ny": 0.0402,
+    "analysts": 13,
+    "eps_g_cy": 0.2198,
+    "eps_g_ny": 0.0596
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "bac": {
+   "ticker": "BAC",
+   "currency": "USD",
+   "price": 51.23,
+   "shares_outstanding": 6992.7484,
+   "beta": 1.214,
+   "est": {
+    "rev_g_cy": 0.0861,
+    "rev_g_ny": 0.0596,
+    "analysts": 10,
+    "eps_g_cy": 0.1653,
+    "eps_g_ny": 0.1616
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "gs": {
+   "ticker": "GS",
+   "currency": "USD",
+   "price": 881.26,
+   "shares_outstanding": 291.1714,
+   "beta": 1.284,
+   "est": {
+    "rev_g_cy": 0.2469,
+    "rev_g_ny": 0.0156,
+    "analysts": 21,
+    "eps_g_cy": 0.3852,
+    "eps_g_ny": 0.0388
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ms": {
+   "ticker": "MS",
+   "currency": "USD",
+   "price": 180.57,
+   "shares_outstanding": 1570.5663,
+   "beta": 1.214,
+   "est": {
+    "rev_g_cy": 0.1632,
+    "rev_g_ny": 0.0547,
+    "analysts": 18,
+    "eps_g_cy": 0.2551,
+    "eps_g_ny": 0.0661
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "v": {
+   "ticker": "V",
+   "currency": "USD",
+   "price": 402.61,
+   "shares_outstanding": 1704.1127,
+   "beta": 0.771,
+   "est": {
+    "rev_g_cy": 0.1445,
+    "rev_g_ny": 0.1097,
+    "analysts": 36,
+    "eps_g_cy": 0.1534,
+    "eps_g_ny": 0.1345
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ma": {
+   "ticker": "MA",
+   "currency": "USD",
+   "price": 617.42,
+   "shares_outstanding": 869.4641,
+   "beta": 0.76,
+   "est": {
+    "rev_g_cy": 0.1366,
+    "rev_g_ny": 0.1261,
+    "analysts": 37,
+    "eps_g_cy": 0.1725,
+    "eps_g_ny": 0.1574
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "pypl": {
+   "ticker": "PYPL",
+   "currency": "USD",
+   "price": 56.7,
+   "shares_outstanding": 855.4609,
+   "beta": 1.28,
+   "est": {
+    "rev_g_cy": 0.0472,
+    "rev_g_ny": 0.0419,
+    "analysts": 38,
+    "eps_g_cy": 0.0147,
+    "eps_g_ny": 0.0722
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tcs": {
+   "ticker": "TCS",
+   "currency": "INR",
+   "price": 2465.0,
+   "shares_outstanding": 361.8088,
+   "beta": 0.182,
+   "est": {
+    "rev_g_cy": 0.0988,
+    "rev_g_ny": 0.0476,
+    "analysts": 42,
+    "eps_g_cy": 0.0594,
+    "eps_g_ny": 0.0456
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "wipro": {
+   "ticker": "WIPRO",
+   "currency": "INR",
+   "price": 184.4,
+   "shares_outstanding": 989.3437,
+   "beta": 0.408,
+   "est": {
+    "rev_g_cy": 0.0717,
+    "rev_g_ny": 0.03,
+    "analysts": 36,
+    "eps_g_cy": 0.0333,
+    "eps_g_ny": 0.0498
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "techm": {
+   "ticker": "TECHM",
+   "currency": "INR",
+   "price": 1790.0,
+   "shares_outstanding": 88.5923,
+   "beta": 0.151,
+   "est": {
+    "rev_g_cy": 0.1389,
+    "rev_g_ny": 0.0619,
+    "analysts": 33,
+    "eps_g_cy": 0.3539,
+    "eps_g_ny": 0.165
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "mphasis": {
+   "ticker": "MPHASIS",
+   "currency": "INR",
+   "price": 2500.0,
+   "shares_outstanding": 19.0871,
+   "beta": 0.526,
+   "est": {
+    "rev_g_cy": 0.1625,
+    "rev_g_ny": 0.099,
+    "analysts": 31,
+    "eps_g_cy": 0.1381,
+    "eps_g_ny": 0.1264
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "persistent": {
+   "ticker": "PERSISTENT",
+   "currency": "INR",
+   "price": 5741.0,
+   "shares_outstanding": 15.6877,
+   "beta": 0.115,
+   "est": {
+    "rev_g_cy": 0.2723,
+    "rev_g_ny": 0.1609,
+    "analysts": 29,
+    "eps_g_cy": 0.133,
+    "eps_g_ny": 0.2666
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "coforge": {
+   "ticker": "COFORGE",
+   "currency": "INR",
+   "price": 1951.9,
+   "shares_outstanding": 44.3039,
+   "beta": 0.327,
+   "est": {
+    "rev_g_cy": 0.5134,
+    "rev_g_ny": 0.1524,
+    "analysts": 30,
+    "eps_g_cy": 0.2036,
+    "eps_g_ny": 0.2164
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tataelxsi": {
+   "ticker": "TATAELXSI",
+   "currency": "INR",
+   "price": 3850.1001,
+   "shares_outstanding": 6.23,
+   "beta": 0.376,
+   "est": {
+    "rev_g_cy": 0.1287,
+    "rev_g_ny": 0.0994,
+    "analysts": 17,
+    "eps_g_cy": 0.0637,
+    "eps_g_ny": 0.1914
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tatacomm": {
+   "ticker": "TATACOMM",
+   "currency": "INR",
+   "price": 1742.8,
+   "shares_outstanding": 28.5086,
+   "beta": 0.816,
+   "est": {
+    "rev_g_cy": 0.0928,
+    "rev_g_ny": 0.1007,
+    "analysts": 10,
+    "eps_g_cy": 0.5072,
+    "eps_g_ny": 0.3847
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "naukri": {
+   "ticker": "NAUKRI",
+   "currency": "INR",
+   "price": 1265.1,
+   "shares_outstanding": 64.7738,
+   "beta": 0.319,
+   "est": {
+    "rev_g_cy": 0.088,
+    "rev_g_ny": 0.1518,
+    "analysts": 18,
+    "eps_g_cy": -0.0905,
+    "eps_g_ny": 0.1954
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "reliance": {
+   "ticker": "RELIANCE",
+   "currency": "INR",
+   "price": 1211.2,
+   "shares_outstanding": 1353.2473,
+   "beta": 0.194,
+   "est": {
+    "rev_g_cy": 1.3448,
+    "rev_g_ny": 0.9373,
+    "analysts": 24,
+    "eps_g_cy": 0.0704,
+    "eps_g_ny": 0.1121
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ongc": {
+   "ticker": "ONGC",
+   "currency": "INR",
+   "price": 222.0,
+   "shares_outstanding": 1258.0279,
+   "beta": 0.157,
+   "est": {
+    "rev_g_cy": 0.2378,
+    "rev_g_ny": -0.0625,
+    "analysts": 19,
+    "eps_g_cy": 0.3142,
+    "eps_g_ny": -0.0441
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "bpcl": {
+   "ticker": "BPCL",
+   "currency": "INR",
+   "price": 293.5,
+   "shares_outstanding": 433.8505,
+   "beta": 0.861,
+   "est": {
+    "rev_g_cy": 0.2408,
+    "rev_g_ny": -0.0407,
+    "analysts": 17,
+    "eps_g_cy": -0.647,
+    "eps_g_ny": 0.7563
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ioc": {
+   "ticker": "IOC",
+   "currency": "INR",
+   "price": 130.38,
+   "shares_outstanding": 1412.1238,
+   "beta": 0.818,
+   "est": {
+    "rev_g_cy": 0.2406,
+    "rev_g_ny": -0.0387,
+    "analysts": 18,
+    "eps_g_cy": -0.6317,
+    "eps_g_ny": 0.6694
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "hindpetro": {
+   "ticker": "HINDPETRO",
+   "currency": "INR",
+   "price": 346.0,
+   "shares_outstanding": 212.7823,
+   "beta": 0.945,
+   "est": {
+    "rev_g_cy": 0.2355,
+    "rev_g_ny": -0.0514,
+    "analysts": 18
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "gail": {
+   "ticker": "GAIL",
+   "currency": "INR",
+   "price": 168.1,
+   "shares_outstanding": 657.508,
+   "beta": 0.541,
+   "est": {
+    "rev_g_cy": 0.1276,
+    "rev_g_ny": 0.0425,
+    "analysts": 19,
+    "eps_g_cy": 0.4556,
+    "eps_g_ny": 0.0959
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "petronet": {
+   "ticker": "PETRONET",
+   "currency": "INR",
+   "price": 293.0,
+   "shares_outstanding": 150.0,
+   "beta": 0.481,
+   "est": {
+    "rev_g_cy": -0.0026,
+    "rev_g_ny": 0.3741,
+    "analysts": 25,
+    "eps_g_cy": 0.022,
+    "eps_g_ny": 0.0664
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "igl": {
+   "ticker": "IGL",
+   "currency": "INR",
+   "price": 143.06,
+   "shares_outstanding": 140.0002,
+   "beta": 0.526,
+   "est": {
+    "rev_g_cy": 0.2043,
+    "rev_g_ny": 0.08,
+    "analysts": 26,
+    "eps_g_cy": 0.046,
+    "eps_g_ny": 0.2153
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ntpc": {
+   "ticker": "NTPC",
+   "currency": "INR",
+   "price": 315.15,
+   "shares_outstanding": 969.6666,
+   "beta": 0.354,
+   "est": {
+    "rev_g_cy": 0.1205,
+    "rev_g_ny": 0.0678,
+    "analysts": 19,
+    "eps_g_cy": -0.0744,
+    "eps_g_ny": 0.0789
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "powergrid": {
+   "ticker": "POWERGRID",
+   "currency": "INR",
+   "price": 250.45,
+   "shares_outstanding": 930.0604,
+   "beta": 0.181,
+   "est": {
+    "rev_g_cy": 0.0581,
+    "rev_g_ny": 0.0764,
+    "analysts": 9,
+    "eps_g_cy": -0.1087,
+    "eps_g_ny": 0.0777
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tatapower": {
+   "ticker": "TATAPOWER",
+   "currency": "INR",
+   "price": 353.85,
+   "shares_outstanding": 319.534,
+   "beta": 0.389,
+   "est": {
+    "rev_g_cy": 0.1571,
+    "rev_g_ny": 0.0657,
+    "analysts": 21,
+    "eps_g_cy": 0.2292,
+    "eps_g_ny": 0.1292
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "adanipower": {
+   "ticker": "ADANIPOWER",
+   "currency": "INR",
+   "price": 195.85,
+   "shares_outstanding": 1928.4695,
+   "beta": 0.443,
+   "est": {
+    "rev_g_cy": 0.1765,
+    "rev_g_ny": 0.1457,
+    "analysts": 11,
+    "eps_g_cy": 0.0173,
+    "eps_g_ny": 0.1791
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "coalindia": {
+   "ticker": "COALINDIA",
+   "currency": "INR",
+   "price": 417.2,
+   "shares_outstanding": 616.2728,
+   "beta": 0.022,
+   "est": {
+    "rev_g_cy": 0.0078,
+    "rev_g_ny": 0.0447,
+    "analysts": 21,
+    "eps_g_cy": 0.1026,
+    "eps_g_ny": 0.0204
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tatasteel": {
+   "ticker": "TATASTEEL",
+   "currency": "INR",
+   "price": 175.5,
+   "shares_outstanding": 1247.4316,
+   "beta": 0.834,
+   "est": {
+    "rev_g_cy": 0.8767,
+    "rev_g_ny": 0.6752,
+    "analysts": 35,
+    "eps_g_cy": 0.3634,
+    "eps_g_ny": -0.0298
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "jswsteel": {
+   "ticker": "JSWSTEEL",
+   "currency": "INR",
+   "price": 1216.3,
+   "shares_outstanding": 244.0978,
+   "beta": 0.628,
+   "est": {
+    "rev_g_cy": 0.533,
+    "rev_g_ny": 0.3543,
+    "analysts": 34,
+    "eps_g_cy": 1.1141,
+    "eps_g_ny": 0.1756
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "hindalco": {
+   "ticker": "HINDALCO",
+   "currency": "INR",
+   "price": 908.0,
+   "shares_outstanding": 221.9837,
+   "beta": 0.952,
+   "est": {
+    "rev_g_cy": 0.2083,
+    "rev_g_ny": 0.0427,
+    "analysts": 28,
+    "eps_g_cy": 0.3599,
+    "eps_g_ny": -0.0306
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "vedl": {
+   "ticker": "VEDL",
+   "currency": "INR",
+   "price": 246.1,
+   "shares_outstanding": 390.4802,
+   "beta": 0.362,
+   "est": {
+    "rev_g_cy": -0.4527,
+    "rev_g_ny": 0.0264,
+    "analysts": 7,
+    "eps_g_cy": -0.279,
+    "eps_g_ny": -0.0663
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ultracemco": {
+   "ticker": "ULTRACEMCO",
+   "currency": "INR",
+   "price": 10907.0,
+   "shares_outstanding": 29.4065,
+   "beta": 0.487,
+   "est": {
+    "rev_g_cy": 0.1359,
+    "rev_g_ny": 0.1381,
+    "analysts": 36,
+    "eps_g_cy": 0.1961,
+    "eps_g_ny": 0.2641
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "grasim": {
+   "ticker": "GRASIM",
+   "currency": "INR",
+   "price": 2920.0,
+   "shares_outstanding": 67.8236,
+   "beta": 0.409,
+   "est": {
+    "rev_g_cy": 0.1633,
+    "rev_g_ny": 0.1071,
+    "analysts": 8,
+    "eps_g_cy": 0.6379,
+    "eps_g_ny": 0.2051
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ambujacem": {
+   "ticker": "AMBUJACEM",
+   "currency": "INR",
+   "price": 360.0,
+   "shares_outstanding": 248.4817,
+   "beta": 0.203,
+   "est": {
+    "rev_g_cy": 0.7868,
+    "rev_g_ny": 0.1417,
+    "analysts": 39,
+    "eps_g_cy": -0.508,
+    "eps_g_ny": 0.4267
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "shreecem": {
+   "ticker": "SHREECEM",
+   "currency": "INR",
+   "price": 22460.0,
+   "shares_outstanding": 3.6081,
+   "beta": 0.297,
+   "est": {
+    "rev_g_cy": 0.1379,
+    "rev_g_ny": 0.0898,
+    "analysts": 22,
+    "eps_g_cy": 0.1115,
+    "eps_g_ny": 0.2507
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "srf": {
+   "ticker": "SRF",
+   "currency": "INR",
+   "price": 2472.1001,
+   "shares_outstanding": 29.6406,
+   "beta": 0.163,
+   "est": {
+    "rev_g_cy": 0.1583,
+    "rev_g_ny": 0.1115,
+    "analysts": 27,
+    "eps_g_cy": 0.2549,
+    "eps_g_ny": 0.12
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "upl": {
+   "ticker": "UPL",
+   "currency": "INR",
+   "price": 534.65,
+   "shares_outstanding": 84.4169,
+   "beta": 0.539,
+   "est": {
+    "rev_g_cy": 0.0892,
+    "rev_g_ny": 0.0834,
+    "analysts": 17,
+    "eps_g_cy": 0.7167,
+    "eps_g_ny": 0.2553
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "pidilitind": {
+   "ticker": "PIDILITIND",
+   "currency": "INR",
+   "price": 1502.8,
+   "shares_outstanding": 101.854,
+   "beta": 0.43,
+   "est": {
+    "rev_g_cy": 0.1815,
+    "rev_g_ny": 0.1042,
+    "analysts": 21,
+    "eps_g_cy": 0.1735,
+    "eps_g_ny": 0.1207
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "asianpaint": {
+   "ticker": "ASIANPAINT",
+   "currency": "INR",
+   "price": 2331.8999,
+   "shares_outstanding": 95.8644,
+   "beta": 0.298,
+   "est": {
+    "rev_g_cy": 0.1559,
+    "rev_g_ny": 0.078,
+    "analysts": 33,
+    "eps_g_cy": 0.1787,
+    "eps_g_ny": 0.1089
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "bergepaint": {
+   "ticker": "BERGEPAINT",
+   "currency": "INR",
+   "price": 473.95,
+   "shares_outstanding": 116.6003,
+   "beta": 0.451,
+   "est": {
+    "rev_g_cy": 0.1328,
+    "rev_g_ny": 0.084,
+    "analysts": 20,
+    "eps_g_cy": 0.1535,
+    "eps_g_ny": 0.1205
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "itc": {
+   "ticker": "ITC",
+   "currency": "INR",
+   "price": 263.5,
+   "shares_outstanding": 1253.0517,
+   "beta": -0.063,
+   "est": {
+    "rev_g_cy": 0.0018,
+    "rev_g_ny": 0.0893,
+    "analysts": 17,
+    "eps_g_cy": -0.1121,
+    "eps_g_ny": 0.1603
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "hindunilvr": {
+   "ticker": "HINDUNILVR",
+   "currency": "INR",
+   "price": 1893.8,
+   "shares_outstanding": 234.9591,
+   "beta": 0.327,
+   "est": {
+    "rev_g_cy": 0.0902,
+    "rev_g_ny": 0.0838,
+    "analysts": 21,
+    "eps_g_cy": 0.038,
+    "eps_g_ny": 0.107
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "nestleind": {
+   "ticker": "NESTLEIND",
+   "currency": "INR",
+   "price": 1265.5,
+   "shares_outstanding": 192.8314,
+   "beta": 0.433,
+   "est": {
+    "rev_g_cy": 0.1665,
+    "rev_g_ny": 0.1145,
+    "analysts": 32,
+    "eps_g_cy": 0.2065,
+    "eps_g_ny": 0.1489
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "britannia": {
+   "ticker": "BRITANNIA",
+   "currency": "INR",
+   "price": 4764.0,
+   "shares_outstanding": 24.0868,
+   "beta": 0.421,
+   "est": {
+    "rev_g_cy": 0.1069,
+    "rev_g_ny": 0.1032,
+    "analysts": 29,
+    "eps_g_cy": 0.0823,
+    "eps_g_ny": 0.14
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "dabur": {
+   "ticker": "DABUR",
+   "currency": "INR",
+   "price": 385.0,
+   "shares_outstanding": 177.3957,
+   "beta": 0.418,
+   "est": {
+    "rev_g_cy": 0.0973,
+    "rev_g_ny": 0.084,
+    "analysts": 37,
+    "eps_g_cy": 0.1068,
+    "eps_g_ny": 0.1073
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "marico": {
+   "ticker": "MARICO",
+   "currency": "INR",
+   "price": 785.0,
+   "shares_outstanding": 129.7993,
+   "beta": 0.182,
+   "est": {
+    "rev_g_cy": 0.1281,
+    "rev_g_ny": 0.1106,
+    "analysts": 38,
+    "eps_g_cy": 0.2509,
+    "eps_g_ny": 0.1469
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "godrejcp": {
+   "ticker": "GODREJCP",
+   "currency": "INR",
+   "price": 855.0,
+   "shares_outstanding": 102.3462,
+   "beta": 0.332,
+   "est": {
+    "rev_g_cy": 0.1504,
+    "rev_g_ny": 0.0993,
+    "analysts": 30,
+    "eps_g_cy": 0.2735,
+    "eps_g_ny": 0.1672
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "colpal": {
+   "ticker": "COLPAL",
+   "currency": "INR",
+   "price": 1770.9,
+   "shares_outstanding": 27.1986,
+   "beta": 0.509,
+   "est": {
+    "rev_g_cy": 0.098,
+    "rev_g_ny": 0.0776,
+    "analysts": 25,
+    "eps_g_cy": 0.0743,
+    "eps_g_ny": 0.1022
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tataconsum": {
+   "ticker": "TATACONSUM",
+   "currency": "INR",
+   "price": 978.9,
+   "shares_outstanding": 98.9698,
+   "beta": 0.399,
+   "est": {
+    "rev_g_cy": 0.1171,
+    "rev_g_ny": 0.1135,
+    "analysts": 27,
+    "eps_g_cy": 0.2833,
+    "eps_g_ny": 0.2055
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "vbl": {
+   "ticker": "VBL",
+   "currency": "INR",
+   "price": 430.5,
+   "shares_outstanding": 338.2495,
+   "beta": 0.286,
+   "est": {
+    "rev_g_cy": 0.7602,
+    "rev_g_ny": 0.7592,
+    "analysts": 26,
+    "eps_g_cy": 0.1239,
+    "eps_g_ny": 0.1528
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "titan": {
+   "ticker": "TITAN",
+   "currency": "INR",
+   "price": 4444.7998,
+   "shares_outstanding": 88.7312,
+   "beta": 0.229,
+   "est": {
+    "rev_g_cy": 0.1268,
+    "rev_g_ny": 0.1675,
+    "analysts": 24,
+    "eps_g_cy": 0.2982,
+    "eps_g_ny": 0.2063
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "trent": {
+   "ticker": "TRENT",
+   "currency": "INR",
+   "price": 2958.7,
+   "shares_outstanding": 53.3232,
+   "beta": 0.383,
+   "est": {
+    "rev_g_cy": 0.2297,
+    "rev_g_ny": 0.2004,
+    "analysts": 15,
+    "eps_g_cy": 0.1076,
+    "eps_g_ny": 0.2207
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "dmart": {
+   "ticker": "DMART",
+   "currency": "INR",
+   "price": 3342.0,
+   "shares_outstanding": 65.231,
+   "beta": 0.252,
+   "est": {
+    "rev_g_cy": 0.2062,
+    "rev_g_ny": 0.2019,
+    "analysts": 20,
+    "eps_g_cy": 0.1341,
+    "eps_g_ny": 0.1875
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "eternal": {
+   "ticker": "ETERNAL",
+   "currency": "INR",
+   "price": 325.3,
+   "shares_outstanding": 921.2774,
+   "beta": 0.239,
+   "est": {
+    "rev_g_cy": 0.797,
+    "rev_g_ny": 0.4643,
+    "analysts": 30,
+    "eps_g_ny": 1.2829
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "nykaa": {
+   "ticker": "NYKAA",
+   "currency": "INR",
+   "price": 345.0,
+   "shares_outstanding": 286.5663,
+   "beta": 0.364,
+   "est": {
+    "rev_g_cy": 0.2806,
+    "rev_g_ny": 0.2533,
+    "analysts": 25,
+    "eps_g_cy": 1.2718,
+    "eps_g_ny": 0.7378
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "jublfood": {
+   "ticker": "JUBLFOOD",
+   "currency": "INR",
+   "price": 417.95,
+   "shares_outstanding": 65.7675,
+   "beta": 0.186,
+   "est": {
+    "rev_g_cy": 0.1172,
+    "rev_g_ny": 0.5443,
+    "analysts": 6,
+    "eps_g_cy": 0.0481,
+    "eps_g_ny": 0.2287
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "pageind": {
+   "ticker": "PAGEIND",
+   "currency": "INR",
+   "price": 36145.0,
+   "shares_outstanding": 1.1154,
+   "beta": 0.034,
+   "est": {
+    "rev_g_cy": 0.1318,
+    "rev_g_ny": 0.1161,
+    "analysts": 22,
+    "eps_g_cy": 0.0813,
+    "eps_g_ny": 0.1381
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "bataindia": {
+   "ticker": "BATAINDIA",
+   "currency": "INR",
+   "price": 638.65,
+   "shares_outstanding": 12.8528,
+   "beta": 0.392,
+   "est": {
+    "rev_g_cy": 0.0627,
+    "rev_g_ny": 0.0892,
+    "analysts": 9,
+    "eps_g_cy": 0.248,
+    "eps_g_ny": 0.2623
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "indigo": {
+   "ticker": "INDIGO",
+   "currency": "INR",
+   "price": 4686.8999,
+   "shares_outstanding": 38.6667,
+   "beta": 0.643,
+   "est": {
+    "rev_g_cy": 0.2093,
+    "rev_g_ny": 0.1257,
+    "analysts": 18,
+    "eps_g_ny": 1.8077
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "irctc": {
+   "ticker": "IRCTC",
+   "currency": "INR",
+   "price": 466.65,
+   "shares_outstanding": 80.0,
+   "beta": 0.287,
+   "est": {
+    "rev_g_cy": 0.1338,
+    "rev_g_ny": 0.1198,
+    "analysts": 7,
+    "eps_g_cy": 0.1411,
+    "eps_g_ny": 0.1371
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "maruti": {
+   "ticker": "MARUTI",
+   "currency": "INR",
+   "price": 11489.0,
+   "shares_outstanding": 31.4403,
+   "beta": 0.26,
+   "est": {
+    "rev_g_cy": 0.1647,
+    "rev_g_ny": 0.0985,
+    "analysts": 39,
+    "eps_g_cy": -0.0087,
+    "eps_g_ny": 0.2788
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "m-m": {
+   "ticker": "M&M",
+   "currency": "INR",
+   "price": 2920.8999,
+   "shares_outstanding": 120.0762,
+   "beta": 0.291,
+   "est": {
+    "rev_g_cy": 0.1443,
+    "rev_g_ny": 0.1038,
+    "analysts": 34,
+    "eps_g_cy": 0.0338,
+    "eps_g_ny": 0.1487
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "bajaj-auto": {
+   "ticker": "BAJAJ-AUTO",
+   "currency": "INR",
+   "price": 10405.0,
+   "shares_outstanding": 27.4804,
+   "beta": 0.657,
+   "est": {
+    "rev_g_cy": 0.1273,
+    "rev_g_ny": 0.1398,
+    "analysts": 36,
+    "eps_g_cy": 0.1127,
+    "eps_g_ny": 0.112
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "eichermot": {
+   "ticker": "EICHERMOT",
+   "currency": "INR",
+   "price": 7284.5,
+   "shares_outstanding": 27.4522,
+   "beta": 0.244,
+   "est": {
+    "rev_g_cy": 0.2414,
+    "rev_g_ny": 0.2122,
+    "analysts": 28,
+    "eps_g_cy": 0.1374,
+    "eps_g_ny": 0.1813
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "heromotoco": {
+   "ticker": "HEROMOTOCO",
+   "currency": "INR",
+   "price": 5225.0,
+   "shares_outstanding": 20.0141,
+   "beta": 0.486,
+   "est": {
+    "rev_g_cy": 0.1502,
+    "rev_g_ny": 0.0795,
+    "analysts": 33,
+    "eps_g_cy": 0.0799,
+    "eps_g_ny": 0.1218
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "tvsmotor": {
+   "ticker": "TVSMOTOR",
+   "currency": "INR",
+   "price": 4095.1001,
+   "shares_outstanding": 47.496,
+   "beta": -0.034,
+   "est": {
+    "rev_g_cy": 0.2154,
+    "rev_g_ny": 0.1295,
+    "analysts": 37,
+    "eps_g_cy": 0.27,
+    "eps_g_ny": 0.1887
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "ashokley": {
+   "ticker": "ASHOKLEY",
+   "currency": "INR",
+   "price": 148.91,
+   "shares_outstanding": 587.3855,
+   "beta": 0.489,
+   "est": {
+    "rev_g_cy": 0.1039,
+    "rev_g_ny": 0.0946,
+    "analysts": 34,
+    "eps_g_cy": 0.0393,
+    "eps_g_ny": 0.1986
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "mrf": {
+   "ticker": "MRF",
+   "currency": "INR",
+   "price": 122790.0,
+   "shares_outstanding": 0.4241,
+   "beta": 0.15,
+   "est": {
+    "rev_g_cy": 0.1372,
+    "rev_g_ny": 0.0994,
+    "analysts": 8,
+    "eps_g_cy": -0.1408,
+    "eps_g_ny": 0.3336
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "boschltd": {
+   "ticker": "BOSCHLTD",
+   "currency": "INR",
+   "price": 45560.0,
+   "shares_outstanding": 2.9496,
+   "beta": 0.715,
+   "est": {
+    "rev_g_cy": 0.2793,
+    "rev_g_ny": 0.1324,
+    "analysts": 4,
+    "eps_g_cy": 0.2879,
+    "eps_g_ny": 0.1082
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "lt": {
+   "ticker": "LT",
+   "currency": "INR",
+   "price": 3627.1001,
+   "shares_outstanding": 137.5866,
+   "beta": 0.522,
+   "est": {
+    "rev_g_cy": 0.1194,
+    "rev_g_ny": 0.1637,
+    "analysts": 26,
+    "eps_g_cy": 0.1792,
+    "eps_g_ny": 0.2164
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "siemens": {
+   "ticker": "SIEMENS",
+   "currency": "INR",
+   "price": 3624.0,
+   "shares_outstanding": 35.6121,
+   "beta": 0.568,
+   "est": {
+    "rev_g_cy": -0.1779,
+    "rev_g_ny": 0.2428,
+    "analysts": 20,
+    "eps_g_cy": -0.2176,
+    "eps_g_ny": 0.3074
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "abb": {
+   "ticker": "ABB",
+   "currency": "INR",
+   "price": 6801.0,
+   "shares_outstanding": 21.1908,
+   "beta": 0.488,
+   "est": {
+    "rev_g_cy": 0.1059,
+    "rev_g_ny": 0.1947,
+    "analysts": 27,
+    "eps_g_cy": -0.0061,
+    "eps_g_ny": 0.3316
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "hal": {
+   "ticker": "HAL",
+   "currency": "INR",
+   "price": 4989.0,
+   "shares_outstanding": 66.8775,
+   "beta": 0.495,
+   "est": {
+    "rev_g_cy": 0.1391,
+    "rev_g_ny": 0.2115,
+    "analysts": 14,
+    "eps_g_cy": 0.0965,
+    "eps_g_ny": 0.1556
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "bel": {
+   "ticker": "BEL",
+   "currency": "INR",
+   "price": 376.85,
+   "shares_outstanding": 730.9779,
+   "beta": 0.312,
+   "est": {
+    "rev_g_cy": 0.1619,
+    "rev_g_ny": 0.1642,
+    "analysts": 19,
+    "eps_g_cy": 0.1506,
+    "eps_g_ny": 0.1766
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "cumminsind": {
+   "ticker": "CUMMINSIND",
+   "currency": "INR",
+   "price": 4608.0,
+   "shares_outstanding": 27.72,
+   "beta": 0.532,
+   "est": {
+    "rev_g_cy": 0.1738,
+    "rev_g_ny": 0.1817,
+    "analysts": 18,
+    "eps_g_cy": 0.0866,
+    "eps_g_ny": 0.203
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "havells": {
+   "ticker": "HAVELLS",
+   "currency": "INR",
+   "price": 1121.0,
+   "shares_outstanding": 62.7562,
+   "beta": 0.341,
+   "est": {
+    "rev_g_cy": 0.1618,
+    "rev_g_ny": 0.1377,
+    "analysts": 23,
+    "eps_g_cy": -0.0297,
+    "eps_g_ny": 0.2124
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "voltas": {
+   "ticker": "VOLTAS",
+   "currency": "INR",
+   "price": 1029.1,
+   "shares_outstanding": 33.0885,
+   "beta": 0.196,
+   "est": {
+    "rev_g_cy": 0.1741,
+    "rev_g_ny": 0.1754,
+    "analysts": 32,
+    "eps_g_cy": 0.8537,
+    "eps_g_ny": 0.4377
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "polycab": {
+   "ticker": "POLYCAB",
+   "currency": "INR",
+   "price": 8219.0,
+   "shares_outstanding": 15.0635,
+   "beta": 0.697,
+   "est": {
+    "rev_g_cy": 0.3095,
+    "rev_g_ny": 0.1558,
+    "analysts": 29,
+    "eps_g_cy": 0.3215,
+    "eps_g_ny": 0.1194
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "dixon": {
+   "ticker": "DIXON",
+   "currency": "INR",
+   "price": 12340.0,
+   "shares_outstanding": 6.1171,
+   "beta": -0.116,
+   "est": {
+    "rev_g_cy": 0.483,
+    "rev_g_ny": 0.3557,
+    "analysts": 24,
+    "eps_g_cy": -0.3475,
+    "eps_g_ny": 0.5859
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "adanient": {
+   "ticker": "ADANIENT",
+   "currency": "INR",
+   "price": 2692.0,
+   "shares_outstanding": 135.2949,
+   "beta": 0.781,
+   "est": {
+    "rev_g_cy": 0.4264,
+    "rev_g_ny": 0.0855,
+    "analysts": 3,
+    "eps_g_cy": 1.0306,
+    "eps_g_ny": 0.3696
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "adaniports": {
+   "ticker": "ADANIPORTS",
+   "currency": "INR",
+   "price": 1750.8,
+   "shares_outstanding": 230.3959,
+   "beta": 0.48,
+   "est": {
+    "rev_g_cy": 0.1572,
+    "rev_g_ny": 0.1561,
+    "analysts": 23,
+    "eps_g_cy": 0.0797,
+    "eps_g_ny": 0.227
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "concor": {
+   "ticker": "CONCOR",
+   "currency": "INR",
+   "price": 447.95,
+   "shares_outstanding": 76.1618,
+   "beta": 0.248,
+   "est": {
+    "rev_g_cy": 0.0902,
+    "rev_g_ny": 0.1419,
+    "analysts": 14,
+    "eps_g_cy": 0.1077,
+    "eps_g_ny": 0.1745
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "dlf": {
+   "ticker": "DLF",
+   "currency": "INR",
+   "price": 675.0,
+   "shares_outstanding": 247.5312,
+   "beta": 0.483,
+   "est": {
+    "rev_g_cy": 0.2047,
+    "rev_g_ny": 0.2485,
+    "analysts": 21,
+    "eps_g_cy": 0.0111,
+    "eps_g_ny": 0.4776
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "godrejprop": {
+   "ticker": "GODREJPROP",
+   "currency": "INR",
+   "price": 1603.3,
+   "shares_outstanding": 30.1226,
+   "beta": 0.652,
+   "est": {
+    "rev_g_cy": 0.6891,
+    "rev_g_ny": 0.7271,
+    "analysts": 18,
+    "eps_g_cy": 0.1894,
+    "eps_g_ny": 0.498
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "sunpharma": {
+   "ticker": "SUNPHARMA",
+   "currency": "INR",
+   "price": 1758.8,
+   "shares_outstanding": 239.9335,
+   "beta": 0.135,
+   "est": {
+    "rev_g_cy": 0.1137,
+    "rev_g_ny": 0.1202,
+    "analysts": 33,
+    "eps_g_cy": 0.0513,
+    "eps_g_ny": 0.1848
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "drreddy": {
+   "ticker": "DRREDDY",
+   "currency": "INR",
+   "price": 1233.0,
+   "shares_outstanding": 83.2989,
+   "beta": 0.25,
+   "est": {
+    "rev_g_cy": 0.0476,
+    "rev_g_ny": 0.117,
+    "analysts": 35,
+    "eps_g_cy": -0.2072,
+    "eps_g_ny": 0.3393
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "cipla": {
+   "ticker": "CIPLA",
+   "currency": "INR",
+   "price": 1325.1,
+   "shares_outstanding": 80.7871,
+   "beta": 0.092,
+   "est": {
+    "rev_g_cy": 0.0983,
+    "rev_g_ny": 0.1213,
+    "analysts": 36,
+    "eps_g_cy": 0.0032,
+    "eps_g_ny": 0.2505
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "divislab": {
+   "ticker": "DIVISLAB",
+   "currency": "INR",
+   "price": 9144.5,
+   "shares_outstanding": 26.5469,
+   "beta": 0.226,
+   "est": {
+    "rev_g_cy": 0.1939,
+    "rev_g_ny": 0.1921,
+    "analysts": 28,
+    "eps_g_cy": 0.2498,
+    "eps_g_ny": 0.224
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "lupin": {
+   "ticker": "LUPIN",
+   "currency": "INR",
+   "price": 1961.6,
+   "shares_outstanding": 45.729,
+   "beta": 0.166,
+   "est": {
+    "rev_g_cy": 0.082,
+    "rev_g_ny": 0.0663,
+    "analysts": 34,
+    "eps_g_cy": -0.2536,
+    "eps_g_ny": 0.0604
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "auropharma": {
+   "ticker": "AUROPHARMA",
+   "currency": "INR",
+   "price": 1666.9,
+   "shares_outstanding": 57.5378,
+   "beta": 0.031,
+   "est": {
+    "rev_g_cy": 0.1905,
+    "rev_g_ny": 0.1093,
+    "analysts": 25,
+    "eps_g_cy": 0.3111,
+    "eps_g_ny": 0.1661
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "torntpharm": {
+   "ticker": "TORNTPHARM",
+   "currency": "INR",
+   "price": 4558.8999,
+   "shares_outstanding": 38.0368,
+   "beta": 0.135,
+   "est": {
+    "rev_g_cy": 0.4178,
+    "rev_g_ny": 0.1263,
+    "analysts": 26,
+    "eps_g_cy": 0.0231,
+    "eps_g_ny": 0.3843
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "apollohosp": {
+   "ticker": "APOLLOHOSP",
+   "currency": "INR",
+   "price": 7890.0,
+   "shares_outstanding": 14.3785,
+   "beta": 0.175,
+   "est": {
+    "rev_g_cy": 0.1849,
+    "rev_g_ny": 0.1816,
+    "analysts": 29,
+    "eps_g_cy": 0.2625,
+    "eps_g_ny": 0.2688
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "bhartiartl": {
+   "ticker": "BHARTIARTL",
+   "currency": "INR",
+   "price": 1905.0,
+   "shares_outstanding": 623.8008,
+   "beta": 0.007,
+   "est": {
+    "rev_g_cy": 0.1561,
+    "rev_g_ny": 0.1263,
+    "analysts": 32,
+    "eps_g_cy": 0.2906,
+    "eps_g_ny": 0.3108
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "hdfcbank": {
+   "ticker": "HDFCBANK",
+   "currency": "INR",
+   "price": 728.85,
+   "shares_outstanding": 1541.8479,
+   "beta": 0.412,
+   "est": {
+    "rev_g_cy": -0.3543,
+    "rev_g_ny": 0.5068,
+    "analysts": 31,
+    "eps_g_cy": 0.0809,
+    "eps_g_ny": 0.1759
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "icicibank": {
+   "ticker": "ICICIBANK",
+   "currency": "INR",
+   "price": 1397.0,
+   "shares_outstanding": 717.9442,
+   "beta": 0.261,
+   "est": {
+    "rev_g_cy": 0.1529,
+    "rev_g_ny": 0.1505,
+    "analysts": 34,
+    "eps_g_cy": 0.1723,
+    "eps_g_ny": 0.1534
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "sbin": {
+   "ticker": "SBIN",
+   "currency": "INR",
+   "price": 962.6,
+   "shares_outstanding": 923.0767,
+   "beta": 0.415,
+   "est": {
+    "rev_g_cy": -0.3094,
+    "rev_g_ny": 0.143,
+    "analysts": 36,
+    "eps_g_cy": 0.037,
+    "eps_g_ny": 0.1168
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "kotakbank": {
+   "ticker": "KOTAKBANK",
+   "currency": "INR",
+   "price": 447.4,
+   "shares_outstanding": 994.7881,
+   "beta": 0.33,
+   "est": {
+    "rev_g_cy": 0.1553,
+    "rev_g_ny": 1.0723,
+    "analysts": 30,
+    "eps_g_cy": 0.0725,
+    "eps_g_ny": 0.1457
+   },
+   "as_of": "2026-10-17T16:08:04Z",
+   "warning": null
+  },
+  "axisbank": {
+   "ticker": "AXISBANK",
+   "currency": "INR",
+   "price": 1290.0,
+   "shares_outstanding": 311.3773,
+   "beta": 0.42,
+   "est": {
+    "rev_g_cy": 0.1389,
+    "rev_g_ny": 0.1525,
+    "analysts": 35,
+    "eps_g_cy": 0.2233,
+    "eps_g_ny": 0.1681
+   },
+   "as_of": "2026-10-17T16:08:04Z",
    "warning": null
   }
  }
