@@ -1,0 +1,21 @@
+name: Request a company
+description: Ask for a company to be added to Fulcrum
+title: "Add company: "
+labels: ["add-company"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Requests are public. Please do not include personal information.
+  - type: input
+    id: ticker
+    attributes:
+      label: Yahoo Finance ticker
+      description: US tickers are plain (NVDA). Indian tickers end in .NS (NSE) or .BO (BSE), for example RELIANCE.NS.
+      placeholder: NVDA
+    validations:
+      required: true
+  - type: input
+    id: note
+    attributes:
+      label: Anything we should know (optional)

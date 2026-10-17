@@ -5,13 +5,20 @@
  "sector": "Technology",
  "currency": "USD",
  "market": {
-  "price": 341.27,
+  "price": 343.46,
   "shares_outstanding": 14594.18,
   "beta": 1.069,
   "net_debt_override": null,
   "source": "yfinance",
-  "as_of": "2026-10-14T09:21:55Z",
-  "warning": null
+  "as_of": "2026-10-17T16:08:04Z",
+  "warning": null,
+  "est": {
+   "rev_g_cy": 0.1491,
+   "rev_g_ny": 0.1043,
+   "analysts": 40,
+   "eps_g_cy": 0.1823,
+   "eps_g_ny": 0.0851
+  }
  },
  "periods": [
   "FY2022",
@@ -7773,7 +7780,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_cash_equivalents_and_short_term_investments": {
+    "cash_and_equivalents": {
      "consolidated": {
       "value": 61555.0,
       "unit": "usd_mm",
@@ -7805,7 +7812,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_and_equivalents": {
+    "cash_and_cash_equivalents": {
      "consolidated": {
       "value": 29965.0,
       "unit": "usd_mm",
@@ -8767,7 +8774,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_cash_equivalents_and_short_term_investments": {
+    "cash_and_equivalents": {
      "consolidated": {
       "value": 65171.0,
       "unit": "usd_mm",
@@ -8799,7 +8806,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_and_equivalents": {
+    "cash_and_cash_equivalents": {
      "consolidated": {
       "value": 29943.0,
       "unit": "usd_mm",
@@ -9841,7 +9848,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_cash_equivalents_and_short_term_investments": {
+    "cash_and_equivalents": {
      "consolidated": {
       "value": 48304.0,
       "unit": "usd_mm",
@@ -9873,7 +9880,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_and_equivalents": {
+    "cash_and_cash_equivalents": {
      "consolidated": {
       "value": 23646.0,
       "unit": "usd_mm",
@@ -10707,7 +10714,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_cash_equivalents_and_short_term_investments": {
+    "cash_and_equivalents": {
      "consolidated": {
       "value": 68507.0,
       "unit": "usd_mm",
@@ -10739,7 +10746,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_and_equivalents": {
+    "cash_and_cash_equivalents": {
      "consolidated": {
       "value": 45572.0,
       "unit": "usd_mm",
@@ -11557,7 +11564,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_cash_equivalents_and_short_term_investments": {
+    "cash_and_equivalents": {
      "consolidated": {
       "value": 66907.0,
       "unit": "usd_mm",
@@ -11589,7 +11596,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_and_equivalents": {
+    "cash_and_cash_equivalents": {
      "consolidated": {
       "value": 45317.0,
       "unit": "usd_mm",
@@ -12551,7 +12558,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_cash_equivalents_and_short_term_investments": {
+    "cash_and_equivalents": {
      "consolidated": {
       "value": 54697.0,
       "unit": "usd_mm",
@@ -12583,7 +12590,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_and_equivalents": {
+    "cash_and_cash_equivalents": {
      "consolidated": {
       "value": 35934.0,
       "unit": "usd_mm",
@@ -13433,7 +13440,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_cash_equivalents_and_short_term_investments": {
+    "cash_and_equivalents": {
      "consolidated": {
       "value": 55372.0,
       "unit": "usd_mm",
@@ -13465,7 +13472,7 @@
      "standalone": null,
      "unspecified": null
     },
-    "cash_and_equivalents": {
+    "cash_and_cash_equivalents": {
      "consolidated": {
       "value": 36269.0,
       "unit": "usd_mm",
@@ -21748,7 +21755,11 @@
    "total_debt": null,
    "cash_and_equivalents": null,
    "operating_cash_flow": 81754.0,
-   "capital_expenditure": -9473.0
+   "capital_expenditure": -9473.0,
+   "minority_interest": null,
+   "interest_expense": null,
+   "total_assets": null,
+   "total_liabilities": null
   },
   "9MFY2026": {
    "revenue": 364357.0,
@@ -21759,7 +21770,11 @@
    "total_debt": null,
    "cash_and_equivalents": null,
    "operating_cash_flow": 116996.0,
-   "capital_expenditure": -6799.0
+   "capital_expenditure": -6799.0,
+   "minority_interest": null,
+   "interest_expense": null,
+   "total_assets": null,
+   "total_liabilities": null
   },
   "FY2025": {
    "revenue": 416161.0,
@@ -21770,7 +21785,11 @@
    "total_debt": 98657.0,
    "cash_and_equivalents": 35934.0,
    "operating_cash_flow": 111482.0,
-   "capital_expenditure": -12715.0
+   "capital_expenditure": -12715.0,
+   "total_assets": 359241.0,
+   "total_liabilities": 285508.0,
+   "minority_interest": null,
+   "interest_expense": null
   },
   "Q3FY2025": {
    "revenue": 94036.0,
@@ -21779,9 +21798,13 @@
    "net_income": 23434.0,
    "shareholders_equity": 65830.0,
    "total_debt": 101698.0,
-   "cash_and_equivalents": 36269.0,
+   "cash_and_equivalents": 55372.0,
    "operating_cash_flow": 27867.0,
-   "capital_expenditure": -3462.0
+   "capital_expenditure": -3462.0,
+   "total_assets": 331495.0,
+   "total_liabilities": 265665.0,
+   "minority_interest": null,
+   "interest_expense": null
   },
   "Q3FY2026": {
    "revenue": 109417.0,
@@ -21792,7 +21815,11 @@
    "total_debt": 84344.0,
    "cash_and_equivalents": 39544.0,
    "operating_cash_flow": 34369.0,
-   "capital_expenditure": -2455.0
+   "capital_expenditure": -2455.0,
+   "total_assets": 383266.0,
+   "total_liabilities": 275746.0,
+   "minority_interest": null,
+   "interest_expense": null
   },
   "FY2024": {
    "revenue": 391035.0,
@@ -21801,9 +21828,13 @@
    "net_income": 93736.0,
    "shareholders_equity": 56950.0,
    "total_debt": 106629.0,
-   "cash_and_equivalents": 29943.0,
+   "cash_and_equivalents": 65171.0,
    "operating_cash_flow": 118254.0,
-   "capital_expenditure": -9447.0
+   "capital_expenditure": -9447.0,
+   "total_assets": 364980.0,
+   "total_liabilities": 308030.0,
+   "minority_interest": null,
+   "interest_expense": null
   },
   "FY2023": {
    "revenue": 383285.0,
@@ -21812,9 +21843,13 @@
    "net_income": 96995.0,
    "shareholders_equity": 62146.0,
    "total_debt": 111088.0,
-   "cash_and_equivalents": 29965.0,
+   "cash_and_equivalents": 61555.0,
    "operating_cash_flow": 110543.0,
-   "capital_expenditure": -10959.0
+   "capital_expenditure": -10959.0,
+   "interest_expense": 3933.0,
+   "total_assets": 352583.0,
+   "total_liabilities": 290437.0,
+   "minority_interest": null
   },
   "FY2022": {
    "revenue": 394328.0,
@@ -21823,9 +21858,13 @@
    "net_income": 99803.0,
    "shareholders_equity": 50672.0,
    "total_debt": 132480.0,
-   "cash_and_equivalents": 23646.0,
+   "cash_and_equivalents": 48304.0,
    "operating_cash_flow": 122151.0,
-   "capital_expenditure": -10708.0
+   "capital_expenditure": -10708.0,
+   "interest_expense": 2931.0,
+   "total_assets": 352755.0,
+   "total_liabilities": 302083.0,
+   "minority_interest": null
   },
   "Q2FY2026": {
    "revenue": 111184.0,
@@ -21834,9 +21873,13 @@
    "net_income": 29578.0,
    "shareholders_equity": 106491.0,
    "total_debt": 84711.0,
-   "cash_and_equivalents": 45572.0,
+   "cash_and_equivalents": 68507.0,
    "operating_cash_flow": 28702.0,
-   "capital_expenditure": -1971.0
+   "capital_expenditure": -1971.0,
+   "total_assets": 371082.0,
+   "total_liabilities": 264591.0,
+   "minority_interest": null,
+   "interest_expense": null
   },
   "Q1FY2026": {
    "revenue": 143756.0,
@@ -21845,9 +21888,13 @@
    "net_income": 42097.0,
    "shareholders_equity": 88190.0,
    "total_debt": 90509.0,
-   "cash_and_equivalents": 45317.0,
+   "cash_and_equivalents": 66907.0,
    "operating_cash_flow": 53925.0,
-   "capital_expenditure": -2373.0
+   "capital_expenditure": -2373.0,
+   "total_assets": 379297.0,
+   "total_liabilities": 291107.0,
+   "minority_interest": null,
+   "interest_expense": null
   },
   "Q4FY2025": {
    "revenue": 102466.0,
@@ -21856,9 +21903,13 @@
    "net_income": 27466.0,
    "shareholders_equity": 73733.0,
    "total_debt": 98657.0,
-   "cash_and_equivalents": 35934.0,
+   "cash_and_equivalents": 54697.0,
    "operating_cash_flow": 29728.0,
-   "capital_expenditure": -3242.0
+   "capital_expenditure": -3242.0,
+   "total_assets": 359241.0,
+   "total_liabilities": 285508.0,
+   "minority_interest": null,
+   "interest_expense": null
   },
   "TTMQ3FY2026": {
    "revenue": 466823.0,
@@ -21869,7 +21920,11 @@
    "capital_expenditure": -10041.0,
    "shareholders_equity": null,
    "total_debt": null,
-   "cash_and_equivalents": null
+   "cash_and_equivalents": null,
+   "minority_interest": null,
+   "interest_expense": null,
+   "total_assets": null,
+   "total_liabilities": null
   }
  },
  "industry": "Consumer Electronics"
